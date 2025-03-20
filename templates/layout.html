@@ -7,9 +7,6 @@
   <body>
     {% if session.username %}
     <p>Kirjautunut sisään nimellä {{ session.username }}</p>
-    <p>
-      <a href="/logout">Kirjaudu ulos</a>
-    </p>
     {% else %}
     <p>et ole kirjautunut sisään</p>
     {% endif %}
@@ -28,6 +25,7 @@
           <li><a href="/logout">Kirjaudu ulos</a></li>
           {% else %}
           <li><a href="/login">Kirjaudu sisään</a></li>
+          <li><a href="/register">Luo tili</a></li>
           {% endif %}
         </ul>
       </nav>
