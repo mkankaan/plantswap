@@ -3,12 +3,21 @@
 
 <h2>Käyttäjä {{ user.username }}</h2>
 
-{% if user.id == session.user_id %}
+{% if user.has_image %}
+<img src="/image/{{ user.id }}" />
+{% else %}
+<div>ei profiilikuvaa</div>
+{% endif %} {% if user.id == session.user_id %}
 <p>oma profiilisi</p>
+<p>
+  <a href="/add_image">Aseta profiilikuva</a>
+</p>
 {% endif %}
 
 <p>{{ user.city }}</p>
 
 <p>Liittyi {{ user.joined }}</p>
+
+<p>Käyttäjän lähettämät ilmoitukset:</p>
 
 {% endblock %}

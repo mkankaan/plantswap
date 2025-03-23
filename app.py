@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, redirect, session, abort
+from flask import render_template, request, redirect, session, abort, make_response
 import db, users, config
 import sqlite3
 
@@ -70,3 +70,40 @@ def show_user(user_id):
     if not user:
         abort(404)
     return render_template("user.html", user=user)
+
+# add profile image
+@app.route("/add_image", methods=["GET", "POST"])
+def add_image():
+    # require_login()
+
+    if request.method == "GET":
+        return render_template("add_image.html")
+
+    if request.method == "POST":
+        # check_csrf()
+
+        file = request.files["image"]
+        if not file.filename.endswith(".jpg"):
+            # return redirect("/add_image")
+            return("ei jpg-tiedosto")
+
+        image = file.read()
+        if len(image) > 100 * 1024:
+            # return redirect("/add_image")
+            return("tiedosto on liian suuri")
+
+        user_id = session["user_id"]
+        users.update_image(user_id, image)
+        return redirect("/user/" + str(user_id))
+    
+# fetch profile image
+@app.route("/image/<int:user_id>")
+def show_image(user_id):
+    image = users.get_image(user_id)
+    if not image:
+        abort(404)
+
+    response = make_response(bytes(image))
+    response.headers.set("Content-Type", "image/jpeg")
+    return response
+

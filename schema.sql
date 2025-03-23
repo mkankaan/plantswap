@@ -3,5 +3,6 @@ CREATE TABLE users (
     username TEXT UNIQUE,
     password_hash TEXT,
     city TEXT,
-    joined TEXT
+    joined TEXT,
+    image BLOB
 );
