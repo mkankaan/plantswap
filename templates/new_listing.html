@@ -1,0 +1,14 @@
+{% extends "layout.html" %} {% block title %}Lisää ilmoitus{% endblock
+%} {% block content %}
+
+<h2>Lisää ilmoitus</h2>
+
+<form action="/new_listing" method="post">
+  <p>
+    <label for="name">Nimi:</label><br />
+    <input type="text" id="name" name="name" required />
+  </p>
+  <input type="submit" value="Lisää" />
+</form>
+
+{% endblock %}

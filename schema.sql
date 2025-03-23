@@ -6,3 +6,12 @@ CREATE TABLE users (
     joined TEXT,
     image BLOB
 );
+
+CREATE TABLE listings (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    user_id INTEGER,
+    date TEXT,
+    image BLOB,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);

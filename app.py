@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template, request, redirect, session, abort, make_response
-import db, users, config
+import db, users, config, listings
 import sqlite3
 
 app = Flask(__name__)
@@ -67,9 +67,12 @@ def register():
 @app.route("/user/<int:user_id>")
 def show_user(user_id):
     user = users.get_user(user_id)
+
     if not user:
         abort(404)
-    return render_template("user.html", user=user)
+    
+    listings = users.get_listings(user_id)
+    return render_template("user.html", user=user, listings=listings)
 
 # add profile image
 @app.route("/add_image", methods=["GET", "POST"])
@@ -107,3 +110,22 @@ def show_image(user_id):
     response.headers.set("Content-Type", "image/jpeg")
     return response
 
+# add listing
+@app.route("/new_listing", methods=["GET", "POST"])
+def new_listing():
+    # require login
+
+    if request.method == "GET":
+        return render_template("new_listing.html")
+    
+    if request.method == "POST":
+        name = request.form["name"]
+        user_id = session["user_id"]
+
+        try:
+            listings.create_listing(name, user_id)
+            print("added listing for user", user_id)
+        except:
+            return "jotain meni vikaan"
+
+        return redirect("/")

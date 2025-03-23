@@ -36,6 +36,13 @@
           </ul>
         </nav>
       </div>
+
+      {% if session.user_id %}
+      <p>
+        <a href="/new_listing">Uusi ilmoitus</a>
+      </p>
+
+      {% endif %}
     </div>
 
     <div class="content">{% block content %}{% endblock %}</div>

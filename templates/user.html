@@ -18,6 +18,16 @@
 
 <p>Liittyi {{ user.joined }}</p>
 
-<p>Käyttäjän lähettämät ilmoitukset:</p>
+<h3>Käyttäjän lähettämät ilmoitukset ({{ listings | count }})</h3>
+
+<ul>
+  {% for listing in listings %}
+  <li>
+    <a href="/listing/{{ listing.id }}">{{ listing.name }}</a>
+    <br />
+    {{ listing.date }}
+  </li>
+  {% endfor %}
+</ul>
 
 {% endblock %}
