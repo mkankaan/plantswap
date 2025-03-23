@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, redirect, session
+from flask import render_template, request, redirect, session, abort
 import db, users, config
 import sqlite3
 
@@ -62,3 +62,11 @@ def register():
             return redirect("/")
         except sqlite3.IntegrityError:
             return "käyttäjätunnus varattu"
+
+# user profile page
+@app.route("/user/<int:user_id>")
+def show_user(user_id):
+    user = users.get_user(user_id)
+    if not user:
+        abort(404)
+    return render_template("user.html", user=user)
