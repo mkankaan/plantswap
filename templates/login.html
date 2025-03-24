@@ -1,18 +1,30 @@
-{% extends "layout.html" %} {% block title %}Kirjaudu sisään{%
-endblock %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Kirjaudu sisään</title>
+  </head>
+  <body>
+    <h2>Kirjaudu sisään</h2>
 
-<h2>Kirjaudu sisään</h2>
+    <form action="/login" method="post">
+      <p>
+        <label for="username">Käyttäjätunnus:</label><br />
+        <input type="text" id="username" name="username" />
+      </p>
+      <p>
+        <label for="password">Salasana</label>:<br />
+        <input type="password" id="password" name="password" />
+      </p>
+      <input type="submit" value="Kirjaudu" />
+    </form>
 
-<form action="/login" method="post">
-  <p>
-    <label for="username">Käyttäjätunnus:</label><br />
-    <input type="text" id="username" name="username" />
-  </p>
-  <p>
-    <label for="password">Salasana</label>:<br />
-    <input type="password" id="password" name="password" />
-  </p>
-  <input type="submit" value="Kirjaudu" />
-</form>
+    <p>Eikö sinulla ole tiliä? <a href="/register">Luo tunnus</a></p>
 
-{% endblock %}
+    <p><a href="/">Takaisin</a></p>
+  </body>
+</html>

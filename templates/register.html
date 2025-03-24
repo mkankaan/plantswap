@@ -1,26 +1,39 @@
-{% extends "layout.html" %} {% block title %}Luo tili{% endblock %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Luo tili</title>
+  </head>
+  <body>
+    <h2>Luo tili</h2>
 
-<h2>Luo tili</h2>
+    <form action="/register" method="post">
+      <p>
+        <label for="username">Käyttäjätili:</label><br />
+        <input type="text" id="username" name="username" required />
+      </p>
+      <p>
+        <label for="password1">Salasana:</label><br />
+        <input type="password" id="password1" name="password1" />
+      </p>
+      <p>
+        <label for="password2">Kirjoita salasana uudestaan:</label
+        ><br />
+        <input type="password" id="password2" name="password2" />
+      </p>
+      <p>
+        <label for="city">Paikkakunta:</label><br />
+        <input type="text" id="city" name="city" />
+      </p>
+      <input type="submit" value="Luo tili" />
+    </form>
 
-<form action="/register" method="post">
-  <p>
-    <label for="username">Käyttäjätili:</label><br />
-    <input type="text" id="username" name="username" required />
-  </p>
-  <p>
-    <label for="password1">Salasana:</label><br />
-    <input type="password" id="password1" name="password1" />
-  </p>
-  <p>
-    <label for="password2">Kirjoita salasana uudestaan:</label><br />
-    <input type="password" id="password2" name="password2" />
-  </p>
-  <p>
-    <label for="city">Paikkakunta:</label><br />
-    <input type="text" id="city" name="city" />
-  </p>
-  <input type="submit" value="Luo tili" />
-</form>
+    <p>Onko sinulla jo tili? <a href="/login">Kirjaudu sisään</a></p>
 
-{% endblock %}
+    <p><a href="/">Takaisin</a></p>
+  </body>
+</html>
