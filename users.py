@@ -36,3 +36,12 @@ def get_image(user_id):
 def get_listings(user_id):
     sql = "SELECT name, date FROM listings WHERE user_id = ?"
     return db.query(sql, [user_id])
+
+# fetches the newest listing posted by the user
+def newest_listing(user_id):
+    sql = """SELECT id 
+             FROM listings
+             WHERE user_id = ?
+             ORDER BY id DESC
+            LIMIT 1 """
+    return db.query(sql, [user_id])[0][0]

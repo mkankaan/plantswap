@@ -75,12 +75,12 @@ def show_user(user_id):
     return render_template("user.html", user=user, listings=listings)
 
 # add profile image
-@app.route("/add_image", methods=["GET", "POST"])
+@app.route("/add_profile_image", methods=["GET", "POST"])
 def add_image():
     # require_login()
 
     if request.method == "GET":
-        return render_template("add_image.html")
+        return render_template("add_profile_image.html")
 
     if request.method == "POST":
         # check_csrf()
@@ -100,8 +100,8 @@ def add_image():
         return redirect("/user/" + str(user_id))
     
 # fetch profile image
-@app.route("/image/<int:user_id>")
-def show_image(user_id):
+@app.route("/image/user/<int:user_id>")
+def show_profile_image(user_id):
     image = users.get_image(user_id)
     if not image:
         abort(404)
@@ -125,7 +125,58 @@ def new_listing():
         try:
             listings.create_listing(name, user_id)
             print("added listing for user", user_id)
+
+            listing = users.newest_listing(user_id)
+            session["editing_listing"] = listing
+            return redirect("/add_listing_image")
         except:
             return "jotain meni vikaan"
 
-        return redirect("/")
+# add listing image
+@app.route("/add_listing_image", methods=["GET", "POST"])
+def add_listing_image():
+    # require_login()
+
+    if request.method == "GET":
+        listing = listings.get_listing(session["editing_listing"])
+        return render_template("add_listing_image.html", listing=listing)
+
+    if request.method == "POST":
+        # check_csrf()
+
+        file = request.files["image"]
+        if not file.filename.endswith(".jpg"):
+            # return redirect("/add_image")
+            return("ei jpg-tiedosto")
+
+        image = file.read()
+        if len(image) > 200 * 1024:
+            # return redirect("/add_image")
+            return("tiedosto on liian suuri")
+
+        listing_id = session["editing_listing"]
+        listings.update_image(listing_id, image)
+        del session["editing_listing"]
+        return redirect("/listing/" + str(listing_id))
+    
+# listing page
+@app.route("/listing/<int:listing_id>")
+def show_listing(listing_id):
+    listing = listings.get_listing(listing_id)
+
+    if not listing:
+        abort(404)
+    
+    #listings = users.get_listings(user_id)
+    return render_template("listing.html", listing=listing, comments=[])
+
+# fetch listing image
+@app.route("/image/listing/<int:listing_id>")
+def show_listing_image(listing_id):
+    image = listings.get_image(listing_id)
+    if not image:
+        abort(404)
+
+    response = make_response(bytes(image))
+    response.headers.set("Content-Type", "image/jpeg")
+    return response

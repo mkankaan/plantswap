@@ -1,0 +1,26 @@
+{% extends "layout.html" %} {% block title %}{{ listing.name }}{%
+endblock %} {% block content %}
+
+<h2>{{ listing.name }}</h2>
+
+{% if listing.has_image %}
+<img src="/image/listing/{{ listing.id }}" />
+{% else %}
+<div>ei kuvaa</div>
+{% endif %} {% if listing.user_id == session.user_id %}
+<p>oma ilmoituksesi (muokkaus)</p>
+{% endif %}
+
+<p>Lisätty {{ listing.date }}</p>
+
+<h3>Kommentit ({{ comments | count }})</h3>
+
+<ul>
+  {% for comment in comments %}
+  <li>
+    <p>kommentti</p>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
