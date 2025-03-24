@@ -8,7 +8,7 @@ endblock %} {% block content %}
 <p>Lähetä jpg-tiedosto, jonka koko on enintään 200 kt</p>
 
 <form
-  action="/add_listing_image"
+  action="/add_listing_image/{{ listing.id }}"
   method="post"
   enctype="multipart/form-data"
 >

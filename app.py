@@ -133,12 +133,16 @@ def new_listing():
             return "jotain meni vikaan"
 
 # add listing image
-@app.route("/add_listing_image", methods=["GET", "POST"])
-def add_listing_image():
+@app.route("/add_listing_image/<int:listing_id>", methods=["GET", "POST"])
+def add_listing_image(listing_id):
     # require_login()
 
     if request.method == "GET":
-        listing = listings.get_listing(session["editing_listing"])
+        listing = listings.get_listing(listing_id)
+
+        if not listing or listing["user_id"] != session["user_id"]:
+            abort(403)
+
         return render_template("add_listing_image.html", listing=listing)
 
     if request.method == "POST":
@@ -154,9 +158,9 @@ def add_listing_image():
             # return redirect("/add_image")
             return("tiedosto on liian suuri")
 
-        listing_id = session["editing_listing"]
+        #listing_id = session["editing_listing"]
         listings.update_image(listing_id, image)
-        del session["editing_listing"]
+        #del session["editing_listing"]
         return redirect("/listing/" + str(listing_id))
     
 # listing page
