@@ -13,5 +13,6 @@ CREATE TABLE listings (
     user_id INTEGER,
     date TEXT,
     image BLOB,
+    views INTEGER,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );

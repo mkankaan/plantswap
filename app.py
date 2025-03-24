@@ -166,6 +166,9 @@ def show_listing(listing_id):
 
     if not listing:
         abort(404)
+
+    listings.add_view(listing_id)
+    listing = listings.get_listing(listing_id)
     
     #listings = users.get_listings(user_id)
     return render_template("listing.html", listing=listing, comments=[])

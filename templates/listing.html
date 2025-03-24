@@ -13,6 +13,11 @@ endblock %} {% block content %}
 
 <p>Lisätty {{ listing.date }}</p>
 
+<p>
+  Katseltu {{ listing.views }} {% if listing.views == 1%} kerran {%
+  else %} kertaa {% endif %}
+</p>
+
 <h3>Kommentit ({{ comments | count }})</h3>
 
 <ul>
