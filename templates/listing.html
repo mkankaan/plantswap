@@ -7,8 +7,6 @@ endblock %} {% block content %}
 <img src="/image/listing/{{ listing.id }}" />
 {% else %}
 <div>ei kuvaa</div>
-{% endif %} {% if listing.user_id == session.user_id %}
-<p>oma ilmoituksesi (muokkaus)</p>
 {% endif %}
 
 <p><a href="/user/{{ user.id }}">{{ user.username }}</a></p>
@@ -19,6 +17,10 @@ endblock %} {% block content %}
   Katseltu {{ listing.views }} {% if listing.views == 1%} kerran {%
   else %} kertaa {% endif %}
 </p>
+{% if session.user_id and listing.user_id == session.user_id %}
+<p><a href="/edit/listing/{{ listing.id }}">Muokkaa</a></p>
+<p><a href="/remove/listing/{{ listing.id }}">Poista</a></p>
+{% else %} et ole tekijä (et voi muokata) {% endif %}
 
 <h3>Kommentit ({{ comments | count }})</h3>
 

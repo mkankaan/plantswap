@@ -5,7 +5,7 @@ def create_listing(name, user_id):
     db.execute(sql, [name, user_id])
 
 def get_listing(id):
-    sql = """SELECT id, name, date, views, image IS NOT NULL has_image
+    sql = """SELECT id, name, date, user_id, views, image IS NOT NULL has_image
              FROM listings
              WHERE id = ?"""
     result = db.query(sql, [id])
@@ -28,3 +28,7 @@ def get_user(listing_id):
     sql = "SELECT user_id FROM listings WHERE id = ?"
     result = db.query(sql, [listing_id])
     return result[0][0] if result else None
+
+def update_listing(listing_id, name):
+    sql = "UPDATE listings SET name = ? WHERE id = ?"
+    db.execute(sql, [name, listing_id])

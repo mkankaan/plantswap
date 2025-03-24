@@ -171,10 +171,8 @@ def show_listing(listing_id):
     listing = listings.get_listing(listing_id)
 
     user_id = listings.get_user(listing_id)
-    print("listing from user:", user_id)
     user = users.get_user(user_id)
     
-    #listings = users.get_listings(user_id)
     return render_template("listing.html", listing=listing, user=user, comments=[])
 
 # fetch listing image
@@ -187,3 +185,26 @@ def show_listing_image(listing_id):
     response = make_response(bytes(image))
     response.headers.set("Content-Type", "image/jpeg")
     return response
+
+@app.route("/edit/listing/<int:listing_id>", methods=["GET", "POST"])
+def edit_message(listing_id):
+    # require_login()
+
+    listing = listings.get_listing(listing_id)
+    if not listing or listing["user_id"] != session["user_id"]:
+        abort(403)
+
+    if request.method == "GET":
+        print("edit listing", listing_id, "login ok")
+
+
+        return render_template("edit_listing.html", listing=listing)
+
+    if request.method == "POST":
+        #check_csrf()
+        name = request.form["name"]
+        #if len(content) > 5000:
+        #    abort(403)
+        listings.update_listing(listing["id"], name)
+        print("päivitys onnistui")
+        return redirect("/listing/" + str(listing["id"]))
