@@ -11,6 +11,8 @@ endblock %} {% block content %}
 <p>oma ilmoituksesi (muokkaus)</p>
 {% endif %}
 
+<p><a href="/user/{{ user.id }}">{{ user.username }}</a></p>
+
 <p>Lisätty {{ listing.date }}</p>
 
 <p>

@@ -169,9 +169,13 @@ def show_listing(listing_id):
 
     listings.add_view(listing_id)
     listing = listings.get_listing(listing_id)
+
+    user_id = listings.get_user(listing_id)
+    print("listing from user:", user_id)
+    user = users.get_user(user_id)
     
     #listings = users.get_listings(user_id)
-    return render_template("listing.html", listing=listing, comments=[])
+    return render_template("listing.html", listing=listing, user=user, comments=[])
 
 # fetch listing image
 @app.route("/image/listing/<int:listing_id>")
