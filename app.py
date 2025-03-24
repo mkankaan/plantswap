@@ -127,8 +127,8 @@ def new_listing():
             print("added listing for user", user_id)
 
             listing = users.newest_listing(user_id)
-            session["editing_listing"] = listing
-            return redirect("/add_listing_image")
+            #session["editing_listing"] = listing
+            return redirect("/add_listing_image/" + str(listing))
         except:
             return "jotain meni vikaan"
 
@@ -190,8 +190,9 @@ def show_listing_image(listing_id):
     response.headers.set("Content-Type", "image/jpeg")
     return response
 
+# edit listing
 @app.route("/edit/listing/<int:listing_id>", methods=["GET", "POST"])
-def edit_message(listing_id):
+def edit_listing(listing_id):
     # require_login()
 
     listing = listings.get_listing(listing_id)
@@ -212,3 +213,22 @@ def edit_message(listing_id):
         listings.update_listing(listing["id"], name)
         print("päivitys onnistui")
         return redirect("/listing/" + str(listing["id"]))
+
+# remove listing
+@app.route("/remove/listing/<int:listing_id>", methods=["GET", "POST"])
+def remove_listing(listing_id):
+    # require_login()
+
+    listing = listings.get_listing(listing_id)
+    if not listing or listing["user_id"] != session["user_id"]:
+        abort(403)
+
+    if request.method == "GET":
+        return render_template("remove_listing.html", listing=listing)
+
+    if request.method == "POST":
+        #check_csrf()
+        if "continue" in request.form:
+            listings.remove_listing(listing["id"])
+            print("ilmoitus", listing["id"], "poistettu")
+        return redirect("/") # vaihda

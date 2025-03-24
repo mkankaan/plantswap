@@ -32,3 +32,7 @@ def get_user(listing_id):
 def update_listing(listing_id, name):
     sql = "UPDATE listings SET name = ? WHERE id = ?"
     db.execute(sql, [name, listing_id])
+
+def remove_listing(listing_id):
+    sql = "DELETE FROM listings WHERE id = ?"
+    db.execute(sql, [listing_id])

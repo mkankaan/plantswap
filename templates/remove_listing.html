@@ -1,0 +1,19 @@
+{% extends "layout.html" %} {% block title %}Poista ilmoitus{%
+endblock %} {% block content %}
+
+<h2>Poista ilmoitus</h2>
+
+<form action="/remove/listing/{{ listing.id }}" method="post">
+  <p>Haluatko varmasti poistaa ilmotuksen?</p>
+
+  {% if listing.has_image %}
+  <img src="/image/listing/{{ listing.id }}" />
+  {% endif %}
+
+  <p>{{ listing.name }}</p>
+  <!-- <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" /> -->
+  <input type="submit" name="continue" value="Jatka" />
+  <input type="submit" name="cancel" value="Peruuta" />
+</form>
+
+{% endblock %}
