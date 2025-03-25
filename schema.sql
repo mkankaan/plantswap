@@ -4,7 +4,8 @@ CREATE TABLE users (
     password_hash TEXT,
     city TEXT,
     joined TEXT,
-    image BLOB
+    image BLOB,
+    status INTEGER DEFAULT 1
 );
 
 CREATE TABLE listings (

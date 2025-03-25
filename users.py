@@ -12,13 +12,20 @@ def check_login(username, password):
         
     return None
 
+def check_status(user_id):
+    sql = "SELECT status FROM users WHERE id = ?"
+    result = db.query(sql, [user_id])[0]
+    if len(result) == 1:
+        return result == 1
+    return None
+        
 def create_user(username, password, city):
     password_hash = generate_password_hash(password)
     sql = "INSERT INTO users (username, password_hash, city, joined) VALUES (?, ?, ?, datetime('now'))"
     db.execute(sql, [username, password_hash, city])
 
 def get_user(user_id):
-    sql = """SELECT id, username, city, joined, image IS NOT NULL has_image
+    sql = """SELECT id, username, city, joined, image IS NOT NULL has_image, status
              FROM users
              WHERE id = ?"""
     result = db.query(sql, [user_id])
@@ -45,3 +52,7 @@ def newest_listing(user_id):
              ORDER BY id DESC
             LIMIT 1 """
     return db.query(sql, [user_id])[0][0]
+
+def delete_account(user_id):
+    sql = "UPDATE users SET status = 0 WHERE id = ?"
+    db.execute(sql, [user_id])

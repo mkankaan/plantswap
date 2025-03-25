@@ -20,8 +20,9 @@ def login():
         password = request.form["password"]
         
         user_id = users.check_login(username, password)
+        active = users.check_status(user_id)
 
-        if user_id:
+        if user_id and active:
             session["user_id"] = user_id
             session["username"] = username
             print("logged in as", username)
@@ -68,7 +69,10 @@ def register():
 def show_user(user_id):
     user = users.get_user(user_id)
 
-    if not user:
+    if not user or user["status"] == 0:
+
+        if user["status"] == 0:
+            print(user_id, "poistettu")
         abort(404)
     
     listings = users.get_listings(user_id)
@@ -232,3 +236,22 @@ def remove_listing(listing_id):
             listings.remove_listing(listing["id"])
             print("ilmoitus", listing["id"], "poistettu")
         return redirect("/") # vaihda
+    
+# delete user account
+@app.route("/delete_account", methods=["GET", "POST"])
+def delete_account():
+    # require_login()
+
+    if request.method == "GET":
+        return render_template("delete_account.html")
+
+    if request.method == "POST":
+        user_id = session["user_id"]
+
+        #check_csrf()
+        if "continue" in request.form:
+            users.delete_account(user_id)
+            print(user_id, "poistettu")
+            logout()
+            return redirect("/")
+        return redirect("/user/" + str(user_id))
