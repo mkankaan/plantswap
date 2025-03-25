@@ -14,10 +14,8 @@ def check_login(username, password):
 
 def check_status(user_id):
     sql = "SELECT status FROM users WHERE id = ?"
-    result = db.query(sql, [user_id])[0]
-    if len(result) == 1:
-        return result == 1
-    return None
+    result = db.query(sql, [user_id])
+    return result[0][0] == 1 if result else None
         
 def create_user(username, password, city):
     password_hash = generate_password_hash(password)
@@ -51,7 +49,8 @@ def newest_listing(user_id):
              WHERE user_id = ?
              ORDER BY id DESC
             LIMIT 1 """
-    return db.query(sql, [user_id])[0][0]
+    result = db.query(sql, [user_id])
+    return result[0][0] if result else None
 
 def delete_account(user_id):
     sql = "UPDATE users SET status = 0 WHERE id = ?"

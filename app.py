@@ -6,6 +6,10 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
+def require_login():
+    if "user_id" not in session:
+        abort(403)
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -20,13 +24,18 @@ def login():
         password = request.form["password"]
         
         user_id = users.check_login(username, password)
-        active = users.check_status(user_id)
 
-        if user_id and active:
-            session["user_id"] = user_id
-            session["username"] = username
-            print("logged in as", username)
-            return redirect("/")
+        if user_id:
+            active = users.check_status(user_id)
+            print("user id:", user_id, "active:", active)
+
+            if active:
+                session["user_id"] = user_id
+                session["username"] = username
+                print("logged in as", username)
+                return redirect("/")
+            else:
+                return "väärä tunnus tai salasana"
         else:
             return "väärä tunnus tai salasana"
         
@@ -39,6 +48,13 @@ def logout():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    min_username = 3
+    max_username = 20
+    min_password = 8
+    max_password = 100
+
+    restrictions = { min_username, max_username, min_password, max_password }
+
     if request.method == "GET":
         result = db.query("SELECT username FROM users")
 
@@ -46,7 +62,7 @@ def register():
         for user in result:
             print(user["username"])
         
-        return render_template("register.html")
+        return render_template("register.html", restrictions=restrictions, filled={})
     
     if request.method == "POST":
         username = request.form["username"]
@@ -55,12 +71,22 @@ def register():
         city = request.form["city"]
 
         if password1 != password2:
-            return render_template("salasanat eivät täsmää")
+            filled = { "username": username, "city": city }
+            print("salasanat eivät täsmää")
+            return render_template("register.html", restrictions=restrictions, filled=filled)
+        
+        if not min_password <= len(password1) <= max_password:
+            print("password length incorrect")
+            abort(403)
+        
+        if not min_username <= len(username) <= max_username:
+            print("username length incorrect")
+            abort(403)
 
         try:
             users.create_user(username, password1, city)
             print("käyttäjä", username, "luotu")
-            return redirect("/")
+            return redirect("/") # vaihda
         except sqlite3.IntegrityError:
             return "käyttäjätunnus varattu"
 
@@ -70,9 +96,6 @@ def show_user(user_id):
     user = users.get_user(user_id)
 
     if not user or user["status"] == 0:
-
-        if user["status"] == 0:
-            print(user_id, "poistettu")
         abort(404)
     
     listings = users.get_listings(user_id)
@@ -81,7 +104,7 @@ def show_user(user_id):
 # add profile image
 @app.route("/add_profile_image", methods=["GET", "POST"])
 def add_image():
-    # require_login()
+    require_login()
 
     if request.method == "GET":
         return render_template("add_profile_image.html")
@@ -117,14 +140,22 @@ def show_profile_image(user_id):
 # add listing
 @app.route("/new_listing", methods=["GET", "POST"])
 def new_listing():
-    # require login
+    require_login()
+
+    max_name = 30
+
+    restrictions = { max_name }
 
     if request.method == "GET":
-        return render_template("new_listing.html")
+        return render_template("new_listing.html", restrictions=restrictions)
     
     if request.method == "POST":
         name = request.form["name"]
         user_id = session["user_id"]
+
+        if not name or len(name) > max_name:
+            print("listing name length incorrect")
+            abort(403)
 
         try:
             listings.create_listing(name, user_id)
@@ -139,14 +170,17 @@ def new_listing():
 # add listing image
 @app.route("/add_listing_image/<int:listing_id>", methods=["GET", "POST"])
 def add_listing_image(listing_id):
-    # require_login()
+    require_login()
+
+    listing = listings.get_listing(listing_id)
+
+    if not listing:
+        abort(404)
+    
+    if listing["user_id"] != session["user_id"]:
+        abort(403)
 
     if request.method == "GET":
-        listing = listings.get_listing(listing_id)
-
-        if not listing or listing["user_id"] != session["user_id"]:
-            abort(403)
-
         return render_template("add_listing_image.html", listing=listing)
 
     if request.method == "POST":
@@ -197,16 +231,17 @@ def show_listing_image(listing_id):
 # edit listing
 @app.route("/edit/listing/<int:listing_id>", methods=["GET", "POST"])
 def edit_listing(listing_id):
-    # require_login()
+    require_login()
 
     listing = listings.get_listing(listing_id)
-    if not listing or listing["user_id"] != session["user_id"]:
+    if not listing:
+        abort(404)
+        
+    if listing["user_id"] != session["user_id"]:
         abort(403)
 
     if request.method == "GET":
         print("edit listing", listing_id, "login ok")
-
-
         return render_template("edit_listing.html", listing=listing)
 
     if request.method == "POST":
@@ -221,10 +256,13 @@ def edit_listing(listing_id):
 # remove listing
 @app.route("/remove/listing/<int:listing_id>", methods=["GET", "POST"])
 def remove_listing(listing_id):
-    # require_login()
+    require_login()
 
     listing = listings.get_listing(listing_id)
-    if not listing or listing["user_id"] != session["user_id"]:
+    if not listing:
+        abort(404)
+        
+    if listing["user_id"] != session["user_id"]:
         abort(403)
 
     if request.method == "GET":
@@ -240,7 +278,7 @@ def remove_listing(listing_id):
 # delete user account
 @app.route("/delete_account", methods=["GET", "POST"])
 def delete_account():
-    # require_login()
+    require_login()
 
     if request.method == "GET":
         return render_template("delete_account.html")

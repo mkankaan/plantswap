@@ -6,7 +6,13 @@
 <form action="/new_listing" method="post">
   <p>
     <label for="name">Nimi:</label><br />
-    <input type="text" id="name" name="name" required />
+    <input
+      type="text"
+      id="name"
+      name="name"
+      maxlength="{{ restrictions.max_name }}"
+      required
+    />
   </p>
   <input type="submit" value="Lisää" />
 </form>
