@@ -21,7 +21,14 @@ endblock %} {% block content %}
   Katseltu {{ listing.views }} {% if listing.views == 1%} kerran {%
   else %} kertaa {% endif %}
 </p>
-{% if session.user_id and listing.user_id == session.user_id %}
+
+{% if listing.cutting == 1 %}
+<p>Pistokas</p>
+{% endif %} {% if listing.info %}
+<p>Lisätiedot</p>
+<p>{{ listing.info }}</p>
+{% endif %} {% if session.user_id and listing.user_id ==
+session.user_id %}
 <p><a href="/edit/listing/{{ listing.id }}">Muokkaa</a></p>
 <p><a href="/remove/listing/{{ listing.id }}">Poista</a></p>
 {% else %} et ole tekijä (et voi muokata) {% endif %}

@@ -1,11 +1,11 @@
 import db
 
-def create_listing(name, user_id):
-    sql = "INSERT INTO listings (name, user_id, views, date) VALUES (?, ?, -1, datetime('now'))"
-    db.execute(sql, [name, user_id])
+def create_listing(name, user_id, cutting, info):
+    sql = "INSERT INTO listings (name, user_id, views, date, cutting, info) VALUES (?, ?, -1, datetime('now'), ?, ?)"
+    db.execute(sql, [name, user_id, cutting, info])
 
 def get_listing(id):
-    sql = """SELECT id, name, date, user_id, views, image IS NOT NULL has_image
+    sql = """SELECT id, name, date, user_id, views, image IS NOT NULL has_image, cutting, info
              FROM listings
              WHERE id = ?"""
     result = db.query(sql, [id])

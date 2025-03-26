@@ -143,26 +143,32 @@ def new_listing():
     require_login()
 
     max_name = 30
+    max_info = 500
 
-    restrictions = { max_name }
+    restrictions = { max_name, max_info }
 
     if request.method == "GET":
         return render_template("new_listing.html", restrictions=restrictions)
     
     if request.method == "POST":
         name = request.form["name"]
+        is_cutting = request.form.getlist("cutting")
+        info = request.form["info"]
         user_id = session["user_id"]
 
         if not name or len(name) > max_name:
             print("listing name length incorrect")
             abort(403)
 
-        try:
-            listings.create_listing(name, user_id)
-            print("added listing for user", user_id)
+        if len(info) > max_info:
+            print("info length incorrect")
+            abort(403)
 
+        cutting = 0 if is_cutting == [] else 1
+
+        try:
+            listings.create_listing(name, user_id, cutting, info)
             listing = users.newest_listing(user_id)
-            #session["editing_listing"] = listing
             return redirect("/add_listing_image/" + str(listing))
         except:
             return "jotain meni vikaan"

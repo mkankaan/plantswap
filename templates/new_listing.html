@@ -5,7 +5,7 @@
 
 <form action="/new_listing" method="post">
   <p>
-    <label for="name">Nimi:</label><br />
+    <label for="name">*Nimi</label><br />
     <input
       type="text"
       id="name"
@@ -14,6 +14,21 @@
       required
     />
   </p>
+
+  <p><input type="checkbox" name="cutting" value="1" /> Pistokas</p>
+
+  <p>
+    Lisätiedot <br />
+    <textarea
+      name="info"
+      rows="5"
+      cols="50"
+      maxlength="{{ restrictions.max_info }}"
+    ></textarea>
+  </p>
+
+  <p>* pakollinen kenttä</p>
+
   <input type="submit" value="Lisää" />
 </form>
 

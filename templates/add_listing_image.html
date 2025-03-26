@@ -1,7 +1,13 @@
-{% extends "layout.html" %} {% block title %}Aseta profiilikuva{%
-endblock %} {% block content %}
+{% extends "layout.html" %} {% block title %}Lisää kuva{% endblock %}
+{% block content %}
 
 <p>{{ listing.name }}</p>
+
+{% if listing.cutting == 1 %}
+<p>Pistokas</p>
+{% endif %} {% if listing.info %}
+<p style="border: 1px solid blue">{{ listing.info }}</p>
+{% endif %}
 
 <h2>Lisää kuva</h2>
 
