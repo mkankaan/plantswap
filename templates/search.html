@@ -1,0 +1,58 @@
+{% extends "layout.html" %} {% block title %}Haku{% endblock%} {%
+block content %}
+
+<h2>Haku</h2>
+
+<form action="/search" method="get">
+  <p>
+    <label for="query">Hakusana</label>: {% if query %}
+    <input type="text" id="query" name="query" value="{{ query }}" />
+    {% else %}
+    <input type="text" id="query" name="query" />
+    {% endif %}
+  </p>
+
+  <h3>Rajaa hakua</h3>
+
+  <p>
+    <label for="city">Sijainti</label>: {% if city %}
+    <input type="text" id="city" name="city" value="{{ city }}" />
+    {% else %}
+    <input type="text" id="city" name="city" />
+    {% endif %}
+  </p>
+
+  <p>
+    {% if plant_type and plant_type.type_cutting %}
+    <input type="radio" name="type" value="1" checked="checked" />
+    {% else %}
+    <input type="radio" name="type" value="1" />
+    {% endif %} Pistokas
+  </p>
+  <p>
+    {% if plant_type and plant_type.type_full %}
+    <input type="radio" name="type" value="2" checked="checked" />
+    {% else %}
+    <input type="radio" name="type" value="2" />
+    {% endif %} Täysi kasvi
+  </p>
+  <p>
+    {% if plant_type and plant_type.type_all %}
+    <input type="radio" name="type" value="3" checked="checked" />
+    {% else %}
+    <input type="radio" name="type" value="3" />
+    {% endif %} Kaikki
+  </p>
+
+  <input type="submit" value="Hae" />
+</form>
+
+{% if query %}
+<h3>Tulokset</h3>
+
+<ul>
+  {% for result in results %}
+  <li>result</li>
+  {% endfor %}
+</ul>
+{% endif %} {% endblock %}

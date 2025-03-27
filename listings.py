@@ -36,3 +36,17 @@ def update_listing(listing_id, name):
 def remove_listing(listing_id):
     sql = "DELETE FROM listings WHERE id = ?"
     db.execute(sql, [listing_id])
+
+def search(query):
+    sql = """SELECT l.id listing_id,
+                    l.name,
+                    l.date,
+                    l.cutting,
+                    l.image,
+                    u.username,
+                    u.city
+             FROM listings l, users u
+             WHERE u.id = l.user_id AND
+                   l.name LIKE ?
+             ORDER BY l.date DESC"""
+    return db.query(sql, ["%" + query + "%"])

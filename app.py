@@ -299,3 +299,24 @@ def delete_account():
             logout()
             return redirect("/")
         return redirect("/user/" + str(user_id))
+    
+@app.route("/search")
+def search():
+    query = request.args.get("query")
+    city = request.args.get("city")
+    type_selection = request.args.get("type")
+
+    print("query:", query)
+    print("city:", city)
+
+    type_cutting = True if type_selection == "cutting" else None
+    type_full = True if type_selection == "full" else None
+    type_all = True if type_selection == "all" else None
+
+    if type_cutting is None and type_full is None:
+        type_all = True
+
+    plant_type = { "type_cutting": type_cutting, "type_full": type_full, "type_all": type_all }
+    print(plant_type)
+    results = listings.search(query) if query else []
+    return render_template("search.html", query=query, city=city, plant_type=plant_type, results=results)
