@@ -47,12 +47,37 @@ block content %}
   <input type="submit" value="Hae" />
 </form>
 
-{% if query %}
-<h3>Tulokset</h3>
+<h3>Hakutulokset ({{ results | count }})</h3>
 
 <ul>
   {% for result in results %}
-  <li>result</li>
+  <li>
+    <div style="border: 1px solid blue">
+      <div>
+        {% if result.has_image %}
+        <img
+          class="listing_thumbnail"
+          src="/image/listing/{{ result.listing_id }}"
+        />
+        {% else %}
+        <p>ei kuvaa</p>
+        {% endif %}
+      </div>
+
+      <p>
+        <a href="/listing/{{ result.listing_id }}"
+          >{{ result.name }}</a
+        >
+      </p>
+      <p>
+        <a href="/user/{{ result.user_id }}">{{ result.username }}</a>
+      </p>
+      {% if result.cutting == 1 %}
+      <p>Pistokas</p>
+      {% endif %}
+      <p>{{ result.date }}</p>
+    </div>
+  </li>
   {% endfor %}
 </ul>
-{% endif %} {% endblock %}
+{% endblock %}

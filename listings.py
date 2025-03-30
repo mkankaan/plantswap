@@ -42,7 +42,7 @@ def search(query):
                     l.name,
                     l.date,
                     l.cutting,
-                    l.image,
+                    l.image IS NOT NULL has_image,
                     u.username,
                     u.city
              FROM listings l, users u
@@ -50,3 +50,17 @@ def search(query):
                    l.name LIKE ?
              ORDER BY l.date DESC"""
     return db.query(sql, ["%" + query + "%"])
+
+def fetch_all():
+    sql = """SELECT l.id listing_id,
+                    l.name,
+                    l.date,
+                    l.cutting,
+                    l.image IS NOT NULL has_image,
+                    u.id user_id,
+                    u.username,
+                    u.city
+             FROM listings l, users u
+             WHERE u.id = l.user_id
+             ORDER BY l.date DESC"""
+    return db.query(sql)
