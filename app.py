@@ -86,7 +86,7 @@ def register():
         try:
             users.create_user(username, password1, city)
             print("käyttäjä", username, "luotu")
-            return redirect("/") # vaihda
+            return redirect("/")
         except sqlite3.IntegrityError:
             return "käyttäjätunnus varattu"
 
@@ -110,16 +110,12 @@ def add_image():
         return render_template("add_profile_image.html")
 
     if request.method == "POST":
-        # check_csrf()
-
         file = request.files["image"]
         if not file.filename.endswith(".jpg"):
-            # return redirect("/add_image")
             return("ei jpg-tiedosto")
 
         image = file.read()
         if len(image) > 100 * 1024:
-            # return redirect("/add_image")
             return("tiedosto on liian suuri")
 
         user_id = session["user_id"]
@@ -190,21 +186,15 @@ def add_listing_image(listing_id):
         return render_template("add_listing_image.html", listing=listing)
 
     if request.method == "POST":
-        # check_csrf()
-
         file = request.files["image"]
         if not file.filename.endswith(".jpg"):
-            # return redirect("/add_image")
             return("ei jpg-tiedosto")
 
         image = file.read()
         if len(image) > 200 * 1024:
-            # return redirect("/add_image")
             return("tiedosto on liian suuri")
 
-        #listing_id = session["editing_listing"]
         listings.update_image(listing_id, image)
-        #del session["editing_listing"]
         return redirect("/listing/" + str(listing_id))
     
 # listing page
@@ -251,10 +241,7 @@ def edit_listing(listing_id):
         return render_template("edit_listing.html", listing=listing)
 
     if request.method == "POST":
-        #check_csrf()
         name = request.form["name"]
-        #if len(content) > 5000:
-        #    abort(403)
         listings.update_listing(listing["id"], name)
         print("päivitys onnistui")
         return redirect("/listing/" + str(listing["id"]))
@@ -275,11 +262,10 @@ def remove_listing(listing_id):
         return render_template("remove_listing.html", listing=listing)
 
     if request.method == "POST":
-        #check_csrf()
         if "continue" in request.form:
             listings.remove_listing(listing["id"])
             print("ilmoitus", listing["id"], "poistettu")
-        return redirect("/") # vaihda
+        return redirect("/")
     
 # delete user account
 @app.route("/delete_account", methods=["GET", "POST"])
@@ -292,7 +278,6 @@ def delete_account():
     if request.method == "POST":
         user_id = session["user_id"]
 
-        #check_csrf()
         if "continue" in request.form:
             users.delete_account(user_id)
             print(user_id, "poistettu")
@@ -309,14 +294,19 @@ def search():
     print("query:", query)
     print("city:", city)
 
-    type_cutting = True if type_selection == "cutting" else None
-    type_full = True if type_selection == "full" else None
-    type_all = True if type_selection == "all" else None
+    type_cutting = 1 if type_selection == "cutting" else None
+    type_full = 1 if type_selection == "full" else None
 
     if type_cutting is None and type_full is None:
-        type_all = True
+        type_all = 1
 
     plant_type = { "type_cutting": type_cutting, "type_full": type_full, "type_all": type_all }
     print(plant_type)
-    results = listings.search(query) if query else []
+
+    results = listings.search(query) if query else listings.fetch_all()
+
+    print("query:", query)
+    print("results:", len(results))
+
     return render_template("search.html", query=query, city=city, plant_type=plant_type, results=results)
+
