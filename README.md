@@ -8,3 +8,27 @@
 - Käyttäjä voi muokata ja poistaa omia ilmoituksiaan ja kommenttejaan. Käyttäjä voi myös lisätä muiden ilmoituksia suosikkeihin.
 - Pääasiallinen tietokohde: ilmoitus. Toissijaiset tietokohteet: toivelista ja kommentti ilmoitukseen.
 - Sovellus näyttää tilastoja siitä, kuinka monta kertaa ilmoitusta on katseltu ja kuinka monta kertaa se on lisätty suosikkeihin.
+
+## 🌵 Toteutetut ominaisuudet
+
+Päivitetty 30.3.2025
+
+### Kirjautuminen ja profiili
+
+- Käyttäjä voi luoda tunnuksen ja kirjautua sisään
+- Käyttäjä voi vaihtaa profiilikuvansa
+- Käyttäjä näkee muiden käyttäjien profiilit
+- Profiilissa näkyy lista käyttäjän luomista ilmoituksista
+- Käyttäjä voi poistaa profiilinsa. Profiili ei katoa tietokannasta, vaan sen status muuttuu
+
+### Ilmoitukset
+
+- Käyttäjä voi lisätä, muokata ja poistaa ilmoituksia. Ilmoitus poistuu tietokannasta pysyvästi
+- Käyttäjä voi vaihtaa kuvan ilmoitukseen
+- Jokaisen ilmoituksen voi klikata auki omalle sivulleen, jossa näkyy kaikki siihen liittyvät tiedot, lisäyspäivä, katselukerrat ja kommentit (ei toteutettu vielä)
+
+### Haku
+
+- Käyttäjä voi hakea ilmoituksia kaavin nimen perusteella. Ilman hakusanaa hakusivu näyttää oletusarvoisesti kaikki ilmoitukset tietokannassa. Tarkoituksena lisätä enemmän hakusanoja ja suodattimia
+
+Kaikkien tietokohteiden luontiin, muokkaukseen ja poistamiseen liittyvät toiminnot vaativat sisäänkirjautumisen. Muokkaus ja poisto vaativat lisäksi käyttäjän id:n tarkistuksen.
