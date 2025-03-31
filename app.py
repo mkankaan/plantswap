@@ -48,12 +48,7 @@ def logout():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    min_username = 3
-    max_username = 20
-    min_password = 8
-    max_password = 100
-
-    restrictions = { min_username, max_username, min_password, max_password }
+    restrictions = { "min_username": 3, "max_username": 20, "min_password": 8, "max_password": 100 }
 
     if request.method == "GET":
         result = db.query("SELECT username FROM users")
@@ -72,14 +67,13 @@ def register():
 
         if password1 != password2:
             filled = { "username": username, "city": city }
-            print("salasanat eivät täsmää")
             return render_template("register.html", restrictions=restrictions, filled=filled)
         
-        if not min_password <= len(password1) <= max_password:
+        if not restrictions["min_password"] <= len(password1) <= restrictions["max_password"]:
             print("password length incorrect")
             abort(403)
         
-        if not min_username <= len(username) <= max_username:
+        if not restrictions["min_username"] <= len(username) <= restrictions["max_username"]:
             print("username length incorrect")
             abort(403)
 
@@ -138,10 +132,7 @@ def show_profile_image(user_id):
 def new_listing():
     require_login()
 
-    max_name = 30
-    max_info = 500
-
-    restrictions = { max_name, max_info }
+    restrictions = { "max_name": 30, "max_info": 500 }
 
     if request.method == "GET":
         return render_template("new_listing.html", restrictions=restrictions)
@@ -152,11 +143,11 @@ def new_listing():
         info = request.form["info"]
         user_id = session["user_id"]
 
-        if not name or len(name) > max_name:
+        if not name or len(name) > restrictions["max_name"]:
             print("listing name length incorrect")
             abort(403)
 
-        if len(info) > max_info:
+        if len(info) > restrictions["max_info"]:
             print("info length incorrect")
             abort(403)
 
