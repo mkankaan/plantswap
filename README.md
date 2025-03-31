@@ -1,3 +1,5 @@
+\*\*Huomio sovelluksen ajamisesta: GitHubissa ei ole config.py eikä database.db -tiedostoja, ne täytyy itse lisätä ja ajaa komento ```sqlite3 database.db < schema.sql``` jotta sovelluksen saa käyntiin\*\*
+
 # 🔄 PlantSwap 🪴
 
 - Käyttäjä pystyy lisäämään ilmoituksia huonekasveista, jotka haluaisi antaa vaihtoon.
