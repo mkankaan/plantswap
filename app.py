@@ -203,8 +203,10 @@ def show_listing(listing_id):
     user = users.get_user(user_id)
 
     restrictions = { "max_comment": 5000 }
+
+    listing_comments = comments.fetch_by_listing(listing_id)
     
-    return render_template("listing.html", listing=listing, user=user, comments=[], restrictions=restrictions)
+    return render_template("listing.html", listing=listing, user=user, comments=listing_comments, restrictions=restrictions)
 
 # fetch listing image
 @app.route("/image/listing/<int:listing_id>")

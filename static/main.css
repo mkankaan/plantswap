@@ -9,3 +9,7 @@ img {
 .listing_thumbnail {
   max-width: 150px;
 }
+
+.comment {
+  border: 1px solid blue;
+}

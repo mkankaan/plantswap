@@ -55,7 +55,21 @@ session.user_id %}
 <ul>
   {% for comment in comments %}
   <li>
-    <p>kommentti</p>
+    <div class="comment">
+      
+        {% if comment.user_status == 1 %}
+        <p><a href="/user/{{ comment.user_id }}"
+          >{{ comment.username }}</a
+        ></p>{% else %}
+        <p>Käyttäjä poistettu</p>
+        {% endif %}
+      </p>
+      <p>Lähetetty {{ comment.sent_date }}</p>
+      {% if comment.edited %}
+      <p>Muokattu {{ comment.sent_date }}</p>
+      {% endif %}
+      <p>{{ comment.content }}</p>
+    </div>
   </li>
   {% endfor %}
 </ul>
