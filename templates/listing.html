@@ -35,6 +35,23 @@ session.user_id %}
 
 <h3>Kommentit ({{ comments | count }})</h3>
 
+{% if session.user_id %}
+<h4>Uusi kommentti</h4>
+<form action="/new_comment" method="post">
+  <textarea
+    name="content"
+    rows="5"
+    cols="50"
+    maxlength="{{ restrictions.max_content }}"
+    required
+  ></textarea>
+  <p>pituus korkeintaan {{ restrictions.max_content }} merkkiä</p>
+  <input type="hidden" name="listing_id" value="{{ listing.id }}" />
+  <input type="submit" value="Lähetä" />
+</form>
+{% else %}
+<p>et ole kirjautunut sisään (et voi kommentoida)</p>
+{% endif %}
 <ul>
   {% for comment in comments %}
   <li>

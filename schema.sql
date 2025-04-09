@@ -19,3 +19,15 @@ CREATE TABLE listings (
     info TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY,
+    content TEXT,
+    user_id TEXT,
+    listing_id TEXT,
+    sent_date TEXT,
+    edited_date TEXT DEFAULT NULL,
+    status INTEGER DEFAULT 1,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (listing_id) REFERENCES listings(id)
+);

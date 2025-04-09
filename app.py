@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template, request, redirect, session, abort, make_response
-import db, users, config, listings
+import db, users, config, listings, comments
 import sqlite3
 
 app = Flask(__name__)
@@ -132,7 +132,7 @@ def show_profile_image(user_id):
 def new_listing():
     require_login()
 
-    restrictions = { "max_name": 30, "max_info": 500 }
+    restrictions = { "max_name": 30, "max_info": 5000 }
 
     if request.method == "GET":
         return render_template("new_listing.html", restrictions=restrictions)
@@ -201,8 +201,10 @@ def show_listing(listing_id):
 
     user_id = listings.get_user(listing_id)
     user = users.get_user(user_id)
+
+    restrictions = { "max_comment": 5000 }
     
-    return render_template("listing.html", listing=listing, user=user, comments=[])
+    return render_template("listing.html", listing=listing, user=user, comments=[], restrictions=restrictions)
 
 # fetch listing image
 @app.route("/image/listing/<int:listing_id>")
@@ -258,6 +260,30 @@ def remove_listing(listing_id):
             print("ilmoitus", listing["id"], "poistettu")
         return redirect("/")
     
+# add comment to listing
+@app.route("/new_comment", methods=["POST"])
+def new_comment():
+    require_login()
+
+    restrictions = { "max_content": 5000 } # siirrä
+    
+    if request.method == "POST":
+        print("post new comment")
+        content = request.form["content"]
+        user_id = session["user_id"]
+        listing_id = request.form["listing_id"]
+
+        if not content or len(content) > restrictions["max_content"]:
+            print("comment length incorrect")
+            abort(403)
+
+        try:
+            comments.create_comment(user_id, listing_id, content)
+            print("added comment")
+            return redirect("/listing/" + str(listing_id))
+        except:
+            return "jotain meni vikaan"
+
 # delete user account
 @app.route("/delete_account", methods=["GET", "POST"])
 def delete_account():
