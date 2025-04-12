@@ -1,0 +1,23 @@
+{% extends "layout.html" %} {% block title %}Muokkaa kommenttia{%
+endblock %} {% block content %}
+
+<h2>Muokkaa kommenttia</h2>
+
+<form action="/edit/comment/{{ comment.id }}" method="post">
+  <p>{{ comment.username }}</p>
+  <textarea
+    name="content"
+    rows="5"
+    cols="50"
+    maxlength="{{ restrictions.max_content }}"
+  >
+{{ filled.content }}</textarea
+  >
+  <p>pituus korkeintaan {{ restrictions.max_content }} merkkiä</p>
+  <input type="hidden" name="comment_id" value="{{ comment.id }}" />
+
+  <!-- <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" /> -->
+  <input type="submit" value="Tallenna" />
+</form>
+
+{% endblock %}

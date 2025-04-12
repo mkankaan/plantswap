@@ -66,9 +66,16 @@ session.user_id %}
       </p>
       <p>Lähetetty {{ comment.sent_date }}</p>
       {% if comment.edited %}
-      <p>Muokattu {{ comment.sent_date }}</p>
+      <p>Muokattu {{ comment.edited_date }}</p>
       {% endif %}
       <p>{{ comment.content }}</p>
+
+      {% if comment.user_id == session.user_id %}
+      <div><p><a href="/edit/comment/{{ comment.comment_id }}">Muokkaa</a></p>
+        <p><a href="/remove/comment/{{ comment.comment_id }}">Poista</a></p></div>
+        {% else %}
+        <p>et ole kommentoija (et voi muokata)</p>
+      {% endif %}
     </div>
   </li>
   {% endfor %}

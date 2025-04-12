@@ -204,8 +204,8 @@ def show_listing(listing_id):
 
     restrictions = { "max_comment": 5000 }
 
-    listing_comments = comments.fetch_by_listing(listing_id)
-    
+    listing_comments = comments.get_by_listing(listing_id)
+
     return render_template("listing.html", listing=listing, user=user, comments=listing_comments, restrictions=restrictions)
 
 # fetch listing image
@@ -232,7 +232,6 @@ def edit_listing(listing_id):
         abort(403)
 
     if request.method == "GET":
-        print("edit listing", listing_id, "login ok")
         return render_template("edit_listing.html", listing=listing)
 
     if request.method == "POST":
@@ -270,9 +269,8 @@ def new_comment():
     restrictions = { "max_content": 5000 } # siirrä
     
     if request.method == "POST":
-        print("post new comment")
         content = request.form["content"]
-        user_id = session["user_id"]
+        user_id = str(session["user_id"]) # ?
         listing_id = request.form["listing_id"]
 
         if not content or len(content) > restrictions["max_content"]:
@@ -285,6 +283,31 @@ def new_comment():
             return redirect("/listing/" + str(listing_id))
         except:
             return "jotain meni vikaan"
+        
+# edit comment
+@app.route("/edit/comment/<int:comment_id>", methods=["GET", "POST"])
+def edit_comment(comment_id):
+    require_login()
+
+    comment = comments.get_comment(comment_id)
+
+    if not comment:
+        abort(404)
+        
+    if comment["user_id"] != session["user_id"]:
+        abort(403)
+
+    restrictions = { "max_content": 5000 } # siirrä
+
+    if request.method == "GET":
+        filled = { "content": comment["content"] }
+        return render_template("edit_comment.html", comment=comment, restrictions=restrictions, filled=filled)
+
+    if request.method == "POST":
+        content = request.form["content"]
+        comments.update_comment(comment_id, content)
+        print("päivitys onnistui")
+        return redirect("/listing/" + str(comment["listing_id"]))
 
 # delete user account
 @app.route("/delete_account", methods=["GET", "POST"])

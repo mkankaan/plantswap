@@ -23,8 +23,8 @@ CREATE TABLE listings (
 CREATE TABLE comments (
     id INTEGER PRIMARY KEY,
     content TEXT,
-    user_id TEXT,
-    listing_id TEXT,
+    user_id INTEGER,
+    listing_id INTEGER,
     sent_date TEXT,
     edited_date TEXT DEFAULT NULL,
     status INTEGER DEFAULT 1,
