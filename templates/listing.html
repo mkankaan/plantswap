@@ -4,7 +4,7 @@ endblock %} {% block content %}
 <h2>{{ listing.name }}</h2>
 
 {% if listing.has_image %}
-<img src="/image/listing/{{ listing.id }}" />
+<img src="/image/listing/{{ listing.id }}" class="listing-image"/>
 {% else %}
 <div>ei kuvaa</div>
 {% endif %} {% if user.id == session.user_id %}
@@ -13,7 +13,14 @@ endblock %} {% block content %}
 </p>
 {% else %} et ole tekijä (et voi vaihtaa kuvaa) {% endif %}
 
+<div>
+  {% if user.has_image %}
+<img src="/image/user/{{ user.id }}" class="profile-image-small" />
+{% else %}
+<div>ei kuvaa</div>
+{% endif %} 
 <p><a href="/user/{{ user.id }}">{{ user.username }}</a></p>
+</div>
 
 <p>Lisätty {{ listing.date }}</p>
 
@@ -58,9 +65,19 @@ session.user_id %}
     <div class="comment">
       
         {% if comment.user_status == 1 %}
+
+        <div>
+          {% if comment.user_has_image %}
+<img src="/image/user/{{ comment.user_id }}" class="profile-image-small"/>
+{% else %}
+<div>ei kuvaa</div>
+{% endif %} 
         <p><a href="/user/{{ comment.user_id }}"
           >{{ comment.username }}</a
-        ></p>{% else %}
+        ></p>
+        </div>
+        
+        {% else %}
         <p>Käyttäjä poistettu</p>
         {% endif %}
       </p>

@@ -4,7 +4,7 @@
 <h2>Käyttäjä {{ user.username }}</h2>
 
 {% if user.has_image %}
-<img src="/image/user/{{ user.id }}" />
+<img src="/image/user/{{ user.id }}" class="profile-image-large" />
 {% else %}
 <div>ei profiilikuvaa</div>
 {% endif %} {% if user.id == session.user_id %}

@@ -4,7 +4,17 @@ endblock %} {% block content %}
 <h2>Muokkaa kommenttia</h2>
 
 <form action="/edit/comment/{{ comment.id }}" method="post">
-  <p>{{ comment.username }}</p>
+  <div>
+    {% if comment.user_has_image %}
+    <img
+      src="/image/user/{{ comment.user_id }}"
+      class="profile-image-small"
+    />
+    {% else %}
+    <div>ei kuvaa</div>
+    {% endif %}
+    <p>{{ comment.username }}</p>
+  </div>
   <textarea
     name="content"
     rows="5"

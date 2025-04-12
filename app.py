@@ -109,7 +109,7 @@ def add_image():
             return("ei jpg-tiedosto")
 
         image = file.read()
-        if len(image) > 100 * 1024:
+        if len(image) > 200 * 1024:
             return("tiedosto on liian suuri")
 
         user_id = session["user_id"]

@@ -2,12 +2,27 @@
   border: 1px solid blue;
 }
 
-img {
-  max-width: 300px;
+.listing-image {
+  max-width: 25em;
+  border-radius: 0.5em;
+}
+
+.profile-image-large {
+  object-fit: cover;
+  width: 15em;
+  height: 15em;
+  border-radius: 100%;
+}
+
+.profile-image-small {
+  object-fit: cover;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 100%;
 }
 
 .listing_thumbnail {
-  max-width: 150px;
+  max-width: 10em;
 }
 
 .comment {
