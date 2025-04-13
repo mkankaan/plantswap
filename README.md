@@ -1,6 +1,11 @@
-\*\*Huomio sovelluksen ajamisesta: GitHubissa ei ole database.db -tiedostoa, se täytyy itse lisätä ja ajaa komento `sqlite3 database.db < schema.sql` jotta sovelluksen saa käyntiin\*\*
-
 # 🔄 PlantSwap 🪴
+
+- [Kuvaus](#kuvaus)
+- [Ajo-ohjeet](#ajo-ohjeet)
+- [Välipalautus 2](#palautus2)
+- [Välipalautus 3](#palautus3)
+
+## <a name="kuvaus"></a> Kuvaus
 
 - Käyttäjä pystyy lisäämään ilmoituksia huonekasveista, jotka haluaisi antaa vaihtoon.
 - Käyttäjä pystyy luomaan toivelistan kasveista, joita haluaisi vastaanottaa vaihdossa.
@@ -11,9 +16,33 @@
 - Pääasiallinen tietokohde: ilmoitus. Toissijaiset tietokohteet: toivelista ja kommentti ilmoitukseen.
 - Sovellus näyttää tilastoja siitä, kuinka monta kertaa ilmoitusta on katseltu ja kuinka monta kertaa se on lisätty suosikkeihin.
 
-## 🌵 Toteutetut ominaisuudet
+## <a name="ajo-ohjeet"></a> Ajo-ohjeet
 
-Päivitetty 30.3.2025
+Suorita seuraavat komennot projektikansiossa.
+
+Alusta tietokanta:
+
+```
+echo schema.sql > database.db
+```
+
+Asenna Pythonin virtuaaliympäristö ja Flask:
+
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install flask
+```
+
+Käynnistä sovellus komennolla
+
+```
+flask run
+```
+
+Sovellus käynnistyy oletusarvoisesti osoitteeseen http://localhost:5000
+
+## <a name="palautus2"></a> Välipalautus 2
 
 ### Kirjautuminen ja profiili
 
@@ -23,7 +52,7 @@ Päivitetty 30.3.2025
 - Profiilissa näkyy lista käyttäjän luomista ilmoituksista
 - Käyttäjä voi poistaa profiilinsa. Profiili ei katoa tietokannasta, vaan sen status muuttuu
 
-### Ilmoitukset
+### Ilmoitukset (pääasiallinen tietokohde)
 
 - Käyttäjä voi lisätä, muokata ja poistaa ilmoituksia. Ilmoitus poistuu tietokannasta pysyvästi
 - Käyttäjä voi vaihtaa kuvan ilmoitukseen
@@ -34,3 +63,13 @@ Päivitetty 30.3.2025
 - Käyttäjä voi hakea ilmoituksia kaavin nimen perusteella. Ilman hakusanaa hakusivu näyttää oletusarvoisesti kaikki ilmoitukset tietokannassa. Tarkoituksena lisätä enemmän hakusanoja ja suodattimia
 
 Kaikkien tietokohteiden luontiin, muokkaukseen ja poistamiseen liittyvät toiminnot vaativat sisäänkirjautumisen. Muokkaus ja poisto vaativat lisäksi käyttäjän id:n tarkistuksen.
+
+## <a name="palautus3"></a> Välipalautus 3
+
+### Kommentit (toissijainen tietokohde)
+
+- Käyttäjä voi lisätä kommentin ilmoitukseen. Käyttäjä pystyy muokkaamaan ja poistamaan omia kommenttejaan
+
+### Muuta
+
+- csrf on käytössä kaikissa lomakkeissa, jotka vaativat sisäänkirjautumisen
