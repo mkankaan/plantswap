@@ -308,6 +308,28 @@ def edit_comment(comment_id):
         comments.update_comment(comment_id, content)
         print("päivitys onnistui")
         return redirect("/listing/" + str(comment["listing_id"]))
+    
+# remove comment
+@app.route("/remove/comment/<int:comment_id>", methods=["GET", "POST"])
+def remove_comment(comment_id):
+    require_login()
+
+    comment = comments.get_comment(comment_id)
+
+    if not comment:
+        abort(404)
+        
+    if comment["user_id"] != session["user_id"]:
+        abort(403)
+
+    if request.method == "GET":
+        return render_template("remove_comment.html", comment=comment)
+
+    if request.method == "POST":
+        if "continue" in request.form:
+            comments.remove_comment(comment["id"])
+            print("kommentti", comment["id"], "poistettu")
+        return redirect("/")
 
 # delete user account
 @app.route("/delete_account", methods=["GET", "POST"])

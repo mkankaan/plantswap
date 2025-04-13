@@ -1,0 +1,26 @@
+{% extends "layout.html" %} {% block title %}Poista kommentti{%
+endblock %} {% block content %}
+
+<h2>Poista kommentti</h2>
+
+<form action="/remove/comment/{{ comment.id }}" method="post">
+  <p>Haluatko varmasti poistaa kommentin?</p>
+
+  <div>
+    {% if comment.user_has_image %}
+    <img
+      src="/image/user/{{ comment.user_id }}"
+      class="profile-image-small"
+    />
+    {% else %}
+    <div>ei kuvaa</div>
+    {% endif %}
+    <p>{{ comment.username }}</p>
+  </div>
+  <p>{{ comment.content}}</p>
+  <!-- <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" /> -->
+  <input type="submit" name="continue" value="Jatka" />
+  <input type="submit" name="cancel" value="Peruuta" />
+</form>
+
+{% endblock %}

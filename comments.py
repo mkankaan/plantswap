@@ -8,6 +8,7 @@ def get_by_listing(listing_id):
     sql = """SELECT c.content, c.id comment_id, c.user_id, c.sent_date, c.edited_date, c.status comment_status, u.username, u.status user_status, u.image IS NOT NULL user_has_image, c.edited_date IS NOT NULL edited
              FROM comments c, users u
              WHERE u.id = c.user_id AND
+             c.status = 1 AND
              c.listing_id = ?"""
     return db.query(sql, [listing_id])
 
@@ -22,3 +23,7 @@ def get_comment(comment_id):
 def update_comment(comment_id, content):
     sql = "UPDATE comments SET (content, edited_date) = (?, datetime('now')) WHERE id = ?"
     db.execute(sql, [content, comment_id])
+
+def remove_comment(comment_id):
+    sql = "UPDATE comments SET status = 0 WHERE id = ?"
+    db.execute(sql, [comment_id])
