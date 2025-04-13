@@ -60,7 +60,7 @@ Sovellus käynnistyy oletusarvoisesti osoitteeseen http://localhost:5000
 
 ### Haku
 
-- Käyttäjä voi hakea ilmoituksia kaavin nimen perusteella. Ilman hakusanaa hakusivu näyttää oletusarvoisesti kaikki ilmoitukset tietokannassa. Tarkoituksena lisätä enemmän hakusanoja ja suodattimia
+- Käyttäjä voi hakea ilmoituksia kasvin nimen perusteella. Ilman hakusanaa hakusivu näyttää oletusarvoisesti kaikki ilmoitukset tietokannassa. Tarkoituksena lisätä enemmän hakusanoja ja suodattimia
 
 Kaikkien tietokohteiden luontiin, muokkaukseen ja poistamiseen liittyvät toiminnot vaativat sisäänkirjautumisen. Muokkaus ja poisto vaativat lisäksi käyttäjän id:n tarkistuksen.
 
@@ -69,6 +69,9 @@ Kaikkien tietokohteiden luontiin, muokkaukseen ja poistamiseen liittyvät toimin
 ### Kommentit (toissijainen tietokohde)
 
 - Käyttäjä voi lisätä kommentin ilmoitukseen. Käyttäjä pystyy muokkaamaan ja poistamaan omia kommenttejaan
+
+### Haku
+- Hakutuloksia voi suodattaa kaupungin perusteella
 
 ### Muuta
 

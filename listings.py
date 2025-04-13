@@ -6,7 +6,7 @@ def create_listing(name, user_id, cutting, info):
 
 def get_listing(id):
     sql = """SELECT id, name, date, user_id, views, image IS NOT NULL has_image, cutting, info
-             FROM listings
+             FROM listings l
              WHERE id = ?"""
     result = db.query(sql, [id])
     return result[0] if result else None
@@ -37,7 +37,7 @@ def remove_listing(listing_id):
     sql = "DELETE FROM listings WHERE id = ?"
     db.execute(sql, [listing_id])
 
-def search(query):
+def search_query(query):
     sql = """SELECT l.id listing_id,
                     l.name,
                     l.date,
@@ -50,6 +50,35 @@ def search(query):
                    l.name LIKE ?
              ORDER BY l.date DESC"""
     return db.query(sql, ["%" + query + "%"])
+
+def search_city(city):
+    sql = """SELECT l.id listing_id,
+                    l.name,
+                    l.date,
+                    l.cutting,
+                    l.image IS NOT NULL has_image,
+                    u.username,
+                    u.city
+             FROM listings l, users u
+             WHERE u.id = l.user_id AND
+                   u.city LIKE ?
+             ORDER BY l.date DESC"""
+    return db.query(sql, ["%" + city + "%"])
+
+def search_query_city(query, city):
+    sql = """SELECT l.id listing_id,
+                    l.name,
+                    l.date,
+                    l.cutting,
+                    l.image IS NOT NULL has_image,
+                    u.username,
+                    u.city
+             FROM listings l, users u
+             WHERE u.id = l.user_id AND
+             l.name LIKE ? AND
+                   u.city LIKE ?
+             ORDER BY l.date DESC"""
+    return db.query(sql, ["%" + query + "%", "%" + city + "%"])
 
 def fetch_all():
     sql = """SELECT l.id listing_id,

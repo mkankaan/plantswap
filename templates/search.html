@@ -21,29 +21,6 @@ block content %}
     <input type="text" id="city" name="city" />
     {% endif %}
   </p>
-
-  <p>
-    {% if plant_type and plant_type.type_cutting %}
-    <input type="radio" name="type" value="1" checked="checked" />
-    {% else %}
-    <input type="radio" name="type" value="1" />
-    {% endif %} Pistokas
-  </p>
-  <p>
-    {% if plant_type and plant_type.type_full %}
-    <input type="radio" name="type" value="2" checked="checked" />
-    {% else %}
-    <input type="radio" name="type" value="2" />
-    {% endif %} Täysi kasvi
-  </p>
-  <p>
-    {% if plant_type and plant_type.type_all %}
-    <input type="radio" name="type" value="3" checked="checked" />
-    {% else %}
-    <input type="radio" name="type" value="3" />
-    {% endif %} Kaikki
-  </p>
-
   <input type="submit" value="Hae" />
 </form>
 
