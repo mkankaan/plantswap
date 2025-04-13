@@ -54,6 +54,7 @@ session.user_id %}
   ></textarea>
   <p>pituus korkeintaan {{ restrictions.max_content }} merkkiä</p>
   <input type="hidden" name="listing_id" value="{{ listing.id }}" />
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Lähetä" />
 </form>
 {% else %}

@@ -1,13 +1,17 @@
 from flask import Flask
 from flask import render_template, request, redirect, session, abort, make_response
 import db, users, config, listings, comments
-import sqlite3
+import sqlite3, secrets
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
 def require_login():
     if "user_id" not in session:
+        abort(403)
+
+def check_csrf():
+    if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
 
 @app.route("/")
@@ -32,7 +36,7 @@ def login():
             if active:
                 session["user_id"] = user_id
                 session["username"] = username
-                print("logged in as", username)
+                session["csrf_token"] = secrets.token_hex(16)
                 return redirect("/")
             else:
                 return "väärä tunnus tai salasana"
@@ -98,12 +102,14 @@ def show_user(user_id):
 # add profile image
 @app.route("/add_profile_image", methods=["GET", "POST"])
 def add_image():
+    check_csrf()
     require_login()
 
     if request.method == "GET":
         return render_template("add_profile_image.html")
 
     if request.method == "POST":
+        check_csrf()
         file = request.files["image"]
         if not file.filename.endswith(".jpg"):
             return("ei jpg-tiedosto")
@@ -138,6 +144,7 @@ def new_listing():
         return render_template("new_listing.html", restrictions=restrictions)
     
     if request.method == "POST":
+        check_csrf()
         name = request.form["name"]
         is_cutting = request.form.getlist("cutting")
         info = request.form["info"]
@@ -177,6 +184,7 @@ def add_listing_image(listing_id):
         return render_template("add_listing_image.html", listing=listing)
 
     if request.method == "POST":
+        check_csrf()
         file = request.files["image"]
         if not file.filename.endswith(".jpg"):
             return("ei jpg-tiedosto")
@@ -235,6 +243,8 @@ def edit_listing(listing_id):
         return render_template("edit_listing.html", listing=listing)
 
     if request.method == "POST":
+        check_csrf()
+
         name = request.form["name"]
         listings.update_listing(listing["id"], name)
         print("päivitys onnistui")
@@ -256,6 +266,8 @@ def remove_listing(listing_id):
         return render_template("remove_listing.html", listing=listing)
 
     if request.method == "POST":
+        check_csrf()
+
         if "continue" in request.form:
             listings.remove_listing(listing["id"])
             print("ilmoitus", listing["id"], "poistettu")
@@ -264,6 +276,7 @@ def remove_listing(listing_id):
 # add comment to listing
 @app.route("/new_comment", methods=["POST"])
 def new_comment():
+    check_csrf()
     require_login()
 
     restrictions = { "max_content": 5000 } # siirrä
@@ -304,6 +317,7 @@ def edit_comment(comment_id):
         return render_template("edit_comment.html", comment=comment, restrictions=restrictions, filled=filled)
 
     if request.method == "POST":
+        check_csrf()
         content = request.form["content"]
         comments.update_comment(comment_id, content)
         print("päivitys onnistui")
@@ -326,6 +340,8 @@ def remove_comment(comment_id):
         return render_template("remove_comment.html", comment=comment)
 
     if request.method == "POST":
+        check_csrf()
+
         if "continue" in request.form:
             comments.remove_comment(comment["id"])
             print("kommentti", comment["id"], "poistettu")
@@ -340,6 +356,7 @@ def delete_account():
         return render_template("delete_account.html")
 
     if request.method == "POST":
+        check_csrf()
         user_id = session["user_id"]
 
         if "continue" in request.form:

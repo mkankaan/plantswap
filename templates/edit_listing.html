@@ -1,15 +1,24 @@
-{% extends "layout.html" %}
-{% block title %}Muokkaa ilmoitusta{% endblock %}
-{% block content %}
+{% extends "layout.html" %} {% block title %}Muokkaa ilmoitusta{%
+endblock %} {% block content %}
 
 <h2>Muokkaa ilmoitusta</h2>
 
 <form action="/edit/listing/{{ listing.id }}" method="post">
-    <p>
-        <label for="name">Nimi:</label><br />
-        <input type="text" id="name" name="name" value="{{ listing.name }}" required />
-      </p>
-  <!-- <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" /> -->
+  <p>
+    <label for="name">Nimi:</label><br />
+    <input
+      type="text"
+      id="name"
+      name="name"
+      value="{{ listing.name }}"
+      required
+    />
+  </p>
+  <input
+    type="hidden"
+    name="csrf_token"
+    value="{{ session.csrf_token }}"
+  />
   <input type="submit" value="Tallenna" />
 </form>
 

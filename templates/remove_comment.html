@@ -18,7 +18,11 @@ endblock %} {% block content %}
     <p>{{ comment.username }}</p>
   </div>
   <p>{{ comment.content}}</p>
-  <!-- <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" /> -->
+  <input
+    type="hidden"
+    name="csrf_token"
+    value="{{ session.csrf_token }}"
+  />
   <input type="submit" name="continue" value="Jatka" />
   <input type="submit" name="cancel" value="Peruuta" />
 </form>

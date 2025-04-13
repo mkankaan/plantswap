@@ -11,7 +11,11 @@ endblock %} {% block content %}
   {% endif %}
 
   <p>{{ listing.name }}</p>
-  <!-- <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" /> -->
+  <input
+    type="hidden"
+    name="csrf_token"
+    value="{{ session.csrf_token }}"
+  />
   <input type="submit" name="continue" value="Jatka" />
   <input type="submit" name="cancel" value="Peruuta" />
 </form>

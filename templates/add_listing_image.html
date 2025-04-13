@@ -22,6 +22,11 @@
     <label for="image">Kuva:</label>
     <input type="file" id="image" name="image" accept=".jpg" />
   </p>
+  <input
+    type="hidden"
+    name="csrf_token"
+    value="{{ session.csrf_token }}"
+  />
   <input type="submit" value="Lähetä" />
 </form>
 

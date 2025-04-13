@@ -26,7 +26,11 @@ endblock %} {% block content %}
   <p>pituus korkeintaan {{ restrictions.max_content }} merkkiä</p>
   <input type="hidden" name="comment_id" value="{{ comment.id }}" />
 
-  <!-- <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" /> -->
+  <input
+    type="hidden"
+    name="csrf_token"
+    value="{{ session.csrf_token }}"
+  />
   <input type="submit" value="Tallenna" />
 </form>
 
