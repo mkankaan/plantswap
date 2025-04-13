@@ -66,11 +66,16 @@ Kaikkien tietokohteiden luontiin, muokkaukseen ja poistamiseen liittyvät toimin
 
 ## <a name="palautus3"></a> Välipalautus 3
 
+### Ilmoitukset
+
+- Kasville voi lisätä luokittelun (pistokas)
+
 ### Kommentit (toissijainen tietokohde)
 
 - Käyttäjä voi lisätä kommentin ilmoitukseen. Käyttäjä pystyy muokkaamaan ja poistamaan omia kommenttejaan
 
 ### Haku
+
 - Hakutuloksia voi suodattaa kaupungin perusteella
 
 ### Muuta
