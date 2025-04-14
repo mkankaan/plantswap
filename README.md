@@ -68,7 +68,7 @@ Kaikkien tietokohteiden luontiin, muokkaukseen ja poistamiseen liittyvät toimin
 
 ### Ilmoitukset
 
-- Kasville voi lisätä luokittelun (pistokas)
+- Kasville voi lisätä luokittelun (pistokas). Tieto on tallennettu tietokannassa sarakkeeseen 'cutting' taulussa 'listings' (ei erillistä taulua). Tarkoituksena on, että ilmoituksia voi suodattaa luokittelun perusteella (ei toteutettu vielä)
 
 ### Kommentit (toissijainen tietokohde)
 
