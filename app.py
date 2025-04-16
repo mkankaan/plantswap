@@ -2,6 +2,7 @@ from flask import Flask
 from flask import render_template, request, redirect, session, abort, make_response
 import db, users, config, listings, comments
 import sqlite3, secrets
+from utils import form_validation
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -52,7 +53,7 @@ def logout():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    restrictions = { "min_username": 3, "max_username": 20, "min_password": 8, "max_password": 100 }
+    restrictions = form_validation.registration_restrictions
 
     if request.method == "GET":
         result = db.query("SELECT username FROM users")
@@ -80,6 +81,11 @@ def register():
         if not restrictions["min_username"] <= len(username) <= restrictions["max_username"]:
             print("username length incorrect")
             abort(403)
+
+        username_valid, error_message = form_validation.validate_username(username)
+
+        if not username_valid:
+            return error_message
 
         try:
             users.create_user(username, password1, city)
@@ -138,7 +144,7 @@ def show_profile_image(user_id):
 def new_listing():
     require_login()
 
-    restrictions = { "max_name": 30, "max_info": 5000 }
+    restrictions = form_validation.new_listing_restrictions
 
     if request.method == "GET":
         return render_template("new_listing.html", restrictions=restrictions)
@@ -210,7 +216,7 @@ def show_listing(listing_id):
     user_id = listings.get_user(listing_id)
     user = users.get_user(user_id)
 
-    restrictions = { "max_comment": 5000 }
+    restrictions = form_validation.listing_comment_restrictions
 
     listing_comments = comments.get_by_listing(listing_id)
 
@@ -279,7 +285,7 @@ def new_comment():
     check_csrf()
     require_login()
 
-    restrictions = { "max_content": 5000 } # siirrä
+    restrictions = form_validation.listing_comment_restrictions
     
     if request.method == "POST":
         content = request.form["content"]
@@ -310,7 +316,7 @@ def edit_comment(comment_id):
     if comment["user_id"] != session["user_id"]:
         abort(403)
 
-    restrictions = { "max_content": 5000 } # siirrä
+    restrictions = form_validation.listing_comment_restrictions
 
     if request.method == "GET":
         filled = { "content": comment["content"] }
