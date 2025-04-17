@@ -22,11 +22,12 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
-        return render_template("login.html", filled={})
+        return render_template("login.html", filled={}, next_page=request.referrer)
     
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        next_page = request.form["next_page"]
         
         user_id = users.check_login(username, password)
 
@@ -38,15 +39,15 @@ def login():
                 session["user_id"] = user_id
                 session["username"] = username
                 session["csrf_token"] = secrets.token_hex(16)
-                return redirect("/") # redirect to next page
+                return redirect(next_page)
             else:
                 filled = { "username": username }
                 flash("Väärä käyttäjätunnus tai salasana")
-                return render_template("login.html", filled=filled)
+                return render_template("login.html", filled=filled, next_page=next_page)
         else:
             filled = { "username": username }
             flash("Väärä käyttäjätunnus tai salasana")
-            return render_template("login.html", filled=filled)
+            return render_template("login.html", filled=filled, next_page=next_page)
         
 @app.route("/logout")
 def logout():
@@ -401,5 +402,5 @@ def search():
 
     print("results:", len(results))
 
-    return render_template("search.html", query=query, city=city, plant_type=plant_type, results=results)
+    return render_template("search.html", query=query, city=city, results=results)
 
