@@ -28,3 +28,8 @@
 .comment {
   border: 1px solid blue;
 }
+
+.flash {
+  color: red;
+  border: 1px solid red;
+}

@@ -7,10 +7,17 @@
       content="width=device-width, initial-scale=1.0"
     />
     <title>Luo tili</title>
+    <link rel="stylesheet" href="/static/main.css" />
   </head>
   <body>
     <h1><a href="/">PlantSwap</a></h1>
     <h2>Luo tili</h2>
+
+    {% for message in get_flashed_messages() %}
+    <div class="flash">
+      <p>{{ message }}</p>
+    </div>
+    {% endfor %}
 
     <form action="/register" method="post">
       <p>
@@ -52,7 +59,7 @@
           type="text"
           id="city"
           name="city"
-          filled="{{ filled.city }}"
+          value="{{ filled.city }}"
           required
         />
       </p>

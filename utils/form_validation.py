@@ -11,7 +11,7 @@ def validate_username(username):
     max_length = registration_restrictions["max_username"]
 
     if not min_length <= len(username) <= max_length:
-        message = "Käyttäjätunnuksen on oltava vähintään " + min_length + " ja korkeintaan " + max_length + " merkkiä pitkä"
+        message = "Käyttäjätunnuksen on oltava vähintään " + str(min_length) + " ja korkeintaan " + str(max_length) + " merkkiä pitkä"
         return (False, message)
 
     if len(username) != len(username.replace(" ", "")):

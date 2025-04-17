@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, redirect, session, abort, make_response
+from flask import render_template, request, redirect, session, abort, make_response, flash
 import db, users, config, listings, comments
 import sqlite3, secrets
 from utils import form_validation
@@ -22,7 +22,7 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
-        return render_template("login.html")
+        return render_template("login.html", filled={})
     
     if request.method == "POST":
         username = request.form["username"]
@@ -38,11 +38,15 @@ def login():
                 session["user_id"] = user_id
                 session["username"] = username
                 session["csrf_token"] = secrets.token_hex(16)
-                return redirect("/")
+                return redirect("/") # redirect to next page
             else:
-                return "väärä tunnus tai salasana"
+                filled = { "username": username }
+                flash("Väärä käyttäjätunnus tai salasana")
+                return render_template("login.html", filled=filled)
         else:
-            return "väärä tunnus tai salasana"
+            filled = { "username": username }
+            flash("Väärä käyttäjätunnus tai salasana")
+            return render_template("login.html", filled=filled)
         
 @app.route("/logout")
 def logout():
@@ -70,26 +74,33 @@ def register():
         password2 = request.form["password2"]
         city = request.form["city"]
 
+        filled = { "username": username, "city": city }
+
         if password1 != password2:
-            filled = { "username": username, "city": city }
+            flash("Salasanat eivät täsmää")
             return render_template("register.html", restrictions=restrictions, filled=filled)
 
         username_valid, username_error_message = form_validation.validate_username(username)
 
         if not username_valid:
-            return username_error_message
+            flash(username_error_message)
+            return render_template("register.html", restrictions=restrictions, filled=filled)
         
         password_valid, password_error_message = form_validation.validate_password(password1)
 
         if not password_valid:
-            return password_error_message
+            flash(password_error_message)
+            return render_template("register.html", restrictions=restrictions, filled=filled)
         
         try:
             users.create_user(username, password1, city)
             print("käyttäjä", username, "luotu")
-            return redirect("/")
+            flash("Tunnuksen luonti onnistui")
+            return redirect("/") # redirect to next page
         except sqlite3.IntegrityError:
-            return "käyttäjätunnus varattu"
+            filled = { "city": city }
+            flash("Käyttäjätunnus varattu")
+            return render_template("register.html", restrictions=restrictions, filled=filled)
 
 # user profile page
 @app.route("/user/<int:user_id>")
