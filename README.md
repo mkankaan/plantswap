@@ -1,9 +1,9 @@
 # 🔄 PlantSwap 🪴
 
-- [Kuvaus](#kuvaus)
-- [Ajo-ohjeet](#ajo-ohjeet)
-- [Välipalautus 2](#palautus2)
-- [Välipalautus 3](#palautus3)
+🌵 [Kuvaus](#kuvaus) <br/>
+🌵 [Ajo-ohjeet](#ajo-ohjeet) <br/>
+🌵 [Välipalautus 2](#palautus2) <br/>
+🌵 [Välipalautus 3](#palautus3)
 
 ## <a name="kuvaus"></a> Kuvaus
 
@@ -23,7 +23,7 @@ Suorita seuraavat komennot projektikansiossa.
 Alusta tietokanta:
 
 ```
-echo schema.sql > database.db
+sqlite3 database.db < schema.sql
 ```
 
 Asenna Pythonin virtuaaliympäristö ja Flask:
