@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template, request, redirect, session, abort, make_response, flash
-import db, users, config, listings, comments
+import db, users, config, listings, comments, images
 import sqlite3, secrets
 from utils import form_validation
 
@@ -117,7 +117,6 @@ def show_user(user_id):
 # add profile image
 @app.route("/add_profile_image", methods=["GET", "POST"])
 def add_image():
-    check_csrf()
     require_login()
 
     if request.method == "GET":
@@ -134,13 +133,24 @@ def add_image():
             return("tiedosto on liian suuri")
 
         user_id = session["user_id"]
-        users.update_image(user_id, image)
+        user = users.get_user(user_id)
+
+        if user["has_image"]:
+            images.remove_image(user["image_id"])
+            print("deleted user's image")
+
+        images.add_image(image, user_id)
+        image_id = images.newest_image_from_user(user_id)
+        users.update_image(user_id, image_id)
+        print("updated profile pic", image_id, "for user", user_id)
         return redirect("/user/" + str(user_id))
     
 # fetch profile image
 @app.route("/image/user/<int:user_id>")
 def show_profile_image(user_id):
-    image = users.get_image(user_id)
+    image_id = users.get_image(user_id)
+    image = images.get_image(image_id)
+    
     if not image:
         abort(404)
 
@@ -207,8 +217,18 @@ def add_listing_image(listing_id):
         image = file.read()
         if len(image) > 200 * 1024:
             return("tiedosto on liian suuri")
+        
+        user_id = listing["user_id"]
 
-        listings.update_image(listing_id, image)
+        if listing["has_image"]:
+            images.remove_image(listing["image_id"])
+            print("deleted old image")
+
+        images.add_image(image, user_id)
+        print("added image")
+        image_id = images.newest_image_from_user(user_id)
+        print(user_id, "added image", image_id)
+        listings.update_image(listing_id, image_id)
         return redirect("/listing/" + str(listing_id))
     
 # listing page
@@ -234,7 +254,10 @@ def show_listing(listing_id):
 # fetch listing image
 @app.route("/image/listing/<int:listing_id>")
 def show_listing_image(listing_id):
-    image = listings.get_image(listing_id)
+    image_id = listings.get_image_id(listing_id)
+    #print("listing", listing_id, "has image", image_id)
+    image = images.get_image(image_id)
+
     if not image:
         abort(404)
 
@@ -285,6 +308,11 @@ def remove_listing(listing_id):
 
         if "continue" in request.form:
             listings.remove_listing(listing["id"])
+
+            if listing["has_image"]:
+                images.remove_image(listing["image_id"])
+                print("deleted image")
+
             print("ilmoitus", listing["id"], "poistettu")
         return redirect("/")
     
@@ -301,7 +329,7 @@ def new_comment():
         user_id = str(session["user_id"]) # ?
         listing_id = request.form["listing_id"]
 
-        if not content or len(content) > restrictions["max_content"]:
+        if not content or len(content) > restrictions["max_comment"]:
             print("comment length incorrect")
             abort(403)
 
@@ -373,10 +401,16 @@ def delete_account():
     if request.method == "POST":
         check_csrf()
         user_id = session["user_id"]
+        user = users.get_user(user_id)
 
         if "continue" in request.form:
             users.delete_account(user_id)
             print(user_id, "poistettu")
+
+            if user["has_image"]:
+                images.remove_image(user["image_id"])
+                print("deleted user's image")
+
             logout()
             return redirect("/")
         return redirect("/user/" + str(user_id))

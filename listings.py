@@ -5,18 +5,18 @@ def create_listing(name, user_id, cutting, info):
     db.execute(sql, [name, user_id, cutting, info])
 
 def get_listing(id):
-    sql = """SELECT id, name, date, user_id, views, image IS NOT NULL has_image, cutting, info
-             FROM listings l
+    sql = """SELECT id, name, date, user_id, views, image_id IS NOT NULL has_image, image_id, cutting, info
+             FROM listings
              WHERE id = ?"""
     result = db.query(sql, [id])
     return result[0] if result else None
 
-def update_image(listing_id, image):
-    sql = "UPDATE listings SET image = ? WHERE id = ?"
-    db.execute(sql, [image, listing_id])
+def update_image(listing_id, image_id):
+    sql = "UPDATE listings SET image_id = ? WHERE id = ?"
+    db.execute(sql, [image_id, listing_id])
 
-def get_image(listing_id):
-    sql = "SELECT image FROM listings WHERE id = ?"
+def get_image_id(listing_id):
+    sql = "SELECT image_id FROM listings WHERE id = ?"
     result = db.query(sql, [listing_id])
     return result[0][0] if result else None
 
@@ -42,7 +42,7 @@ def search_query(query):
                     l.name,
                     l.date,
                     l.cutting,
-                    l.image IS NOT NULL has_image,
+                    l.image_id IS NOT NULL has_image,
                     u.username,
                     u.city
              FROM listings l, users u
@@ -56,7 +56,7 @@ def search_city(city):
                     l.name,
                     l.date,
                     l.cutting,
-                    l.image IS NOT NULL has_image,
+                    l.image_id IS NOT NULL has_image,
                     u.username,
                     u.city
              FROM listings l, users u
@@ -70,7 +70,7 @@ def search_query_city(query, city):
                     l.name,
                     l.date,
                     l.cutting,
-                    l.image IS NOT NULL has_image,
+                    l.image_id IS NOT NULL has_image,
                     u.username,
                     u.city
              FROM listings l, users u
@@ -85,7 +85,7 @@ def fetch_all():
                     l.name,
                     l.date,
                     l.cutting,
-                    l.image IS NOT NULL has_image,
+                    l.image_id IS NOT NULL has_image,
                     u.id user_id,
                     u.username,
                     u.city

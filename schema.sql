@@ -4,7 +4,7 @@ CREATE TABLE users (
     password_hash TEXT,
     city TEXT,
     joined TEXT,
-    image BLOB,
+    image_id INTEGER DEFAULT NULL,
     status INTEGER DEFAULT 1
 );
 
@@ -13,10 +13,10 @@ CREATE TABLE listings (
     name TEXT,
     user_id INTEGER,
     date TEXT,
-    image BLOB,
     views INTEGER,
     cutting INTEGER,
     info TEXT,
+    image_id INTEGER DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -30,4 +30,11 @@ CREATE TABLE comments (
     status INTEGER DEFAULT 1,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (listing_id) REFERENCES listings(id)
+);
+
+CREATE TABLE images (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER, 
+    image BLOB,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );

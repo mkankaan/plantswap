@@ -23,18 +23,18 @@ def create_user(username, password, city):
     db.execute(sql, [username, password_hash, city])
 
 def get_user(user_id):
-    sql = """SELECT id, username, city, joined, image IS NOT NULL has_image, status
+    sql = """SELECT id, username, city, joined, image_id IS NOT NULL has_image, image_id, status
              FROM users
              WHERE id = ?"""
     result = db.query(sql, [user_id])
     return result[0] if result else None
 
-def update_image(user_id, image):
-    sql = "UPDATE users SET image = ? WHERE id = ?"
-    db.execute(sql, [image, user_id])
+def update_image(user_id, image_id):
+    sql = "UPDATE users SET image_id = ? WHERE id = ?"
+    db.execute(sql, [image_id, user_id])
 
 def get_image(user_id):
-    sql = "SELECT image FROM users WHERE id = ?"
+    sql = "SELECT image_id FROM users WHERE id = ?"
     result = db.query(sql, [user_id])
     return result[0][0] if result else None
 
