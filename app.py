@@ -73,20 +73,17 @@ def register():
         if password1 != password2:
             filled = { "username": username, "city": city }
             return render_template("register.html", restrictions=restrictions, filled=filled)
-        
-        if not restrictions["min_password"] <= len(password1) <= restrictions["max_password"]:
-            print("password length incorrect")
-            abort(403)
-        
-        if not restrictions["min_username"] <= len(username) <= restrictions["max_username"]:
-            print("username length incorrect")
-            abort(403)
 
-        username_valid, error_message = form_validation.validate_username(username)
+        username_valid, username_error_message = form_validation.validate_username(username)
 
         if not username_valid:
-            return error_message
+            return username_error_message
+        
+        password_valid, password_error_message = form_validation.validate_password(password1)
 
+        if not password_valid:
+            return password_error_message
+        
         try:
             users.create_user(username, password1, city)
             print("käyttäjä", username, "luotu")
