@@ -4,7 +4,7 @@ endblock %} {% block content %}
 <h2>{{ listing.name }}</h2>
 
 {% if listing.has_image %}
-<img src="/image/listing/{{ listing.id }}" class="listing-image"/>
+<img src="/image/listing/{{ listing.id }}" class="listing-image" alt="Ilmoituksen {{ listing.name }} kuva"/>
 {% else %}
 <div>ei kuvaa</div>
 {% endif %} {% if user.id == session.user_id %}
@@ -15,7 +15,7 @@ endblock %} {% block content %}
 
 <div>
   {% if user.has_image %}
-<img src="/image/user/{{ user.id }}" class="profile-image-small" />
+<img src="/image/user/{{ user.id }}" class="profile-image-small" alt="Käyttäjän {{ user.username }} kuva" />
 {% else %}
 <div>ei kuvaa</div>
 {% endif %} 
@@ -69,7 +69,7 @@ session.user_id %}
 
         <div>
           {% if comment.user_has_image %}
-<img src="/image/user/{{ comment.user_id }}" class="profile-image-small"/>
+<img src="/image/user/{{ comment.user_id }}" class="profile-image-small" alt="Käyttäjän {{ comment.username }} kuva"/>
 {% else %}
 <div>ei kuvaa</div>
 {% endif %} 
