@@ -158,6 +158,36 @@ def show_profile_image(user_id):
     response.headers.set("Content-Type", "image/jpeg")
     return response
 
+# remove profile image
+@app.route("/remove/profile_image/<int:user_id>", methods=["GET", "POST"])
+def remove_profile_image(user_id):
+    require_login()
+
+    user = users.get_user(user_id)
+
+    if not user:
+        abort(404)
+        
+    if user["id"] != session["user_id"]:
+        abort(403)
+
+    if request.method == "GET":
+        return render_template("remove_profile_image.html", user=user)
+
+    if request.method == "POST":
+        check_csrf()
+
+        if "continue" in request.form:
+            image_id = user["image_id"]
+            images.remove_image(image_id)
+
+            if user["has_image"]:
+                users.remove_image(user_id)
+                print("deleted image")
+
+            print("käyttäjän", user["id"], "kuva", image_id, "poistettu")
+        return redirect("/")
+
 # add listing
 @app.route("/new_listing", methods=["GET", "POST"])
 def new_listing():

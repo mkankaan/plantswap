@@ -4,11 +4,22 @@
 <h2>Käyttäjä {{ user.username }}</h2>
 
 {% if user.has_image %}
-<img src="/image/user/{{ user.id }}" class="profile-image-large" />
+<img
+  src="/image/user/{{ user.id }}"
+  class="profile-image-large"
+  alt="Käyttäjän {{ user.username }} kuva"
+/>
 {% else %}
 <div>ei profiilikuvaa</div>
 {% endif %} {% if user.id == session.user_id %}
 <p><a href="/add_profile_image">Vaihda profiilikuva</a></p>
+{% if user.has_image %}
+<p>
+  <a href="/remove/profile_image/{{ user.id }}"
+    >Poista profiilikuva</a
+  >
+</p>
+{% endif %}
 <p><a href="/edit_profile">Muokkaa profiilia</a></p>
 <p><a href="/delete_account">Poista tili</a></p>
 {% endif %}
