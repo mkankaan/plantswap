@@ -22,7 +22,7 @@ endblock %} {% block content %}
 <p><a href="/user/{{ user.id }}">{{ user.username }}</a></p>
 </div>
 
-<p>Lisätty {{ listing.date }}</p>
+<p>Lisätty {{ date_added }}</p>
 
 <p>
   Katseltu {{ listing.views }} {% if listing.views == 1%} kerran {%
@@ -52,7 +52,7 @@ session.user_id %}
     maxlength="{{ restrictions.max_content }}"
     required
   ></textarea>
-  <p>pituus korkeintaan {{ restrictions.max_content }} merkkiä</p>
+  <p>pituus korkeintaan {{ restrictions.max_comment }} merkkiä</p>
   <input type="hidden" name="listing_id" value="{{ listing.id }}" />
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Lähetä" />
@@ -83,7 +83,7 @@ session.user_id %}
         {% endif %}
       </p>
       <p>Lähetetty {{ comment.sent_date }}</p>
-      {% if comment.edited %}
+      {% if comment.edited_date %}
       <p>Muokattu {{ comment.edited_date }}</p>
       {% endif %}
       <p>{{ comment.content }}</p>

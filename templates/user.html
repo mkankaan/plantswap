@@ -21,14 +21,13 @@
 </p>
 {% endif %}
 <p><a href="/edit_profile">Muokkaa profiilia</a></p>
-<p><a href="/delete_account">Poista tili</a></p>
 {% endif %}
 
 <p>{{ user.city }}</p>
 
-<p>Liittyi {{ user.joined }}</p>
+<p>Liittyi {{ joined_date }}</p>
 
-<h3>Käyttäjän lähettämät ilmoitukset ({{ listings | count }})</h3>
+<h3>Käyttäjän ilmoitukset ({{ listings | count }})</h3>
 
 <ul>
   {% for listing in listings %}
@@ -40,4 +39,6 @@
   {% endfor %}
 </ul>
 
-{% endblock %}
+{% if user.id == session.user_id %}
+<p><a href="/delete_account">Poista tili</a></p>
+{% endif %} {% endblock %}
