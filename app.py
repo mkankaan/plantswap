@@ -16,6 +16,7 @@ def check_csrf():
         abort(403)
 
 @app.route("/")
+@app.route("/recommendations")
 def index():
     return render_template("index.html")
 
@@ -112,6 +113,59 @@ def show_user(user_id):
 
     joined_date = date_formatter.format_date(user["joined"])
     return render_template("user.html", user=user, listings=listings, joined_date=joined_date)
+
+# edit profile
+@app.route("/edit_profile/<int:user_id>", methods=["GET", "POST"])
+def edit_profile(user_id):
+    require_login()
+
+    user =  users.get_user(user_id)
+    if not user:
+        abort(404)
+        
+    if user["id"] != session["user_id"]:
+        abort(403)
+
+    restrictions = form_validation.registration_restrictions
+    all_cities = cities.fetch_all()
+
+    if request.method == "GET":
+        filled = { "username": user["username"] }
+
+        return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, filled=filled)
+
+    if request.method == "POST":
+        check_csrf()
+
+        new_username = request.form["new_username"]
+
+        new_city_id = request.form["new_city"]
+
+        filled = { "username": new_username }
+
+        username_valid, username_error_message = form_validation.validate_username(new_username)
+
+        if not username_valid:
+            flash(username_error_message)
+            return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, filled=filled)
+        
+        try:
+            users.update_user(user_id, new_username, new_city_id)
+            print("käyttäjä", user_id, "päivitetty")
+            flash("Muutokset tallennettu")
+            session["username"] = new_username
+            return redirect("/user/" + str(user_id)) # redirect to next page
+        except sqlite3.IntegrityError:
+            flash("Käyttäjätunnus varattu")
+            return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, filled=filled)
+
+
+        #name = request.form["name"]
+        #listings.update_listing(listing["id"], name)
+        #print("päivitys onnistui")
+        #return redirect("/listing/" + str(listing["id"]))
+
+        return ""
 
 # add profile image
 @app.route("/add_profile_image", methods=["GET", "POST"])

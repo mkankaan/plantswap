@@ -2,8 +2,6 @@
 {% block content %}
 <h2>Etusivu</h2>
 
-{% if session.user_id %} olet kirjautunut sisään {% endif %}
-
-<p>sisältö</p>
-
-{% endblock %}
+{% if session.user_id %} olet kirjautunut sisään {% else %}
+<p><a href="/login">Kirjaudu sisään</a> nähdäksesi suosituksia</p>
+{% endif %} {% endblock %}

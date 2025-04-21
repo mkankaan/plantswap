@@ -60,3 +60,7 @@ def newest_listing(user_id):
 def delete_account(user_id):
     sql = "UPDATE users SET status = 0 WHERE id = ?"
     db.execute(sql, [user_id])
+
+def update_user(user_id, new_username, new_city_id):
+    sql = "UPDATE users SET (username, city_id) = (?, ?) WHERE id = ?"
+    db.execute(sql, [new_username, new_city_id, user_id])
