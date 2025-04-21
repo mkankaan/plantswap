@@ -11,7 +11,7 @@ def check_login(username, password):
             return user_id
         
     return None
-
+    
 def check_status(user_id):
     sql = "SELECT status FROM users WHERE id = ?"
     result = db.query(sql, [user_id])
@@ -64,3 +64,9 @@ def delete_account(user_id):
 def update_user(user_id, new_username, new_city_id):
     sql = "UPDATE users SET (username, city_id) = (?, ?) WHERE id = ?"
     db.execute(sql, [new_username, new_city_id, user_id])
+
+def change_password(user_id, new_password):
+    new_password_hash = generate_password_hash(new_password)
+    sql = "UPDATE users SET password_hash = ? WHERE id = ?"
+    db.execute(sql, [new_password_hash, user_id])
+

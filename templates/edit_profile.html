@@ -38,7 +38,7 @@ endblock %} {% block content %}
   <input type="submit" value="Tallenna" />
 </form>
 
-<!--
+
 <h2>Vaihda salasana</h2>
 
 <form action="/change_password/{{ user.id }}" method="post">
@@ -49,6 +49,7 @@ endblock %} {% block content %}
           id="new_password1"
           name="new_password1"
           maxlength="{{ restrictions.max_password }}"
+          required
         />
         <p>pituus: {{ restrictions.min_password }}-{{ restrictions.max_password }} merkkiä</p>
       </p>
@@ -60,6 +61,7 @@ endblock %} {% block content %}
           id="new_password2"
           name="new_password2"
           maxlength="{{ restrictions.max_password }}"
+          required
         />
       </p>
       <p>
@@ -69,6 +71,7 @@ endblock %} {% block content %}
           type="password"
           id="old_password"
           name="old_password"
+          required
         />
       </p>
     <input
@@ -78,6 +81,8 @@ endblock %} {% block content %}
     />
     <input type="submit" value="Tallenna" />
   </form>
-  -->
+
+<a href="/user/{{ user.id }}">Takaisin</a>
+
 
 {% endblock %}
