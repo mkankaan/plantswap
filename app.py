@@ -1,8 +1,8 @@
 from flask import Flask
 from flask import render_template, request, redirect, session, abort, make_response, flash
-import db, users, config, listings, comments, images
+import db, users, config, listings, comments, images, cities
 import sqlite3, secrets
-from utils import form_validation
+from utils import form_validation, date_formatter
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -59,49 +59,46 @@ def logout():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     restrictions = form_validation.registration_restrictions
+    all_cities = cities.fetch_all()
 
     if request.method == "GET":
-        result = db.query("SELECT username FROM users")
-
-        print("käyttäjät tietokannassa:")
-        for user in result:
-            print(user["username"])
+        print("all cities:", all_cities)
         
-        return render_template("register.html", restrictions=restrictions, filled={})
+        return render_template("register.html", restrictions=restrictions, cities=all_cities, filled={})
     
     if request.method == "POST":
         username = request.form["username"]
         password1 = request.form["password1"]
         password2 = request.form["password2"]
-        city = request.form["city"]
+        city_id = request.form["city"]
 
-        filled = { "username": username, "city": city }
+        filled = { "username": username, "city": city_id }
 
         if password1 != password2:
             flash("Salasanat eivät täsmää")
-            return render_template("register.html", restrictions=restrictions, filled=filled)
+            return render_template("register.html", restrictions=restrictions, cities=all_cities, filled=filled)
 
         username_valid, username_error_message = form_validation.validate_username(username)
 
         if not username_valid:
             flash(username_error_message)
-            return render_template("register.html", restrictions=restrictions, filled=filled)
+            return render_template("register.html", restrictions=restrictions, cities=all_cities, filled=filled)
         
         password_valid, password_error_message = form_validation.validate_password(password1)
 
         if not password_valid:
             flash(password_error_message)
-            return render_template("register.html", restrictions=restrictions, filled=filled)
+            return render_template("register.html", restrictions=restrictions, cities=all_cities, filled=filled)
         
         try:
-            users.create_user(username, password1, city)
+            users.create_user(username, password1, city_id)
             print("käyttäjä", username, "luotu")
             flash("Tunnuksen luonti onnistui")
             return redirect("/") # redirect to next page
         except sqlite3.IntegrityError:
-            filled = { "city": city }
+            filled = { "city": city_id }
             flash("Käyttäjätunnus varattu")
-            return render_template("register.html", restrictions=restrictions, filled=filled)
+            return render_template("register.html", restrictions=restrictions, cities=all_cities, filled=filled)
 
 # user profile page
 @app.route("/user/<int:user_id>")
@@ -112,7 +109,9 @@ def show_user(user_id):
         abort(404)
     
     listings = users.get_listings(user_id)
-    return render_template("user.html", user=user, listings=listings)
+
+    joined_date = date_formatter.format_date(user["joined"])
+    return render_template("user.html", user=user, listings=listings, joined_date=joined_date)
 
 # add profile image
 @app.route("/add_profile_image", methods=["GET", "POST"])
@@ -275,11 +274,28 @@ def show_listing(listing_id):
     user_id = listings.get_user(listing_id)
     user = users.get_user(user_id)
 
+    date_added = date_formatter.format_date(listing["date"])
     restrictions = form_validation.listing_comment_restrictions
-
     listing_comments = comments.get_by_listing(listing_id)
 
-    return render_template("listing.html", listing=listing, user=user, comments=listing_comments, restrictions=restrictions)
+    formatted_comments = []
+
+    for comment in listing_comments:
+        formatted_comment = { "content": comment["content"],
+                       "user_id": comment["user_id"],
+                       "username": comment["username"],
+                       "sent_date": date_formatter.format_date_time(comment["sent_date"]),
+                       "user_status": comment["user_status"],
+                       "user_has_image": comment["user_has_image"]                       }
+        
+        if comment["edited_date"]:
+            formatted_comment["edited_date"] = date_formatter.format_date_time(comment["edited_date"])
+        
+        print("new comment:", formatted_comment)
+
+        formatted_comments.append(formatted_comment)
+
+    return render_template("listing.html", listing=listing, user=user, comments=formatted_comments, date_added=date_added, restrictions=restrictions)
 
 # fetch listing image
 @app.route("/image/listing/<int:listing_id>")

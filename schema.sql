@@ -2,10 +2,11 @@ CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     username TEXT UNIQUE,
     password_hash TEXT,
-    city TEXT,
+    city_id INTEGER,
     joined TEXT,
     image_id INTEGER DEFAULT NULL,
-    status INTEGER DEFAULT 1
+    status INTEGER DEFAULT 1,
+    FOREIGN KEY (city_id) REFERENCES cities(id)
 );
 
 CREATE TABLE listings (
@@ -37,4 +38,9 @@ CREATE TABLE images (
     user_id INTEGER, 
     image BLOB,
     FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE cities (
+    id INTEGER PRIMARY KEY,
+    name TEXT
 );

@@ -17,15 +17,16 @@ def check_status(user_id):
     result = db.query(sql, [user_id])
     return result[0][0] == 1 if result else None
         
-def create_user(username, password, city):
+def create_user(username, password, city_id):
     password_hash = generate_password_hash(password)
-    sql = "INSERT INTO users (username, password_hash, city, joined) VALUES (?, ?, ?, datetime('now'))"
-    db.execute(sql, [username, password_hash, city])
+    sql = "INSERT INTO users (username, password_hash, city_id, joined) VALUES (?, ?, ?, datetime('now'))"
+    db.execute(sql, [username, password_hash, city_id])
 
 def get_user(user_id):
-    sql = """SELECT id, username, city, joined, image_id IS NOT NULL has_image, image_id, status
-             FROM users
-             WHERE id = ?"""
+    sql = """SELECT u.id, u.username, c.name city, u.joined, u.image_id IS NOT NULL has_image, u.image_id, u.status
+             FROM users u, cities c
+             WHERE u.city_id = c.id
+             AND u.id = ?"""
     result = db.query(sql, [user_id])
     return result[0] if result else None
 

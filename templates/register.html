@@ -55,13 +55,20 @@
       </p>
       <p>
         <label for="city">*Paikkakunta:</label><br />
+
+        <select name="city" id="city">
+          {% for city in cities %}
+          <option value="{{ city.id }}">{{ city.name }}</option>
+          {% endfor %}
+        </select>
+        <!--
         <input
           type="text"
           id="city"
           name="city"
           value="{{ filled.city }}"
           required
-        />
+        />-->
       </p>
       <p>* pakollinen kenttä</p>
       <input type="submit" value="Luo tili" />
