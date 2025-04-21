@@ -340,6 +340,7 @@ def remove_listing(listing_id):
     require_login()
 
     listing = listings.get_listing(listing_id)
+
     if not listing:
         abort(404)
         
@@ -357,7 +358,7 @@ def remove_listing(listing_id):
 
             if listing["has_image"]:
                 images.remove_image(listing["image_id"])
-                print("deleted image")
+                print("deleted image", listing["image_id"])
 
             print("ilmoitus", listing["id"], "poistettu")
         return redirect("/")

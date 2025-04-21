@@ -7,7 +7,11 @@ endblock %} {% block content %}
   <p>Haluatko varmasti poistaa ilmotuksen?</p>
 
   {% if listing.has_image %}
-  <img src="/image/listing/{{ listing.id }}" alt="Ilmoituksen {{ user.username }} kuva"/>
+  <img
+    src="/image/listing/{{ listing.id }}"
+    class="listing-image"
+    alt="Ilmoituksen {{ listing.username }} kuva"
+  />
   {% endif %}
 
   <p>{{ listing.name }}</p>

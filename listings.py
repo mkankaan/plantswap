@@ -5,9 +5,10 @@ def create_listing(name, user_id, cutting, info):
     db.execute(sql, [name, user_id, cutting, info])
 
 def get_listing(id):
-    sql = """SELECT id, name, date, user_id, views, image_id IS NOT NULL has_image, image_id, cutting, info
-             FROM listings
-             WHERE id = ?"""
+    sql = """SELECT l.id, l.name, l.date, l.user_id, u.username, l.views, l.image_id IS NOT NULL has_image, l.image_id, l.cutting, l.info
+             FROM listings l, users u
+             WHERE l.user_id = u.id
+             AND l.id = ?"""
     result = db.query(sql, [id])
     return result[0] if result else None
 
@@ -88,7 +89,7 @@ def fetch_all():
                     l.image_id IS NOT NULL has_image,
                     u.id user_id,
                     u.username,
-                    u.city
+                    u.city_id
              FROM listings l, users u
              WHERE u.id = l.user_id
              ORDER BY l.date DESC"""
