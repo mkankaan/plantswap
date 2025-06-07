@@ -64,7 +64,7 @@ def search_city(city):
              WHERE u.id = l.user_id AND
                    u.city LIKE ?
              ORDER BY l.date DESC"""
-    return db.query(sql, ["%" + city + "%"])
+    return db.query(sql, [city])
 
 def search_query_city(query, city):
     sql = """SELECT l.id listing_id,
@@ -79,7 +79,7 @@ def search_query_city(query, city):
              l.name LIKE ? AND
                    u.city LIKE ?
              ORDER BY l.date DESC"""
-    return db.query(sql, ["%" + query + "%", "%" + city + "%"])
+    return db.query(sql, ["%" + query + "%", city])
 
 def fetch_all():
     sql = """SELECT l.id listing_id,
@@ -89,7 +89,7 @@ def fetch_all():
                     l.image_id IS NOT NULL has_image,
                     u.id user_id,
                     u.username,
-                    u.city_id
+                    u.city
              FROM listings l, users u
              WHERE u.id = l.user_id
              ORDER BY l.date DESC"""

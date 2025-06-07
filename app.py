@@ -97,7 +97,7 @@ def register():
             print("user", username, "city", city)
             users.create_user(username, password1, city)
             print("käyttäjä", username, "luotu")
-            flash("Tunnuksen luonti onnistui")
+            flash("Tunnuksen luonti onnistui. Voit nyt kirjautua sisään.")
             return redirect("/") # redirect to next page
         except sqlite3.IntegrityError:
             filled = { "city": city }
@@ -614,6 +614,9 @@ def search():
         results = listings.fetch_all()
 
     print("results:", len(results))
+
+    if results:
+        print("result:", results[0]["city"])
 
     return render_template("search.html", query=query, city=city, results=results)
 
