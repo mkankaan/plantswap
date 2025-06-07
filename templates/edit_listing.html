@@ -11,8 +11,24 @@ endblock %} {% block content %}
       id="name"
       name="name"
       value="{{ listing.name }}"
+      maxlength="{{ restrictions.max_name }}"
       required
     />
+  </p>
+  {% if listing.cutting == 1 %}
+  <p><input type="checkbox" name="cutting" value="1" checked/> Pistokas</p>
+  {% else %}
+  <p><input type="checkbox" name="cutting" value="1" /> Pistokas</p>
+  {% endif %}
+  <p>
+    <label for="name">Lisätiedot:</label><br />
+    <textarea
+      name="info"
+      rows="5"
+      cols="50"
+      maxlength="{{ restrictions.max_info }}"
+    >{{ listing.info }}</textarea>
+    <p>pituus korkeintaan {{ restrictions.max_info }} merkkiä</p>
   </p>
   <input
     type="hidden"

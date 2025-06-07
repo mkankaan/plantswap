@@ -30,9 +30,9 @@ def get_user(listing_id):
     result = db.query(sql, [listing_id])
     return result[0][0] if result else None
 
-def update_listing(listing_id, name):
-    sql = "UPDATE listings SET name = ? WHERE id = ?"
-    db.execute(sql, [name, listing_id])
+def update_listing(listing_id, name, info, cutting):
+    sql = "UPDATE listings SET (name, info, cutting) = (?, ?, ?) WHERE id = ?"
+    db.execute(sql, [name, info, cutting, listing_id])
 
 def remove_listing(listing_id):
     sql = "DELETE FROM listings WHERE id = ?"

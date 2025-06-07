@@ -447,8 +447,8 @@ def show_listing_image(listing_id):
 @app.route("/edit/listing/<int:listing_id>", methods=["GET", "POST"])
 def edit_listing(listing_id):
     require_login()
-
     listing = listings.get_listing(listing_id)
+
     if not listing:
         abort(404)
         
@@ -456,13 +456,19 @@ def edit_listing(listing_id):
         abort(403)
 
     if request.method == "GET":
-        return render_template("edit_listing.html", listing=listing)
+        print("cutting?", listing["cutting"])
+        restrictions = form_validation.new_listing_restrictions
+        return render_template("edit_listing.html", listing=listing, restrictions=restrictions)
 
     if request.method == "POST":
         check_csrf()
 
         name = request.form["name"]
-        listings.update_listing(listing["id"], name)
+        info = request.form["info"]
+        is_cutting = 1 if request.form.getlist("cutting") else 0
+
+        print("edited cutting?", is_cutting)
+        listings.update_listing(listing["id"], name, info, is_cutting)
         print("päivitys onnistui")
         return redirect("/listing/" + str(listing["id"]))
 
