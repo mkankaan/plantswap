@@ -60,7 +60,8 @@ def logout():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     restrictions = form_validation.registration_restrictions
-    all_cities = cities.fetch_all()
+    #all_cities = cities.fetch_all()
+    all_cities = []
 
     if request.method == "GET":
         print("all cities:", all_cities)
@@ -71,9 +72,9 @@ def register():
         username = request.form["username"]
         password1 = request.form["password1"]
         password2 = request.form["password2"]
-        city_id = request.form["city"]
+        city = request.form["city"]
 
-        filled = { "username": username, "city": city_id }
+        filled = { "username": username, "city": city }
 
         if password1 != password2:
             flash("Salasanat eivät täsmää")
@@ -92,12 +93,14 @@ def register():
             return render_template("register.html", restrictions=restrictions, cities=all_cities, filled=filled)
         
         try:
-            users.create_user(username, password1, city_id)
+            #users.create_user(username, password1, city_id)
+            print("user", username, "city", city)
+            users.create_user(username, password1, city)
             print("käyttäjä", username, "luotu")
             flash("Tunnuksen luonti onnistui")
             return redirect("/") # redirect to next page
         except sqlite3.IntegrityError:
-            filled = { "city": city_id }
+            filled = { "city": city }
             flash("Käyttäjätunnus varattu")
             return render_template("register.html", restrictions=restrictions, cities=all_cities, filled=filled)
 
@@ -127,10 +130,10 @@ def edit_profile(user_id):
         abort(403)
 
     restrictions = form_validation.registration_restrictions
-    all_cities = cities.fetch_all()
+    all_cities = []
 
     if request.method == "GET":
-        filled = { "username": user["username"] }
+        filled = { "username": user["username"], "city": user["city"] }
 
         return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, filled=filled)
 
@@ -139,7 +142,7 @@ def edit_profile(user_id):
 
         new_username = request.form["new_username"]
 
-        new_city_id = request.form["new_city"]
+        new_city = request.form["new_city"]
 
         filled = { "username": new_username }
 
@@ -150,11 +153,11 @@ def edit_profile(user_id):
             return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, filled=filled)
         
         try:
-            users.update_user(user_id, new_username, new_city_id)
+            users.update_user(user_id, new_username, new_city)
             print("käyttäjä", user_id, "päivitetty")
             flash("Muutokset tallennettu")
             session["username"] = new_username
-            filled = { "username": new_username }
+            filled = { "username": new_username, "city": new_city }
             return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, filled=filled)
         except sqlite3.IntegrityError:
             flash("Käyttäjätunnus varattu")
@@ -175,7 +178,7 @@ def change_password(user_id):
         abort(403)
 
     restrictions = form_validation.registration_restrictions
-    all_cities = cities.fetch_all()
+    all_cities = []
 
     if request.method == "POST":
         new_password1 = request.form["new_password1"]

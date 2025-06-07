@@ -23,12 +23,14 @@ endblock %} {% block content %}
 
   <p>
     <label for="city">Paikkakunta:</label><br />
-
-    <select name="new_city" id="new_city">
-      {% for city in cities %}
-      <option value="{{ city.id }}">{{ city.name }}</option>
-      {% endfor %}
-    </select>
+    <input
+      type="text"
+      id="new_city"
+      name="new_city"
+      maxlength=""
+      value="{{ filled.city }}"
+      required
+    />
   </p>
   <input
     type="hidden"
