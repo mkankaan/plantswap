@@ -185,7 +185,7 @@ def change_password(user_id):
         new_password2 = request.form["new_password2"]
         old_password = request.form["old_password"]
 
-        filled = { "username": user["username"] }
+        filled = { "username": user["username"], "city": user["city"] }
 
         password_correct = users.check_login(user["username"], old_password)
 
