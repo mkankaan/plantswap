@@ -3,47 +3,58 @@ endblock %} {% block content %}
 
 <h2>{{ listing.name }}</h2>
 
+<section>
+  <div>
 {% if listing.has_image %}
 <img src="/image/listing/{{ listing.id }}" class="listing-image" alt="Ilmoituksen {{ listing.name }} kuva"/>
 {% else %}
 <div>ei kuvaa</div>
 {% endif %} {% if user.id == session.user_id %}
 <p>
-  <a href="/add_listing_image/{{ listing.id }}">Vaihda kuva</a>
+  <a href="/add_listing_image/{{ listing.id }}"><button>Vaihda kuva</button></a>
 </p>
-{% else %} et ole tekijä (et voi vaihtaa kuvaa) {% endif %}
+{% else %} <p><i>(et ole tekijä (et voi vaihtaa kuvaa))</i></p> {% endif %}
 
-<div>
+<div class="username-image-box">
   {% if user.has_image %}
 <img src="/image/user/{{ user.id }}" class="profile-image-small" alt="Käyttäjän {{ user.username }} kuva" />
 {% else %}
-<div>ei kuvaa</div>
+<div class="no-profile-image"></div>
 {% endif %} 
 <p><a href="/user/{{ user.id }}">{{ user.username }}</a></p>
 </div>
 
-<p>Lisätty {{ date_added }}</p>
+<p class="small-text">Lisätty {{ date_added }}</p>
 
-<p>
+<p class="small-text">
   Katseltu {{ listing.views }} {% if listing.views == 1%} kerran {%
   else %} kertaa {% endif %}
 </p>
+</div>
 
 {% if listing.cutting == 1 %}
 <p>Pistokas</p>
-{% endif %} {% if listing.info %}
-<p>Lisätiedot</p>
-<p>{{ listing.info }}</p>
-{% endif %} {% if session.user_id and listing.user_id ==
-session.user_id %}
-<p><a href="/edit/listing/{{ listing.id }}">Muokkaa</a></p>
-<p><a href="/remove/listing/{{ listing.id }}">Poista</a></p>
-{% else %} et ole tekijä (et voi muokata) {% endif %}
+{% endif %}
+
+{% if listing.info %} <div>
+
+<p class="subheading">Lisätiedot</p>
+<p>{{ listing.info }}</p></div>
+{% endif %}
+{% if session.user_id and listing.user_id ==
+session.user_id %} <div>
+<div class="button-bar">
+<a href="/edit/listing/{{ listing.id }}"><button>Muokkaa</button></a>
+<a href="/remove/listing/{{ listing.id }}"><button>Poista</button></a>
+</div>
+{% else %} <p><i>(et ole tekijä (et voi muokata))</i></p> {% endif %}</div>
+</section>
 
 <h3>Kommentit ({{ comments | count }})</h3>
+<section>
 
-{% if session.user_id %}
-<h4>Uusi kommentti</h4>
+{% if session.user_id %}<div>
+<p class="subheading">Uusi kommentti</p>
 <form action="/new_comment" method="post">
   <textarea
     name="content"
@@ -52,26 +63,26 @@ session.user_id %}
     maxlength="{{ restrictions.max_content }}"
     required
   ></textarea>
-  <p>pituus korkeintaan {{ restrictions.max_comment }} merkkiä</p>
+  <p class="small-text">pituus korkeintaan {{ restrictions.max_comment }} merkkiä</p>
   <input type="hidden" name="listing_id" value="{{ listing.id }}" />
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Lähetä" />
 </form>
 {% else %}
-<p>et ole kirjautunut sisään (et voi kommentoida)</p>
-{% endif %}
-<ul>
+<p><i>(et ole kirjautunut sisään (et voi kommentoida))</i></p>
+</div>{% endif %}
+<ul class="comment-list">
   {% for comment in comments %}
   <li>
     <div class="comment">
       
         {% if comment.user_status == 1 %}
 
-        <div>
+        <div class="username-image-box">
           {% if comment.user_has_image %}
 <img src="/image/user/{{ comment.user_id }}" class="profile-image-small" alt="Käyttäjän {{ comment.username }} kuva"/>
 {% else %}
-<div>ei kuvaa</div>
+<div class="no-profile-image"></div>
 {% endif %} 
         <p><a href="/user/{{ comment.user_id }}"
           >{{ comment.username }}</a
@@ -82,21 +93,22 @@ session.user_id %}
         <p>Käyttäjä poistettu</p>
         {% endif %}
       </p>
-      <p>Lähetetty {{ comment.sent_date }}</p>
+      <p class="small-text">Lähetetty {{ comment.sent_date }}</p>
       {% if comment.edited_date %}
-      <p>Muokattu {{ comment.edited_date }}</p>
+      <p class="small-text">Muokattu {{ comment.edited_date }}</p>
       {% endif %}
       <p>{{ comment.content }}</p>
 
       {% if comment.user_id == session.user_id %}
-      <div><p><a href="/edit/comment/{{ comment.comment_id }}">Muokkaa</a></p>
-        <p><a href="/remove/comment/{{ comment.comment_id }}">Poista</a></p></div>
+      <div class="button-bar"><a href="/edit/comment/{{ comment.comment_id }}"><button>Muokkaa</button></a>
+        <a href="/remove/comment/{{ comment.comment_id }}"><button>Poista</button></a>
         {% else %}
-        <p>et ole kommentoija (et voi muokata)</p>
+        <p><i>(et ole kommentoija (et voi muokata))</i></p>
       {% endif %}
     </div>
   </li>
   {% endfor %}
 </ul>
+</section>
 
 {% endblock %}

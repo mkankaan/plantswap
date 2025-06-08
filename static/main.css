@@ -1,3 +1,41 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --profile-img--small: 3em;
+  --clr-text-light: rgb(60, 60, 60);
+}
+
+* {
+  font-family: 'Roboto Mono', verdana, monospace;
+  font-size: 0.95rem;
+}
+
+h1 a {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+h3 {
+  font-size: 1.25em;
+}
+
+h1,
+h2,
+h3 {
+  padding-bottom: 1rem;
+}
+
+.subheading {
+  font-weight: bold;
+}
+
 .nav_box {
   border: 1px solid blue;
 }
@@ -16,8 +54,8 @@
 
 .profile-image-small {
   object-fit: cover;
-  width: 2.5em;
-  height: 2.5em;
+  width: var(--profile-img--small);
+  height: var(--profile-img--small);
   border-radius: 100%;
 }
 
@@ -25,11 +63,66 @@
   max-width: 10em;
 }
 
+.comment-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.comment-list li:not(:last-child) {
+  margin-bottom: 1em;
+}
+
 .comment {
   border: 1px solid blue;
+}
+
+.username-image-box {
+  border: 1px solid cyan;
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  flex-wrap: nowrap;
+  max-width: fit-content;
 }
 
 .flash {
   color: red;
   border: 1px solid red;
+}
+
+.button-bar {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  max-width: fit-content;
+  gap: 1em;
+}
+
+.button-bar button {
+  width: 100%;
+}
+
+.no-profile-image {
+  width: var(--profile-img--small);
+  height: var(--profile-img--small);
+  border-radius: 100%;
+  background-color: lightgrey;
+}
+
+.small-text {
+  margin: 0.25em 0;
+  font-size: 0.92em;
+  color: var(--clr-text-light);
+}
+
+section:not(:last-child) {
+  margin-bottom: 3rem;
+}
+
+section > *:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+section > * > *:not(:last-child) {
+  margin-bottom: 1rem;
 }
