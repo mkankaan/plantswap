@@ -5,50 +5,53 @@
     <link rel="stylesheet" href="/static/main.css" />
   </head>
   <body>
-    <div class="header">
-      <h1><a href="/">PlantSwap</a></h1>
-    </div>
-
-    <div class="nav_box">
-      {% if session.username %}
-      <p>
-        Kirjautunut sisään nimellä
-        <a href="/user/{{ session.user_id }}"
-          >{{ session.username }}</a
-        >
-      </p>
-      {% else %}
-      <p>et ole kirjautunut sisään</p>
-      {% endif %}
-
-      <div class="nav">
-        <nav>
-          <ul>
-            <li><a href="/search">Haku</a></li>
-            {% if session.username %}
-            <li><a href="/logout">Kirjaudu ulos</a></li>
-            {% else %}
-            <li><a href="/login">Kirjaudu sisään</a></li>
-            <li><a href="/register">Luo tili</a></li>
-            {% endif %}
-          </ul>
-        </nav>
+    <div class="bg"></div>
+    <div class="page-content">
+      <div class="header">
+        <h1><a href="/">PlantSwap</a></h1>
       </div>
 
-      {% if session.user_id %}
-      <p>
-        <a href="/new_listing">Uusi ilmoitus</a>
-      </p>
+      <div class="nav_box">
+        {% if session.username %}
+        <p>
+          Kirjautunut sisään nimellä
+          <a href="/user/{{ session.user_id }}"
+            >{{ session.username }}</a
+          >
+        </p>
+        {% else %}
+        <p>et ole kirjautunut sisään</p>
+        {% endif %}
 
-      {% endif %}
+        <div class="nav">
+          <nav>
+            <ul>
+              <li><a href="/search">Haku</a></li>
+              {% if session.username %}
+              <li><a href="/logout">Kirjaudu ulos</a></li>
+              {% else %}
+              <li><a href="/login">Kirjaudu sisään</a></li>
+              <li><a href="/register">Luo tili</a></li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+
+        {% if session.user_id %}
+        <p>
+          <a href="/new_listing">Uusi ilmoitus</a>
+        </p>
+
+        {% endif %}
+      </div>
+
+      {% for message in get_flashed_messages() %}
+      <div class="flash">
+        <p>{{ message }}</p>
+      </div>
+      {% endfor %}
+
+      <div class="content">{% block content %}{% endblock %}</div>
     </div>
-
-    {% for message in get_flashed_messages() %}
-    <div class="flash">
-      <p>{{ message }}</p>
-    </div>
-    {% endfor %}
-
-    <div class="content">{% block content %}{% endblock %}</div>
   </body>
 </html>
