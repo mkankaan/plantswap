@@ -24,12 +24,14 @@ endblock %} {% block content %}
 <p><a href="/user/{{ user.id }}">{{ user.username }}</a></p>
 </div>
 
-<p class="small-text">Lisätty {{ date_added }}</p>
+<div>
+<p class="text-small">Lisätty {{ date_added }}</p>
 
-<p class="small-text">
+<p class="text-small">
   Katseltu {{ listing.views }} {% if listing.views == 1%} kerran {%
   else %} kertaa {% endif %}
 </p>
+</div>
 </div>
 
 {% if listing.cutting == 1 %}
@@ -41,13 +43,13 @@ endblock %} {% block content %}
 <p class="subheading">Lisätiedot</p>
 <p>{{ listing.info }}</p></div>
 {% endif %}
-{% if session.user_id and listing.user_id ==
-session.user_id %} <div>
-<div class="button-bar">
-<a href="/edit/listing/{{ listing.id }}"><button>Muokkaa</button></a>
-<a href="/remove/listing/{{ listing.id }}"><button>Poista</button></a>
-</div>
-{% else %} <p><i>(et ole tekijä (et voi muokata))</i></p> {% endif %}</div>
+
+{% if session.user_id and listing.user_id == session.user_id %}
+    <div class="button-bar">
+      <a href="/edit/listing/{{ listing.id }}"><button>Muokkaa</button></a>
+      <a href="/remove/listing/{{ listing.id }}"><button>Poista</button></a>
+    </div>
+{% endif %}
 </section>
 
 <h3>Kommentit ({{ comments | count }})</h3>
@@ -63,7 +65,7 @@ session.user_id %} <div>
     maxlength="{{ restrictions.max_content }}"
     required
   ></textarea>
-  <p class="small-text">pituus korkeintaan {{ restrictions.max_comment }} merkkiä</p>
+  <p class="text-small">pituus korkeintaan {{ restrictions.max_comment }} merkkiä</p>
   <input type="hidden" name="listing_id" value="{{ listing.id }}" />
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Lähetä" />
@@ -75,6 +77,7 @@ session.user_id %} <div>
   {% for comment in comments %}
   <li>
     <div class="comment">
+      <div>
       
         {% if comment.user_status == 1 %}
 
@@ -90,13 +93,17 @@ session.user_id %} <div>
         </div>
         
         {% else %}
-        <p>Käyttäjä poistettu</p>
+        <div class="username-image-box">
+          <div class="no-profile-image"></div>
+        <p class="text-no-results">Käyttäjä poistettu</p>
+        </div>
         {% endif %}
       </p>
-      <p class="small-text">Lähetetty {{ comment.sent_date }}</p>
+      <p class="text-small">Lähetetty {{ comment.sent_date }}</p>
       {% if comment.edited_date %}
-      <p class="small-text">Muokattu {{ comment.edited_date }}</p>
+      <p class="text-small">Muokattu {{ comment.edited_date }}</p>
       {% endif %}
+      </div>
       <p>{{ comment.content }}</p>
 
       {% if comment.user_id == session.user_id %}
