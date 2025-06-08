@@ -16,6 +16,7 @@
   --clr-light: #fdffee;
   --clr-bg: #92f39d;
   --clr-text: #090b09;
+  --border-size: 1.5px;
 }
 
 /* */
@@ -43,12 +44,22 @@
   width: min(95%, 700px);
 }
 
+.login-page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.login-page-content > * {
+  width: min(95%, 700px);
+}
+
 /* login and registration box */
 
 .login-content {
-  border: 2px solid var(--clr-light);
+  border: var(--border-size) solid var(--clr-light);
   padding: 2rem;
-  margin: auto;
   border-radius: 1rem;
   display: grid;
   justify-items: center;
@@ -108,24 +119,32 @@ textarea {
   color: var(--clr-text);
 }
 
+button,
 input[type='submit'] {
   background-color: var(--clr-primary);
   color: var(--clr-light);
-  border: 2px solid var(--clr-primary);
+  border: var(--border-size) solid var(--clr-primary);
   padding: 0.75rem 1.5rem;
   border-radius: 2rem;
   font-weight: bold;
   display: inline-block;
 }
 
+button:hover,
 input[type='submit']:hover {
   background-color: transparent;
   color: var(--clr-primary);
-  border: 2px solid var(--clr-primary);
+  border: var(--border-size) solid var(--clr-primary);
   text-decoration: underline;
+  cursor: pointer;
 }
 
 /* */
+
+.header {
+  text-align: center;
+  padding: 1rem;
+}
 
 h1 a {
   font-size: 2.5rem;
@@ -153,6 +172,7 @@ a:visited {
 
 a:hover {
   text-decoration: none;
+  cursor: pointer;
 }
 
 label {
@@ -165,8 +185,27 @@ label {
   color: var(--clr-primary);
 }
 
-.nav_box {
-  border: 1px solid blue;
+.nav {
+  min-height: 5rem;
+}
+
+.nav ul {
+  /* border-bottom: var(--border-size) solid var(--clr-primary); */
+  box-shadow: 0 0 0.75rem 0 rgba(9, 11, 9, 0.15);
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 1rem;
+}
+
+.nav ul div {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav ul li {
+  display: inline-block;
 }
 
 .listing-image {
