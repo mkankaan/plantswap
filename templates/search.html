@@ -3,62 +3,77 @@ block content %}
 <header>
   <h2>Haku</h2>
 </header>
+<section>
+  <form action="/search" method="get">
+    <section class="subsection">
+      <div class="form-grid">
+        <label for="query">Hakusana</label> {% if query %}
+        <input
+          type="text"
+          id="query"
+          name="query"
+          value="{{ query }}"
+        />
+        {% else %}
+        <input type="text" id="query" name="query" />
+        {% endif %}
+      </div>
+    </section>
+    <header>
+      <h3>Rajaa hakua</h3>
+    </header>
 
-<form action="/search" method="get">
-  <p>
-    <label for="query">Hakusana</label>: {% if query %}
-    <input type="text" id="query" name="query" value="{{ query }}" />
-    {% else %}
-    <input type="text" id="query" name="query" />
-    {% endif %}
-  </p>
-  <header>
-    <h3>Rajaa hakua</h3>
-  </header>
-
-  <p>
-    <label for="city">Sijainti</label>: {% if city %}
-    <input type="text" id="city" name="city" value="{{ city }}" />
-    {% else %}
-    <input type="text" id="city" name="city" />
-    {% endif %}
-  </p>
-  <input type="submit" value="Hae" />
-</form>
+    <section class="subsection">
+      <div class="form-grid">
+        <label for="city">Sijainti</label> {% if city %}
+        <input type="text" id="city" name="city" value="{{ city }}" />
+        {% else %}
+        <input type="text" id="city" name="city" />
+        {% endif %}
+      </div>
+      <div>
+        <input type="submit" value="Hae" />
+      </div>
+    </section>
+  </form>
+</section>
 <header>
   <h3>Hakutulokset ({{ results | count }})</h3>
 </header>
+<section>
+  <ul>
+    {% for result in results %}
+    <li>
+      <div style="border: 1px solid blue">
+        <div>
+          {% if result.has_image %}
+          <img
+            class="listing_thumbnail"
+            src="/image/listing/{{ result.listing_id }}"
+          />
+          {% else %}
+          <p>ei kuvaa</p>
+          {% endif %}
+        </div>
 
-<ul>
-  {% for result in results %}
-  <li>
-    <div style="border: 1px solid blue">
-      <div>
-        {% if result.has_image %}
-        <img
-          class="listing_thumbnail"
-          src="/image/listing/{{ result.listing_id }}"
-        />
-        {% else %}
-        <p>ei kuvaa</p>
+        <p>
+          <a href="/listing/{{ result.listing_id }}"
+            >{{ result.name }}</a
+          >
+        </p>
+        <p>
+          <a href="/user/{{ result.user_id }}"
+            >{{ result.username }}</a
+          >
+        </p>
+        <p>{{ result.city }}</p>
+        {% if result.cutting == 1 %}
+        <p>Pistokas</p>
         {% endif %}
+        <p>{{ result.date }}</p>
       </div>
-
-      <p>
-        <a href="/listing/{{ result.listing_id }}"
-          >{{ result.name }}</a
-        >
-      </p>
-      <p>
-        <a href="/user/{{ result.user_id }}">{{ result.username }}</a>
-      </p>
-      <p>{{ result.city }}</p>
-      {% if result.cutting == 1 %}
-      <p>Pistokas</p>
-      {% endif %}
-      <p>{{ result.date }}</p>
-    </div>
-  </li>
-  {% endfor %}
-</ul>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
 {% endblock %}

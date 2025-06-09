@@ -40,15 +40,15 @@
                 value="{{ filled.username }}"
                 required
               />
-              <p class="text-small">
-                pituus: {{ restrictions.min_username }}-{{
+              <p class="text-small hint">
+                {{ restrictions.min_username }}-{{
                 restrictions.max_username }} merkkiä
               </p>
             </div>
 
             <div>
-            <label for="password1">*Salasana</label>
-            <p class="form-bottom-text-space"></p>
+              <label for="password1">*Salasana</label>
+              <p class="form-bottom-text-space"></p>
             </div>
             <div>
               <input
@@ -57,8 +57,8 @@
                 name="password1"
                 maxlength="{{ restrictions.max_password }}"
               />
-              <p class="text-small">
-                pituus: {{ restrictions.min_password }}-{{
+              <p class="text-small hint">
+                {{ restrictions.min_password }}-{{
                 restrictions.max_password }} merkkiä
               </p>
             </div>

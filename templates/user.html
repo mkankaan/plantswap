@@ -4,43 +4,62 @@
   <h2>Käyttäjä {{ user.username }}</h2>
 </header>
 
-{% if user.has_image %}
-<img
-  src="/image/user/{{ user.id }}"
-  class="profile-image-large"
-  alt="Käyttäjän {{ user.username }} kuva"
-/>
-{% else %}
-<div>ei profiilikuvaa</div>
-{% endif %} {% if user.id == session.user_id %}
-<p><a href="/add_profile_image">Vaihda profiilikuva</a></p>
-{% if user.has_image %}
-<p>
-  <a href="/remove/profile_image/{{ user.id }}"
-    >Poista profiilikuva</a
-  >
-</p>
-{% endif %}
-<p><a href="/edit_profile/{{ user.id }}">Muokkaa profiilia</a></p>
-{% endif %}
+<section>
+  <div class="item-info">
+    <div>
+      {% if user.has_image %}
+      <img
+        src="/image/user/{{ user.id }}"
+        class="profile-image-large"
+        alt="Käyttäjän {{ user.username }} kuva"
+      />
+      {% else %}
+      <div>ei profiilikuvaa</div>
+      {% endif %} {% if user.id == session.user_id %}
+      <div class="button-bar">
+        <a href="/add_profile_image"
+          ><button>Vaihda profiilikuva</button></a
+        >
 
-<p>{{ user.city }}</p>
+        {% if user.has_image %}
 
-<p>Liittyi {{ joined_date }}</p>
+        <a href="/remove/profile_image/{{ user.id }}"
+          ><button>Poista profiilikuva</button></a
+        >
+
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+    <div>
+      <p>{{ user.city }}</p>
+      <p>Liittyi {{ joined_date }}</p>
+    </div>
+  </div>
+  {% if user.id == session.user_id %}
+  <div class="button-bar-vertical">
+    <a href="/edit_profile/{{ user.id }}"
+      ><button>Muokkaa profiilia</button></a
+    >
+    <a href="/delete_account"
+      ><button class="delete">Poista tili</button></a
+    >
+  </div>
+  {% endif %}
+</section>
 <header>
   <h3>Käyttäjän ilmoitukset ({{ listings | count }})</h3>
 </header>
 
-<ul>
-  {% for listing in listings %}
-  <li>
-    <a href="/listing/{{ listing.id }}">{{ listing.name }}</a>
-    <br />
-    {{ listing.date }}
-  </li>
-  {% endfor %}
-</ul>
-
-{% if user.id == session.user_id %}
-<p><a href="/delete_account">Poista tili</a></p>
-{% endif %} {% endblock %}
+<section>
+  <ul>
+    {% for listing in listings %}
+    <li>
+      <a href="/listing/{{ listing.id }}">{{ listing.name }}</a>
+      <br />
+      {{ listing.date }}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}
