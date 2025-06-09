@@ -43,19 +43,19 @@ block content %}
 <section>
   <ul>
     {% for result in results %}
-    <li>
-      <div style="border: 1px solid blue">
-        <div>
-          {% if result.has_image %}
-          <img
-            class="listing_thumbnail"
-            src="/image/listing/{{ result.listing_id }}"
-          />
-          {% else %}
-          <p>ei kuvaa</p>
-          {% endif %}
-        </div>
+    <li class="list-item">
+      <div class="listing-thumbnail-container">
+        {% if result.has_image %}
+        <img
+          class="listing-thumbnail"
+          src="/image/listing/{{ result.listing_id }}"
+        />
+        {% else %}
+        <p>ei kuvaa</p>
+        {% endif %}
+      </div>
 
+      <div>
         <p>
           <a href="/listing/{{ result.listing_id }}"
             >{{ result.name }}</a
@@ -65,8 +65,9 @@ block content %}
           <a href="/user/{{ result.user_id }}"
             >{{ result.username }}</a
           >
+          | {{ result.city }}
         </p>
-        <p>{{ result.city }}</p>
+
         {% if result.cutting == 1 %}
         <p>Pistokas</p>
         {% endif %}

@@ -65,7 +65,7 @@ endblock %} {% block content %}
     maxlength="{{ restrictions.max_content }}"
     required
   ></textarea>
-  <p class="text-small">pituus korkeintaan {{ restrictions.max_comment }} merkkiä</p>
+  <p class="text-small">Korkeintaan {{ restrictions.max_comment }} merkkiä</p>
   <input type="hidden" name="listing_id" value="{{ listing.id }}" />
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Lähetä" />

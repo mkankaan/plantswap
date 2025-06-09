@@ -1,37 +1,47 @@
 {% extends "layout.html" %} {% block title %}Lisää kuva{% endblock %}
 {% block content %}
 
-<p>{{ listing.name }}</p>
+<section>
+  <p class="subheading">{{ listing.name }}</p>
 
-{% if listing.cutting == 1 %}
-<p>Pistokas</p>
-{% endif %} {% if listing.info %}
-<p style="border: 1px solid blue">{{ listing.info }}</p>
-{% endif %}
+  {% if listing.cutting == 1 %}
+  <p>Pistokas</p>
+  {% endif %} {% if listing.info %}
+  <div>
+    <p class="subheading">Lisätiedot</p>
+    <p>{{ listing.info }}</p>
+  </div>
+  {% endif %}
+</section>
 
 <header>
   <h2>Lisää kuva</h2>
 </header>
 
-<p>Lähetä jpg-tiedosto, jonka koko on enintään 200 kt</p>
+<div>
+  <p>Lähetä jpg-tiedosto, jonka koko on enintään 200 kt</p>
 
-<form
-  action="/add_listing_image/{{ listing.id }}"
-  method="post"
-  enctype="multipart/form-data"
->
-  <p>
-    <label for="image">Kuva:</label>
-    <input type="file" id="image" name="image" accept=".jpg" />
-  </p>
-  <input
-    type="hidden"
-    name="csrf_token"
-    value="{{ session.csrf_token }}"
-  />
-  <input type="submit" value="Lähetä" />
-</form>
+  <form
+    class="image-form"
+    action="/add_listing_image/{{ listing.id }}"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <div class="form-grid">
+      <label for="image">Kuva</label>
+      <input type="file" id="image" name="image" accept=".jpg" />
+    </div>
+    <input
+      type="hidden"
+      name="csrf_token"
+      value="{{ session.csrf_token }}"
+    />
 
-<p><a href="/listing/{{ listing.id }}">Ohita</a></p>
+    <div class="button-bar">
+      <input type="submit" value="Lähetä" />
+      <a href="/listing/{{ listing.id }}">Ohita</a>
+    </div>
+  </form>
+</div>
 
 {% endblock %}

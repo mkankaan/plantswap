@@ -1,37 +1,60 @@
 {% extends "layout.html" %} {% block title %}Lisää ilmoitus{% endblock
 %} {% block content %}
 <header>
-<h2>Lisää ilmoitus</h2></header>
+  <h2>Lisää ilmoitus</h2>
+</header>
 
 <form action="/new_listing" method="post">
-  <p>
-    <label for="name">*Nimi</label><br />
-    <input
-      type="text"
-      id="name"
-      name="name"
-      maxlength="{{ restrictions.max_name }}"
-      required
-    />
-    <p>pituus korkeintaan {{ restrictions.max_name }} merkkiä</p>
-  </p>
+  <section class="subsection">
+    <div class="form-grid">
+      <div>
+        <label class="form-label" for="name">*Nimi</label>
+        <p class="form-bottom-text-space"></p>
+      </div>
 
-  <p><input type="checkbox" name="cutting" value="1" /> Pistokas</p>
+      <div>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          maxlength="{{ restrictions.max_name }}"
+          required
+        />
+        <p class="text-small hint">
+          Korkeintaan {{ restrictions.max_name }} merkkiä
+        </p>
+      </div>
+    </div>
+  </section>
 
-  <p>
-    Lisätiedot <br />
-    <textarea
-      name="info"
-      rows="5"
-      cols="50"
-      maxlength="{{ restrictions.max_info }}"
-    ></textarea>
-    <p>pituus korkeintaan {{ restrictions.max_info }} merkkiä</p>
-  </p>
+  <section class="subsection">
+    <p><input type="checkbox" name="cutting" value="1" /> Pistokas</p>
+  </section>
+
+  <section class="subsection">
+    <div class="form-grid label-top">
+      <p class="form-label">Lisätiedot</p>
+      <div>
+        <textarea
+          name="info"
+          rows="5"
+          cols="50"
+          maxlength="{{ restrictions.max_info }}"
+        ></textarea>
+        <p class="text-small hint">
+          Korkeintaan {{ restrictions.max_info }} merkkiä
+        </p>
+      </div>
+    </div>
+  </section>
 
   <p>* pakollinen kenttä</p>
-  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-  <input type="submit" value="Lisää" />
+  <input
+    type="hidden"
+    name="csrf_token"
+    value="{{ session.csrf_token }}"
+  />
+  <input type="submit" value="Jatka" />
 </form>
 
 {% endblock %}
