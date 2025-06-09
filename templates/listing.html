@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block title %}{{ listing.name }}{%
 endblock %} {% block content %}
-
-<h2>{{ listing.name }}</h2>
+<header>
+<h2>{{ listing.name }}</h2></header>
 
 <section>
   <div>
@@ -51,8 +51,8 @@ endblock %} {% block content %}
     </div>
 {% endif %}
 </section>
-
-<h3>Kommentit ({{ comments | count }})</h3>
+<header>
+<h3>Kommentit ({{ comments | count }})</h3></header>
 <section>
 
 {% if session.user_id %}<div>

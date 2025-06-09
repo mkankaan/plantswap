@@ -1,7 +1,8 @@
 {% extends "layout.html" %} {% block title %}Poista ilmoitus{%
 endblock %} {% block content %}
-
-<h2>Poista ilmoitus</h2>
+<header>
+  <h2>Poista ilmoitus</h2>
+</header>
 
 <form action="/remove/listing/{{ listing.id }}" method="post">
   <p>Haluatko varmasti poistaa ilmotuksen?</p>

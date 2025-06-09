@@ -1,7 +1,8 @@
 {% extends "layout.html" %} {% block title %}Haku{% endblock%} {%
 block content %}
-
-<h2>Haku</h2>
+<header>
+  <h2>Haku</h2>
+</header>
 
 <form action="/search" method="get">
   <p>
@@ -11,8 +12,9 @@ block content %}
     <input type="text" id="query" name="query" />
     {% endif %}
   </p>
-
-  <h3>Rajaa hakua</h3>
+  <header>
+    <h3>Rajaa hakua</h3>
+  </header>
 
   <p>
     <label for="city">Sijainti</label>: {% if city %}
@@ -23,8 +25,9 @@ block content %}
   </p>
   <input type="submit" value="Hae" />
 </form>
-
-<h3>Hakutulokset ({{ results | count }})</h3>
+<header>
+  <h3>Hakutulokset ({{ results | count }})</h3>
+</header>
 
 <ul>
   {% for result in results %}

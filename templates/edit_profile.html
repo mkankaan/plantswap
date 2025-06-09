@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block title %}Muokkaa profiilia{%
 endblock %} {% block content %}
-
-<h2>Muokkaa profiilia</h2>
+<header>
+<h2>Muokkaa profiilia</h2></header>
 
 <form action="/edit_profile/{{ user.id }}" method="post">
   <p>
@@ -40,8 +40,8 @@ endblock %} {% block content %}
   <input type="submit" value="Tallenna" />
 </form>
 
-
-<h2>Vaihda salasana</h2>
+<header>
+<h2>Vaihda salasana</h2></header>
 
 <form action="/change_password/{{ user.id }}" method="post">
     <p>

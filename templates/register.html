@@ -10,74 +10,94 @@
     <link rel="stylesheet" href="/static/main.css" />
   </head>
   <body>
-    <h1><a href="/">PlantSwap</a></h1>
-    <h2>Luo tili</h2>
+    <div class="bg"></div>
+    <div class="nav"></div>
+    <div class="login-page-content">
+      <div class="header">
+        <h1><a href="/">PlantSwap</a></h1>
+      </div>
 
-    {% for message in get_flashed_messages() %}
-    <div class="flash">
-      <p>{{ message }}</p>
+      <div class="login-content">
+        <h2>Luo tili</h2>
+        {% for message in get_flashed_messages() %}
+        <div class="flash">
+          <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+        <form action="/register" method="post">
+          <div class="form-grid">
+            <div>
+              <label for="username">*Käyttäjätunnus</label>
+              <p class="form-bottom-text-space"></p>
+            </div>
+
+            <div>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                maxlength="{{ restrictions.max_username }}"
+                value="{{ filled.username }}"
+                required
+              />
+              <p class="text-small">
+                pituus: {{ restrictions.min_username }}-{{
+                restrictions.max_username }} merkkiä
+              </p>
+            </div>
+
+            <div>
+            <label for="password1">*Salasana</label>
+            <p class="form-bottom-text-space"></p>
+            </div>
+            <div>
+              <input
+                type="password"
+                id="password1"
+                name="password1"
+                maxlength="{{ restrictions.max_password }}"
+              />
+              <p class="text-small">
+                pituus: {{ restrictions.min_password }}-{{
+                restrictions.max_password }} merkkiä
+              </p>
+            </div>
+
+            <label for="password2"
+              >*Kirjoita salasana uudestaan</label
+            >
+            <input
+              type="password"
+              id="password2"
+              name="password2"
+              maxlength="{{ restrictions.max_password }}"
+            />
+
+            <label for="city">*Paikkakunta</label>
+
+            <input
+              type="text"
+              id="city"
+              name="city"
+              maxlength=""
+              value="{{ filled.city }}"
+              required
+            />
+          </div>
+          <div class="login-extra-links">
+            <p class="text-small">* pakollinen kenttä</p>
+            <input type="submit" value="Luo tili" />
+          </div>
+        </form>
+
+        <div class="login-extra-links">
+          <p>
+            Onko sinulla jo tili?
+            <a href="/login">Kirjaudu sisään</a>
+          </p>
+          <p><a href="/">Takaisin</a></p>
+        </div>
+      </div>
     </div>
-    {% endfor %}
-
-    <form action="/register" method="post">
-      <p>
-        <label for="username">*Käyttäjätunnus:</label><br />
-        <input
-          type="text"
-          id="username"
-          name="username"
-          maxlength="{{ restrictions.max_username }}"
-          value="{{ filled.username }}"
-          required
-        />
-        <p>pituus: {{ restrictions.min_username }}-{{ restrictions.max_username }} merkkiä</p>
-
-      </p>
-      <p>
-        <label for="password1">*Salasana:</label><br />
-        <input
-          type="password"
-          id="password1"
-          name="password1"
-          maxlength="{{ restrictions.max_password }}"
-        />
-        <p>pituus: {{ restrictions.min_password }}-{{ restrictions.max_password }} merkkiä</p>
-      </p>
-      <p>
-        <label for="password2">*Kirjoita salasana uudestaan:</label
-        ><br />
-        <input
-          type="password"
-          id="password2"
-          name="password2"
-          maxlength="{{ restrictions.max_password }}"
-        />
-      </p>
-      <p>
-        <label for="city">*Paikkakunta:</label><br />
-
-        <!--
-        <select name="city" id="city">
-          {% for city in cities %}
-          <option value="{{ city.id }}">{{ city.name }}</option>
-          {% endfor %}
-        </select>
-        -->
-        <input
-          type="text"
-          id="city"
-          name="city"
-          maxlength=""
-          value="{{ filled.city }}"
-          required
-        />
-      </p>
-      <p>* pakollinen kenttä</p>
-      <input type="submit" value="Luo tili" />
-    </form>
-
-    <p>Onko sinulla jo tili? <a href="/login">Kirjaudu sisään</a></p>
-
-    <p><a href="/">Takaisin</a></p>
   </body>
 </html>

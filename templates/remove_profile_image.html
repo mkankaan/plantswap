@@ -1,7 +1,8 @@
 {% extends "layout.html" %} {% block title %}Poista profiilikuva{%
 endblock %} {% block content %}
-
-<h2>Poista profiilikuva</h2>
+<header>
+  <h2>Poista profiilikuva</h2>
+</header>
 
 <form action="/remove/profile_image/{{ user.id }}" method="post">
   <p>Haluatko varmasti poistaa profiilikuvasi?</p>

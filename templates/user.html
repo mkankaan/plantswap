@@ -1,7 +1,8 @@
 {% extends "layout.html" %} {% block title %}Käyttäjä {{ user.username
 }}{% endblock %} {% block content %}
-
-<h2>Käyttäjä {{ user.username }}</h2>
+<header>
+  <h2>Käyttäjä {{ user.username }}</h2>
+</header>
 
 {% if user.has_image %}
 <img
@@ -26,8 +27,9 @@
 <p>{{ user.city }}</p>
 
 <p>Liittyi {{ joined_date }}</p>
-
-<h3>Käyttäjän ilmoitukset ({{ listings | count }})</h3>
+<header>
+  <h3>Käyttäjän ilmoitukset ({{ listings | count }})</h3>
+</header>
 
 <ul>
   {% for listing in listings %}
