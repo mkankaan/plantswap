@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template, request, redirect, session, abort, make_response, flash
 import db, users, config, listings, comments, images, cities
-import sqlite3, secrets
+import sqlite3, secrets, markupsafe
 from utils import form_validation, date_formatter
 
 app = Flask(__name__)
@@ -14,6 +14,12 @@ def require_login():
 def check_csrf():
     if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
+
+@app.template_filter()
+def show_lines(content):
+    content = str(markupsafe.escape(content))
+    content = content.replace("\n", "<br />")
+    return markupsafe.Markup(content)
 
 @app.route("/")
 @app.route("/recommendations")

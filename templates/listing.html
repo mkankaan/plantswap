@@ -29,7 +29,7 @@ endblock %} {% block content %}
 {% if listing.info %} <div>
 
 <p class="subheading">Lisätiedot</p>
-<p class="text-box">{{ listing.info }}</p></div>
+<p class="text-box">{{ listing.info | show_lines }}</p></div>
 {% endif %}
 </div>
 </div>
@@ -37,8 +37,6 @@ endblock %} {% block content %}
 {% if listing.cutting == 1 %}
 <p>Pistokas</p>
 {% endif %}
-
-
 
 <div class="username-image-box">
   {% if user.has_image %}
@@ -55,7 +53,7 @@ endblock %} {% block content %}
 {% if session.user_id and listing.user_id == session.user_id %}
     <div class="button-bar">
       <a href="/edit/listing/{{ listing.id }}"><button>Muokkaa</button></a>
-      <a href="/remove/listing/{{ listing.id }}"><button>Poista</button></a>
+      <a href="/remove/listing/{{ listing.id }}"><button class="delete">Poista</button></a>
     </div>
 {% endif %}
 </section>
@@ -112,11 +110,11 @@ endblock %} {% block content %}
       <p class="text-small">Muokattu {{ comment.edited_date }}</p>
       {% endif %}
       </div>
-      <p>{{ comment.content }}</p>
+      <p>{{ comment.content | show_lines }}</p>
 
       {% if comment.user_id == session.user_id %}
-      <div class="button-bar"><a href="/edit/comment/{{ comment.comment_id }}"><button>Muokkaa</button></a>
-        <a href="/remove/comment/{{ comment.comment_id }}"><button>Poista</button></a>
+      <div class="button-bar"><a href="/edit/comment/{{ comment.comment_id }}">Muokkaa</a>
+        <a href="/remove/comment/{{ comment.comment_id }}">Poista</a>
         {% else %}
         <p><i>(et ole kommentoija (et voi muokata))</i></p>
       {% endif %}
