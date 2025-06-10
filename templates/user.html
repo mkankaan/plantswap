@@ -54,10 +54,22 @@
 <section>
   <ul>
     {% for listing in listings %}
-    <li>
-      <a href="/listing/{{ listing.id }}">{{ listing.name }}</a>
-      <br />
-      {{ listing.date }}
+    <li class="list-item">
+      <div class="listing-thumbnail-container">
+        {% if listing.has_image %}
+        <img
+          class="listing-thumbnail"
+          src="/image/listing/{{ listing.id }}"
+        />
+        {% else %}
+        <p class="text-small">Ei kuvaa</p>
+        {% endif %}
+      </div>
+      <div>
+        <a href="/listing/{{ listing.id }}">{{ listing.name }}</a>
+        <br />
+        {{ listing.date }}
+      </div>
     </li>
     {% endfor %}
   </ul>

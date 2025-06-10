@@ -9,7 +9,7 @@
 }
 
 :root {
-  --profile-img--small: 3em;
+  --profile-img--small: 3rem;
   --clr-neutral-dark: rgb(60, 60, 60);
   --clr-primary: #25a12d;
   --clr-primary: #1a8c22;
@@ -109,12 +109,6 @@
   align-items: normal;
 }
 
-.text-box {
-  background-color: var(--clr-neutral-light);
-  border-radius: var(--border-radius-small);
-  padding: 1rem;
-}
-
 form input[type='text'],
 form input[type='password'],
 form textarea {
@@ -135,7 +129,9 @@ form textarea {
   min-height: 100vh;
 }
 
-.form-bottom-text-space {
+.form-bottom-text-space,
+.blank {
+  display: inline-block;
   min-height: 1.5em;
 }
 
@@ -296,12 +292,20 @@ label,
 }
 
 .username-image-box {
-  border: 1px solid cyan;
   display: flex;
-  gap: 0.5em;
-  align-items: center;
+  gap: 0.5rem;
   flex-wrap: nowrap;
   max-width: fit-content;
+  justify-content: center;
+  align-items: center;
+}
+
+.username-image-box p:first-child {
+  margin-bottom: 0.25rem;
+}
+
+.username-image-box p:last-child {
+  margin-bottom: 0;
 }
 
 .flash {
@@ -416,4 +420,11 @@ section.subsection:not(:last-child) {
   display: grid;
   align-items: center;
   justify-content: center;
+  min-height: var(--listing-thumbnail-size);
+}
+
+.text-box {
+  background-color: var(--clr-neutral-light);
+  border-radius: var(--border-radius-small);
+  padding: 1rem;
 }

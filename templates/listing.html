@@ -4,7 +4,8 @@ endblock %} {% block content %}
 <h2>{{ listing.name }}</h2></header>
 
 <section>
-  <div>
+  <div class="item-info">
+    <div>
 {% if listing.has_image %}
 <img src="/image/listing/{{ listing.id }}" class="listing-image" alt="Ilmoituksen {{ listing.name }} kuva"/>
 {% else %}
@@ -13,16 +14,9 @@ endblock %} {% block content %}
 <p>
   <a href="/add_listing_image/{{ listing.id }}"><button>Vaihda kuva</button></a>
 </p>
-{% else %} <p><i>(et ole tekijä (et voi vaihtaa kuvaa))</i></p> {% endif %}
+{% else %} <p><i>(et ole tekijä (et voi vaihtaa kuvaa))</i></p> {% endif %}</div>
 
-<div class="username-image-box">
-  {% if user.has_image %}
-<img src="/image/user/{{ user.id }}" class="profile-image-small" alt="Käyttäjän {{ user.username }} kuva" />
-{% else %}
-<div class="no-profile-image"></div>
-{% endif %} 
-<p><a href="/user/{{ user.id }}">{{ user.username }}</a></p>
-</div>
+
 
 <div>
 <p class="text-small">Lisätty {{ date_added }}</p>
@@ -31,6 +25,12 @@ endblock %} {% block content %}
   Katseltu {{ listing.views }} {% if listing.views == 1%} kerran {%
   else %} kertaa {% endif %}
 </p>
+
+{% if listing.info %} <div>
+
+<p class="subheading">Lisätiedot</p>
+<p class="text-box">{{ listing.info }}</p></div>
+{% endif %}
 </div>
 </div>
 
@@ -38,11 +38,19 @@ endblock %} {% block content %}
 <p>Pistokas</p>
 {% endif %}
 
-{% if listing.info %} <div>
 
-<p class="subheading">Lisätiedot</p>
-<p>{{ listing.info }}</p></div>
-{% endif %}
+
+<div class="username-image-box">
+  {% if user.has_image %}
+<img src="/image/user/{{ user.id }}" class="profile-image-small" alt="Käyttäjän {{ user.username }} kuva" />
+{% else %}
+<div class="no-profile-image"></div>
+{% endif %} 
+<div>
+<p><a href="/user/{{ user.id }}">{{ user.username }}</a></p>
+<p>{{ user.city }}</p>
+</div>
+</div>
 
 {% if session.user_id and listing.user_id == session.user_id %}
     <div class="button-bar">
@@ -71,7 +79,7 @@ endblock %} {% block content %}
   <input type="submit" value="Lähetä" />
 </form>
 {% else %}
-<p><i>(et ole kirjautunut sisään (et voi kommentoida))</i></p>
+<p><a href="/login">Kirjaudu sisään</a> kommentoidaksesi.</p>
 </div>{% endif %}
 <ul class="comment-list">
   {% for comment in comments %}

@@ -51,7 +51,7 @@ block content %}
           src="/image/listing/{{ result.listing_id }}"
         />
         {% else %}
-        <p>ei kuvaa</p>
+        <p class="text-small">Ei kuvaa</p>
         {% endif %}
       </div>
 
@@ -70,6 +70,8 @@ block content %}
 
         {% if result.cutting == 1 %}
         <p>Pistokas</p>
+        {% else %}
+        <span class="blank"></span>
         {% endif %}
         <p>{{ result.date }}</p>
       </div>
