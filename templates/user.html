@@ -6,7 +6,7 @@
 
 <section>
   <div class="item-info">
-    <div>
+    <div class="profile-image-container">
       {% if user.has_image %}
       <img
         src="/image/user/{{ user.id }}"
@@ -17,14 +17,16 @@
       <div>ei profiilikuvaa</div>
       {% endif %} {% if user.id == session.user_id %}
       <div class="button-bar">
-        <a href="/add_profile_image"
-          ><button>Vaihda profiilikuva</button></a
+        <a href="/add_profile_image" class="button button-secondary"
+          >Vaihda profiilikuva</a
         >
 
         {% if user.has_image %}
 
-        <a href="/remove/profile_image/{{ user.id }}"
-          ><button>Poista profiilikuva</button></a
+        <a
+          href="/remove/profile_image/{{ user.id }}"
+          class="button button-secondary"
+          >Poista profiilikuva</a
         >
 
         {% endif %}
@@ -37,12 +39,12 @@
     </div>
   </div>
   {% if user.id == session.user_id %}
-  <div class="button-bar-vertical">
-    <a href="/edit_profile/{{ user.id }}"
-      ><button>Muokkaa profiilia</button></a
+  <div class="button-bar">
+    <a href="/edit_profile/{{ user.id }}" class="button"
+      >Muokkaa profiilia</a
     >
-    <a href="/delete_account"
-      ><button class="delete">Poista tili</button></a
+    <a href="/delete_account" class="button"
+      >Poista tili</a
     >
   </div>
   {% endif %}

@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block title %}Lisää ilmoitus{% endblock
 %} {% block content %}
 <header>
-  <h2>Lisää ilmoitus</h2>
+  <h2>Uusi ilmoitus</h2>
 </header>
 
 <form action="/new_listing" method="post">
@@ -54,7 +54,7 @@
     name="csrf_token"
     value="{{ session.csrf_token }}"
   />
-  <input type="submit" value="Jatka" />
+  <input type="submit" class="button" value="Jatka" />
 </form>
 
 {% endblock %}

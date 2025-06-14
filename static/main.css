@@ -10,11 +10,12 @@
 
 :root {
   --profile-img--small: 3rem;
+  --image-large: 25rem;
   --clr-neutral-dark: rgb(60, 60, 60);
   --clr-primary: #25a12d;
-  --clr-primary: #1a8c22;
+  --clr-primary: #116617;
   --clr-light: #fdffee;
-  --clr-bg: #92f39d;
+  --clr-bg: #b1ebae;
   --clr-text: #090b09;
   --clr-neutral-light: #eaeadd;
   --border-size: 1.5px;
@@ -145,34 +146,35 @@ textarea {
   color: var(--clr-text);
 }
 
-button,
-input[type='submit'] {
+.button {
   background-color: var(--clr-primary);
   color: var(--clr-light);
   border: var(--border-size) solid var(--clr-primary);
-  padding: 0.75rem 1.5rem;
-  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
   font-weight: bold;
   display: inline-block;
+  text-decoration: none;
+  text-align: center;
 }
 
-button:hover,
-input[type='submit']:hover {
+.button:hover {
   background-color: transparent;
   color: var(--clr-primary);
   border: var(--border-size) solid var(--clr-primary);
   cursor: pointer;
 }
 
-button.delete {
-  background-color: var(--clr-alert);
-  border: var(--border-size) solid var(--clr-alert);
+.button-secondary {
+  background-color: transparent;
+  color: var(--clr-primary);
+  border: var(--border-size) solid var(--clr-primary);
 }
 
-button.delete:hover {
-  background-color: transparent;
-  border: var(--border-size) solid var(--clr-alert);
-  color: var(--clr-alert);
+.button-secondary:hover {
+  background-color: var(--clr-primary);
+  color: var(--clr-light);
+  border: var(--border-size) solid var(--clr-primary);
 }
 
 /* */
@@ -252,15 +254,16 @@ label,
 }
 
 .listing-image {
-  max-width: 25em;
+  max-width: var(--image-large);
   border-radius: 0.5em;
 }
 
 .profile-image-large {
   object-fit: cover;
-  width: 15em;
-  height: 15em;
+  width: 20em;
+  height: 20em;
   border-radius: 100%;
+  margin: 0 auto;
 }
 
 .profile-image-small {
@@ -327,7 +330,7 @@ label,
   gap: 1rem;
 }
 
-.button-bar button {
+.button-bar .button {
   width: 100%;
 }
 
@@ -380,11 +383,13 @@ section > * {
 }
 
 .item-info > *:first-child {
-  background-color: lightgreen;
+  /* background-color: lightgreen; */
+  display: grid;
+  gap: 1rem;
 }
 
 .item-info > *:not(:first-child) {
-  background-color: lightpink;
+  /* background-color: lightpink; */
 }
 
 section:not(:last-child) {
@@ -426,5 +431,5 @@ section.subsection:not(:last-child) {
 .text-box {
   background-color: var(--clr-neutral-light);
   border-radius: var(--border-radius-small);
-  padding: 1rem;
+  padding: 0.5rem;
 }

@@ -1,127 +1,164 @@
 {% extends "layout.html" %} {% block title %}{{ listing.name }}{%
 endblock %} {% block content %}
 <header>
-<h2>{{ listing.name }}</h2></header>
+  <h2>{{ listing.name }}</h2>
+</header>
 
 <section>
   <div class="item-info">
     <div>
-{% if listing.has_image %}
-<img src="/image/listing/{{ listing.id }}" class="listing-image" alt="Ilmoituksen {{ listing.name }} kuva"/>
-{% else %}
-<div>ei kuvaa</div>
-{% endif %} {% if user.id == session.user_id %}
-<p>
-  <a href="/add_listing_image/{{ listing.id }}"><button>Vaihda kuva</button></a>
-</p>
-{% else %} <p><i>(et ole tekijä (et voi vaihtaa kuvaa))</i></p> {% endif %}</div>
-
-
-
-<div>
-<p class="text-small">Lisätty {{ date_added }}</p>
-
-<p class="text-small">
-  Katseltu {{ listing.views }} {% if listing.views == 1%} kerran {%
-  else %} kertaa {% endif %}
-</p>
-
-{% if listing.info %} <div>
-
-<p class="subheading">Lisätiedot</p>
-<p class="text-box">{{ listing.info | show_lines }}</p></div>
-{% endif %}
-</div>
-</div>
-
-{% if listing.cutting == 1 %}
-<p>Pistokas</p>
-{% endif %}
-
-<div class="username-image-box">
-  {% if user.has_image %}
-<img src="/image/user/{{ user.id }}" class="profile-image-small" alt="Käyttäjän {{ user.username }} kuva" />
-{% else %}
-<div class="no-profile-image"></div>
-{% endif %} 
-<div>
-<p><a href="/user/{{ user.id }}">{{ user.username }}</a></p>
-<p>{{ user.city }}</p>
-</div>
-</div>
-
-{% if session.user_id and listing.user_id == session.user_id %}
-    <div class="button-bar">
-      <a href="/edit/listing/{{ listing.id }}"><button>Muokkaa</button></a>
-      <a href="/remove/listing/{{ listing.id }}"><button class="delete">Poista</button></a>
+      {% if listing.has_image %}
+      <img
+        src="/image/listing/{{ listing.id }}"
+        class="listing-image"
+        alt="Ilmoituksen {{ listing.name }} kuva"
+      />
+      {% else %}
+      <div>ei kuvaa</div>
+      {% endif %} {% if user.id == session.user_id %}
+      <p>
+        <a
+          href="/add_listing_image/{{ listing.id }}"
+          class="button button-secondary"
+          >Vaihda kuva</a
+        >
+      </p>
+      {% else %}
+      <p><i>(et ole tekijä (et voi vaihtaa kuvaa))</i></p>
+      {% endif %}
     </div>
-{% endif %}
+
+    <div>
+      <p>Lisätty {{ date_added }}</p>
+
+      <p>
+        Katseltu {{ listing.views }} {% if listing.views == 1%} kerran
+        {% else %} kertaa {% endif %}
+      </p>
+
+      {% if listing.cutting == 1 %}
+      <p>🌱 Pistokas</p>
+      {% endif %} {% if listing.info %}
+      <div>
+        <p class="subheading">Lisätiedot</p>
+        <p class="text-box">{{ listing.info | show_lines }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if session.user_id and listing.user_id == session.user_id %}
+  <div class="button-bar">
+    <a href="/edit/listing/{{ listing.id }}" class="button"
+      >Muokkaa</a
+    >
+    <a href="/remove/listing/{{ listing.id }}" class="button"
+      >Poista</a
+    >
+  </div>
+  {% endif %}
+
+  <div class="username-image-box">
+    {% if user.has_image %}
+    <img
+      src="/image/user/{{ user.id }}"
+      class="profile-image-small"
+      alt="Käyttäjän {{ user.username }} kuva"
+    />
+    {% else %}
+    <div class="no-profile-image"></div>
+    {% endif %}
+    <div>
+      <p><a href="/user/{{ user.id }}">{{ user.username }}</a></p>
+      <p>{{ user.city }}</p>
+    </div>
+  </div>
 </section>
 <header>
-<h3>Kommentit ({{ comments | count }})</h3></header>
+  <h3>Kommentit ({{ comments | count }})</h3>
+</header>
 <section>
+  {% if session.user_id %}
+  <div>
+    <p class="subheading">Uusi kommentti</p>
+    <form action="/new_comment" method="post">
+      <textarea
+        name="content"
+        rows="5"
+        cols="50"
+        maxlength="{{ restrictions.max_content }}"
+        required
+      ></textarea>
+      <p class="text-small">
+        Korkeintaan {{ restrictions.max_comment }} merkkiä
+      </p>
+      <input
+        type="hidden"
+        name="listing_id"
+        value="{{ listing.id }}"
+      />
+      <input
+        type="hidden"
+        name="csrf_token"
+        value="{{ session.csrf_token }}"
+      />
+      <input type="submit" value="Lähetä" class="button" />
+    </form>
+    {% else %}
+    <p><a href="/login">Kirjaudu sisään</a> kommentoidaksesi.</p>
+  </div>
+  {% endif %}
+  <ul class="comment-list">
+    {% for comment in comments %}
+    <li>
+      <div class="comment">
+        <div>
+          {% if comment.user_status == 1 %}
 
-{% if session.user_id %}<div>
-<p class="subheading">Uusi kommentti</p>
-<form action="/new_comment" method="post">
-  <textarea
-    name="content"
-    rows="5"
-    cols="50"
-    maxlength="{{ restrictions.max_content }}"
-    required
-  ></textarea>
-  <p class="text-small">Korkeintaan {{ restrictions.max_comment }} merkkiä</p>
-  <input type="hidden" name="listing_id" value="{{ listing.id }}" />
-  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-  <input type="submit" value="Lähetä" />
-</form>
-{% else %}
-<p><a href="/login">Kirjaudu sisään</a> kommentoidaksesi.</p>
-</div>{% endif %}
-<ul class="comment-list">
-  {% for comment in comments %}
-  <li>
-    <div class="comment">
-      <div>
-      
-        {% if comment.user_status == 1 %}
+          <div class="username-image-box">
+            {% if comment.user_has_image %}
+            <img
+              src="/image/user/{{ comment.user_id }}"
+              class="profile-image-small"
+              alt="Käyttäjän {{ comment.username }} kuva"
+            />
+            {% else %}
+            <div class="no-profile-image"></div>
+            {% endif %}
 
-        <div class="username-image-box">
-          {% if comment.user_has_image %}
-<img src="/image/user/{{ comment.user_id }}" class="profile-image-small" alt="Käyttäjän {{ comment.username }} kuva"/>
-{% else %}
-<div class="no-profile-image"></div>
-{% endif %} 
-        <p><a href="/user/{{ comment.user_id }}"
-          >{{ comment.username }}</a
-        ></p>
+            <p>
+              <a href="/user/{{ comment.user_id }}"
+                >{{ comment.username }}</a
+              >
+            </p>
+          </div>
+
+          {% else %}
+          <div class="username-image-box">
+            <div class="no-profile-image"></div>
+            <p class="text-no-results">Käyttäjä poistettu</p>
+          </div>
+          {% endif %} {% if comment.edited_date %}
+          <p class="text-small">Muokattu {{ comment.edited_date }}</p>
+          {% else %}
+          <p class="text-small">Lähetetty {{ comment.sent_date }}</p>
+          {% endif %}
         </div>
-        
-        {% else %}
-        <div class="username-image-box">
-          <div class="no-profile-image"></div>
-        <p class="text-no-results">Käyttäjä poistettu</p>
+
+        <p>{{ comment.content | show_lines }}</p>
+
+        {% if comment.user_id == session.user_id %}
+        <div class="button-bar">
+          <a href="/edit/comment/{{ comment.comment_id }}">Muokkaa</a>
+          <a href="/remove/comment/{{ comment.comment_id }}"
+            >Poista</a
+          >
         </div>
         {% endif %}
-      </p>
-      <p class="text-small">Lähetetty {{ comment.sent_date }}</p>
-      {% if comment.edited_date %}
-      <p class="text-small">Muokattu {{ comment.edited_date }}</p>
-      {% endif %}
       </div>
-      <p>{{ comment.content | show_lines }}</p>
-
-      {% if comment.user_id == session.user_id %}
-      <div class="button-bar"><a href="/edit/comment/{{ comment.comment_id }}">Muokkaa</a>
-        <a href="/remove/comment/{{ comment.comment_id }}">Poista</a>
-        {% else %}
-        <p><i>(et ole kommentoija (et voi muokata))</i></p>
-      {% endif %}
-    </div>
-  </li>
-  {% endfor %}
-</ul>
+    </li>
+    {% endfor %}
+  </ul>
 </section>
 
 {% endblock %}

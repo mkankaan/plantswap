@@ -3,6 +3,8 @@ endblock %} {% block content %}
 <header>
 <h2>Muokkaa profiilia</h2></header>
 
+<section>
+
 <form action="/edit_profile/{{ user.id }}" method="post">
   <p>
     <label for="username">Käyttäjätunnus:</label><br />
@@ -37,12 +39,14 @@ endblock %} {% block content %}
     name="csrf_token"
     value="{{ session.csrf_token }}"
   />
-  <input type="submit" value="Tallenna" />
+  <input type="submit"  class="button" value="Tallenna" />
 </form>
+</section>
 
 <header>
 <h2>Vaihda salasana</h2></header>
 
+<section>
 <form action="/change_password/{{ user.id }}" method="post">
     <p>
         <label for="password1">Uusi salasana:</label><br />
@@ -81,8 +85,9 @@ endblock %} {% block content %}
       name="csrf_token"
       value="{{ session.csrf_token }}"
     />
-    <input type="submit" value="Tallenna" />
+    <input type="submit" class="button" value="Tallenna" />
   </form>
+  </section>
 
 <a href="/user/{{ user.id }}">Takaisin</a>
 

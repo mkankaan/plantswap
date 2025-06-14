@@ -35,7 +35,9 @@ endblock %} {% block content %}
     name="csrf_token"
     value="{{ session.csrf_token }}"
   />
-  <input type="submit" value="Tallenna" />
+  <input type="submit"  class="button"value="Tallenna" />
 </form>
+
+<a href="/listing/{{ listing.id }}">Takaisin</a>
 
 {% endblock %}

@@ -11,14 +11,12 @@
         <ul>
           <div>
             <li>
-              <a href="/search"><button>Haku</button></a>
+              <a href="/search" class="button">Haku</a>
             </li>
 
             {% if session.user_id %}
             <li>
-              <a href="/new_listing"
-                ><button>Uusi ilmoitus</button></a
-              >
+              <a href="/new_listing" class="button">Uusi ilmoitus</a>
             </li>
             {% endif %}
           </div>
@@ -34,14 +32,14 @@
               </p>
             </li>
             <li>
-              <a href="/logout"><button>Kirjaudu ulos</button></a>
+              <a href="/logout" class="button">Kirjaudu ulos</a>
             </li>
             {% else %}
             <li>
-              <a href="/login"><button>Kirjaudu sisään</button></a>
+              <a href="/login" class="button">Kirjaudu sisään</a>
             </li>
             <li>
-              <a href="/register"><button>Luo tili</button></a>
+              <a href="/register" class="button">Luo tili</a>
             </li>
             {% endif %}
           </div>
