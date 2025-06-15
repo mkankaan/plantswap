@@ -268,7 +268,7 @@ def add_image():
             return redirect("/add_profile_image")
 
         image = file.read()
-        
+
         if len(image) > 200 * 1024:
             flash("Lähettämäsi tiedosto on liian suuri")
             return redirect("/add_profile_image")
@@ -382,12 +382,16 @@ def add_listing_image(listing_id):
     if request.method == "POST":
         check_csrf()
         file = request.files["image"]
+        
         if not file.filename.endswith(".jpg"):
-            return("ei jpg-tiedosto")
+            flash("Lähettämäsi tiedosto ei ole jpg-tiedosto")
+            return redirect("/add_listing_image/" + str(listing_id))
 
         image = file.read()
+
         if len(image) > 200 * 1024:
-            return("tiedosto on liian suuri")
+            flash("Lähettämäsi tiedosto on liian suuri")
+            return redirect("/add_listing_image/" + str(listing_id))
         
         user_id = listing["user_id"]
 
@@ -400,6 +404,7 @@ def add_listing_image(listing_id):
         image_id = images.newest_image_from_user(user_id)
         print(user_id, "added image", image_id)
         listings.update_image(listing_id, image_id)
+        flash("Kuvan lisääminen onnistui")
         return redirect("/listing/" + str(listing_id))
     
 # listing page
