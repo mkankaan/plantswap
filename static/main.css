@@ -21,6 +21,7 @@
   --border-size: 1.5px;
   --clr-alert: rgb(212, 0, 0);
   --border-radius-small: 0.3rem;
+  --border-radius-big: 0.75rem;
   --listing-thumbnail-size: 11rem;
   --label-width: 20ch;
 }
@@ -125,7 +126,7 @@ form textarea {
 .content {
   background-color: var(--clr-light);
   padding: 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: var(--border-radius-big);
   margin-bottom: 0;
   min-height: 100vh;
 }
@@ -333,7 +334,15 @@ label,
 
 .flash {
   color: var(--clr-alert);
-  border: 1px solid var(--clr-alert);
+  background-color: var(--clr-light);
+  margin-bottom: 1rem;
+  border-radius: var(--border-radius-big);
+  padding: 1rem;
+  text-align: center;
+}
+
+.flash p {
+  margin: 0;
 }
 
 .button-bar {

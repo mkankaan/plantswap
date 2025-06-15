@@ -17,14 +17,14 @@
         <h1><a href="/">PlantSwap</a></h1>
       </div>
       <div>
+        {% for message in get_flashed_messages() %}
+        <div class="flash">
+          <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+
         <div class="login-content">
           <h2>Kirjaudu sisään</h2>
-
-          {% for message in get_flashed_messages() %}
-          <div class="flash">
-            <p>{{ message }}</p>
-          </div>
-          {% endfor %}
 
           <div>
             <form action="/login" method="post">

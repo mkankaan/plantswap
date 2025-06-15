@@ -7,7 +7,8 @@ endblock %} {% block content %}
 <form action="/remove/comment/{{ comment.id }}" method="post">
   <p>Haluatko varmasti poistaa kommentin?</p>
 
-  <div>
+  <!-- 
+  <div class="username-image-box">
     {% if comment.user_has_image %}
     <img
       src="/image/user/{{ comment.user_id }}"
@@ -15,18 +16,63 @@ endblock %} {% block content %}
       alt="Käyttäjän {{ comment.username }} kuva"
     />
     {% else %}
-    <div>ei kuvaa</div>
+    <div class="no-profile-image"></div>
     {% endif %}
-    <p>{{ comment.username }}</p>
+
+    <p class="subheading">{{ comment.username }}</p>
   </div>
+
   <p>{{ comment.content}}</p>
+-->
+
+  <div class="comment">
+    <div class="comment-header">
+      <div class="username-image-box">
+        {% if comment.user_has_image %}
+        <img
+          src="/image/user/{{ comment.user_id }}"
+          class="profile-image-small"
+          alt="Käyttäjän {{ comment.username }} kuva"
+        />
+        {% else %}
+        <div class="no-profile-image"></div>
+        {% endif %}
+
+        <p class="subheading">{{ comment.username }}</p>
+      </div>
+
+      <div>
+        <p class="text-small">Lähetetty {{ comment.sent_date }}</p>
+
+        {% if comment.edited_date %}
+        <p class="text-small">Muokattu {{ comment.edited_date }}</p>
+
+        {% endif %}
+      </div>
+    </div>
+
+    <p>{{ comment.content | show_lines }}</p>
+  </div>
+
   <input
     type="hidden"
     name="csrf_token"
     value="{{ session.csrf_token }}"
   />
-  <input type="submit" name="continue" value="Jatka" />
-  <input type="submit" name="cancel" value="Peruuta" />
+  <div class="button-bar">
+    <input
+      type="submit"
+      class="button"
+      name="continue"
+      value="Jatka"
+    />
+    <input
+      type="submit"
+      class="button"
+      name="cancel"
+      value="Peruuta"
+    />
+  </div>
 </form>
 
 {% endblock %}

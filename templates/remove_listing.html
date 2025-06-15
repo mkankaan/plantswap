@@ -21,8 +21,20 @@ endblock %} {% block content %}
     name="csrf_token"
     value="{{ session.csrf_token }}"
   />
-  <input type="submit" name="continue" value="Jatka" />
-  <input type="submit" name="cancel" value="Peruuta" />
+  <div class="button-bar">
+    <input
+      type="submit"
+      class="button"
+      name="continue"
+      value="Jatka"
+    />
+    <input
+      type="submit"
+      class="button"
+      name="cancel"
+      value="Peruuta"
+    />
+  </div>
 </form>
 
 {% endblock %}
