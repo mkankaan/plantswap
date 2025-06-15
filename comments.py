@@ -5,7 +5,7 @@ def create_comment(user_id, listing_id, content):
     db.execute(sql, [content, user_id, listing_id])
 
 def get_by_listing(listing_id):
-    sql = """SELECT c.content, c.id comment_id, c.user_id, c.sent_date, c.edited_date, c.status comment_status, u.username, u.status user_status, u.image_id IS NOT NULL user_has_image, c.edited_date IS NOT NULL edited
+    sql = """SELECT c.id comment_id, c.content, c.user_id, c.sent_date, c.edited_date, c.status comment_status, u.username, u.status user_status, u.image_id IS NOT NULL user_has_image, c.edited_date IS NOT NULL edited
              FROM comments c, users u
              WHERE u.id = c.user_id AND
              c.status = 1 AND

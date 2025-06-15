@@ -419,7 +419,9 @@ def show_listing(listing_id):
     formatted_comments = []
 
     for comment in listing_comments:
-        formatted_comment = { "content": comment["content"],
+        formatted_comment = { 
+                        "comment_id": comment["comment_id"],
+                        "content": comment["content"],
                        "user_id": comment["user_id"],
                        "username": comment["username"],
                        "sent_date": date_formatter.format_date_time(comment["sent_date"]),

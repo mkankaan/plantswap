@@ -69,9 +69,9 @@ endblock %} {% block content %}
     {% endif %}
     <div>
       <p><a href="/user/{{ user.id }}">{{ user.username }}</a></p>
-      <p>{{ user.city }}</p>
     </div>
   </div>
+  <p>📍 {{ user.city }}</p>
 </section>
 <header>
   <h3>Kommentit ({{ comments | count }})</h3>
@@ -135,11 +135,18 @@ endblock %} {% block content %}
             </p>
           </div>
 
-          {% if comment.edited_date %}
-          <p class="text-small">Muokattu {{ comment.edited_date }}</p>
-          {% else %}
-          <p class="text-small">Lähetetty {{ comment.sent_date }}</p>
-          {% endif %}
+          <div>
+            <p class="text-small">
+              Lähetetty {{ comment.sent_date }}
+            </p>
+
+            {% if comment.edited_date %}
+            <p class="text-small">
+              Muokattu {{ comment.edited_date }}
+            </p>
+
+            {% endif %}
+          </div>
         </div>
 
         <p>{{ comment.content | show_lines }}</p>

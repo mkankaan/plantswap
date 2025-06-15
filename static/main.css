@@ -290,18 +290,22 @@ label,
 
 .comment {
   padding: 1rem;
-  background-color: rgb(235, 235, 235);
+  background-color: var(--clr-neutral-light);
   border-radius: 0.5rem;
 }
 
 .comment-header {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
   gap: 1rem;
 }
 
-.comment-header p {
+.comment-header p:only-child {
   margin-bottom: 0;
+}
+
+.comment-header p:not(:only-child) {
+  margin-bottom: 0.5em;
 }
 
 .comment-footer {
@@ -434,5 +438,5 @@ section.subsection:not(:last-child) {
 .text-box {
   background-color: var(--clr-neutral-light);
   border-radius: var(--border-radius-small);
-  padding: 0.5rem;
+  padding: 1rem;
 }
