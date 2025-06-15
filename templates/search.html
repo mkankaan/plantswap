@@ -65,13 +65,12 @@ block content %}
           <a href="/user/{{ result.user_id }}"
             >{{ result.username }}</a
           >
-          | {{ result.city }}
+          📍 {{ result.city }}
         </p>
 
         {% if result.cutting == 1 %}
         <p>Pistokas</p>
-        {% else %}
-        <span class="blank"></span>
+
         {% endif %}
         <p>{{ result.date }}</p>
       </div>

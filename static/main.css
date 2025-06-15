@@ -392,6 +392,7 @@ label,
 .item-info > *:first-child {
   display: grid;
   gap: 1rem;
+  justify-content: center;
 }
 
 section:not(:last-child) {

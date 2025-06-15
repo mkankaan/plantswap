@@ -13,8 +13,6 @@
         class="profile-image-large"
         alt="Käyttäjän {{ user.username }} kuva"
       />
-      {% else %}
-      <div>ei profiilikuvaa</div>
       {% endif %} {% if user.id == session.user_id %}
       <div class="button-bar">
         <a href="/add_profile_image" class="button button-secondary"
@@ -34,7 +32,7 @@
       {% endif %}
     </div>
     <div>
-      <p>{{ user.city }}</p>
+      <p>📍 {{ user.city }}</p>
       <p>Liittyi {{ joined_date }}</p>
     </div>
   </div>

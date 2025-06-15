@@ -7,7 +7,6 @@ endblock %} {% block content %}
 <form action="/remove/profile_image/{{ user.id }}" method="post">
   <p>Haluatko varmasti poistaa profiilikuvasi?</p>
 
-  <h3>{{ user.username }}</h3>
   {% if user.has_image %}
   <img
     src="/image/user/{{ user.id }}"
@@ -21,8 +20,20 @@ endblock %} {% block content %}
     name="csrf_token"
     value="{{ session.csrf_token }}"
   />
-  <input type="submit" name="continue" value="Jatka" />
-  <input type="submit" name="cancel" value="Peruuta" />
+  <div class="button-bar">
+    <input
+      type="submit"
+      class="button"
+      name="continue"
+      value="Jatka"
+    />
+    <input
+      type="submit"
+      class="button"
+      name="cancel"
+      value="Peruuta"
+    />
+  </div>
 </form>
 
 {% endblock %}
