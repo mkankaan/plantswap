@@ -8,19 +8,22 @@ endblock %} {% block content %}
 
 <form
   action="/add_profile_image"
+  class="image-form"
   method="post"
   enctype="multipart/form-data"
 >
-  <p>
-    <label for="image">Kuva:</label>
+  <div class="form-grid">
+    <label for="image">Kuva</label>
     <input type="file" id="image" name="image" accept=".jpg" />
-  </p>
+  </div>
   <input
     type="hidden"
     name="csrf_token"
     value="{{ session.csrf_token }}"
   />
-  <input type="submit" class="button" value="Lähetä" />
+  <div class="button-bar">
+    <input type="submit" class="button" value="Lähetä" />
+  </div>
 </form>
 
 {% endblock %}

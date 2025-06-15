@@ -262,12 +262,16 @@ def add_image():
     if request.method == "POST":
         check_csrf()
         file = request.files["image"]
+
         if not file.filename.endswith(".jpg"):
-            return("ei jpg-tiedosto")
+            flash("Lähettämäsi tiedosto ei ole jpg-tiedosto")
+            return redirect("/add_profile_image")
 
         image = file.read()
+        
         if len(image) > 200 * 1024:
-            return("tiedosto on liian suuri")
+            flash("Lähettämäsi tiedosto on liian suuri")
+            return redirect("/add_profile_image")
 
         user_id = session["user_id"]
         user = users.get_user(user_id)
@@ -279,7 +283,7 @@ def add_image():
         images.add_image(image, user_id)
         image_id = images.newest_image_from_user(user_id)
         users.update_image(user_id, image_id)
-        print("updated profile pic", image_id, "for user", user_id)
+        flash("Kuvan lisääminen onnistui")
         return redirect("/user/" + str(user_id))
     
 # fetch profile image
