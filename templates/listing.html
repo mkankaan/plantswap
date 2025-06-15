@@ -23,8 +23,7 @@ endblock %} {% block content %}
           >Vaihda kuva</a
         >
       </p>
-      {% else %}
-      <p><i>(et ole tekijä (et voi vaihtaa kuvaa))</i></p>
+
       {% endif %}
     </div>
 
@@ -48,12 +47,12 @@ endblock %} {% block content %}
   </div>
 
   {% if session.user_id and listing.user_id == session.user_id %}
-  <div class="button-bar">
+  <div class="button-bar-vertical">
     <a href="/edit/listing/{{ listing.id }}" class="button"
-      >Muokkaa</a
+      >Muokkaa ilmoitusta</a
     >
     <a href="/remove/listing/{{ listing.id }}" class="button"
-      >Poista</a
+      >Poista ilmoitus</a
     >
   </div>
   {% endif %}
@@ -81,6 +80,7 @@ endblock %} {% block content %}
   {% if session.user_id %}
   <div>
     <p class="subheading">Uusi kommentti</p>
+
     <form action="/new_comment" method="post">
       <textarea
         name="content"
@@ -104,17 +104,19 @@ endblock %} {% block content %}
       />
       <input type="submit" value="Lähetä" class="button" />
     </form>
-    {% else %}
-    <p><a href="/login">Kirjaudu sisään</a> kommentoidaksesi.</p>
   </div>
+  {% else %}
+  <p><a href="/login">Kirjaudu sisään</a> kommentoidaksesi.</p>
+
   {% endif %}
+</section>
+
+<section>
   <ul class="comment-list">
     {% for comment in comments %}
     <li>
       <div class="comment">
-        <div>
-          {% if comment.user_status == 1 %}
-
+        <div class="comment-header">
           <div class="username-image-box">
             {% if comment.user_has_image %}
             <img
@@ -133,12 +135,7 @@ endblock %} {% block content %}
             </p>
           </div>
 
-          {% else %}
-          <div class="username-image-box">
-            <div class="no-profile-image"></div>
-            <p class="text-no-results">Käyttäjä poistettu</p>
-          </div>
-          {% endif %} {% if comment.edited_date %}
+          {% if comment.edited_date %}
           <p class="text-small">Muokattu {{ comment.edited_date }}</p>
           {% else %}
           <p class="text-small">Lähetetty {{ comment.sent_date }}</p>
@@ -148,7 +145,7 @@ endblock %} {% block content %}
         <p>{{ comment.content | show_lines }}</p>
 
         {% if comment.user_id == session.user_id %}
-        <div class="button-bar">
+        <div class="comment-footer">
           <a href="/edit/comment/{{ comment.comment_id }}">Muokkaa</a>
           <a href="/remove/comment/{{ comment.comment_id }}"
             >Poista</a

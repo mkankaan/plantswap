@@ -39,13 +39,11 @@
     </div>
   </div>
   {% if user.id == session.user_id %}
-  <div class="button-bar">
+  <div class="button-bar-vertical">
     <a href="/edit_profile/{{ user.id }}" class="button"
       >Muokkaa profiilia</a
     >
-    <a href="/delete_account" class="button"
-      >Poista tili</a
-    >
+    <a href="/delete_account" class="button">Poista tili</a>
   </div>
   {% endif %}
 </section>

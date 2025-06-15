@@ -10,7 +10,7 @@
 
 :root {
   --profile-img--small: 3rem;
-  --image-large: 25rem;
+  --image-large: 20rem;
   --clr-neutral-dark: rgb(60, 60, 60);
   --clr-primary: #25a12d;
   --clr-primary: #116617;
@@ -260,8 +260,8 @@ label,
 
 .profile-image-large {
   object-fit: cover;
-  width: 20em;
-  height: 20em;
+  width: var(--image-large);
+  height: var(--image-large);
   border-radius: 100%;
   margin: 0 auto;
 }
@@ -292,6 +292,22 @@ label,
   padding: 1rem;
   background-color: rgb(235, 235, 235);
   border-radius: 0.5rem;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.comment-header p {
+  margin-bottom: 0;
+}
+
+.comment-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
 }
 
 .username-image-box {
@@ -367,29 +383,15 @@ label,
   font-style: italic;
 }
 
-section {
-  /* border: 1px solid lightblue; */
-}
-
-section > * {
-  /* border: 1px solid pink; */
-}
-
 .item-info {
-  border: 1px solid pink;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: var(--image-large) 1fr;
   gap: 1rem;
 }
 
 .item-info > *:first-child {
-  /* background-color: lightgreen; */
   display: grid;
   gap: 1rem;
-}
-
-.item-info > *:not(:first-child) {
-  /* background-color: lightpink; */
 }
 
 section:not(:last-child) {
