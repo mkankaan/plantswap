@@ -38,10 +38,7 @@
                 value="{{ filled.username }}"
                 required
               />
-              <p class="text-small hint">
-                {{ restrictions.min_username }}-{{
-                restrictions.max_username }} merkkiä
-              </p>
+              <p class="text-small hint">{{ hint_text.username }}</p>
             </div>
 
             <div class="form-grid form-grid-hint">
@@ -54,11 +51,7 @@
                 name="password1"
                 maxlength="{{ restrictions.max_password }}"
               />
-              <p class="text-small hint">
-                Salasanassa täytyy olla vähintään {{
-                restrictions.min_password }} merkkiä ja vähintään yksi
-                kirjain, numero ja erikoismerkki.
-              </p>
+              <p class="text-small hint">{{ hint_text.password }}</p>
             </div>
 
             <div class="form-grid">

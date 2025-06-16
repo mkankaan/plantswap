@@ -6,6 +6,11 @@ new_listing_restrictions = { "max_name": 30, "max_info": 5000 }
 
 listing_comment_restrictions = { "max_comment": 5000 }
 
+form_hint_text = {
+    "username": f"Pituus {registration_restrictions['min_username']}-{registration_restrictions['max_username']} merkkiä",
+    "password": f"Pituus {registration_restrictions['min_password']}-{registration_restrictions['max_password']} merkkiä ja vähintään yksi kirjain, numero ja erikoismerkki",
+}
+
 def validate_username(username):
     min_length = registration_restrictions["min_username"]
     max_length = registration_restrictions["max_username"]

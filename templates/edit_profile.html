@@ -17,10 +17,7 @@ endblock %} {% block content %}
         class="hint-input"
         required
       />
-      <p class="hint-text text-small">
-        {{ restrictions.min_username }}-{{ restrictions.max_username
-        }} merkkiä
-      </p>
+      <p class="hint-text text-small">{{ hint_text.username }}</p>
     </div>
 
     <div class="form-grid">
@@ -63,10 +60,7 @@ endblock %} {% block content %}
         class="hint-input"
         required
       />
-      <p class="hint-text text-small">
-        Salasanassa täytyy olla vähintään {{ restrictions.min_password
-        }} merkkiä ja vähintään yksi kirjain, numero ja erikoismerkki.
-      </p>
+      <p class="hint-text text-small">{{ hint_text.password }}</p>
     </div>
 
     <div class="form-grid">

@@ -75,16 +75,7 @@
 }
 
 .login-content > * {
-  /* border: 1px solid lightblue; */
-}
-
-.login-content form {
-  /* display: grid;
-  gap: 2rem; */
-}
-
-.login-content label {
-  /* text-align: left; */
+  border: 1px solid lightblue;
 }
 
 .login-content h2 {
@@ -102,13 +93,19 @@ form {
   max-width: fit-content;
 }
 
+/*       */
 form {
-  /* border: 1px solid blue; */
+  border: 1px solid blue;
 }
 
 form > * {
-  /* border: 1px solid pink; */
+  border: 1px solid pink;
 }
+
+form .button-bar-vertical > * {
+  border: 1px solid pink;
+}
+/*       */
 
 .form-grid {
   display: grid;
