@@ -105,8 +105,9 @@
   gap: 1rem;
 }
 
-form {
+.page-content form {
   border: 1px solid blue;
+  max-width: fit-content;
 }
 
 form > * {

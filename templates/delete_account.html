@@ -12,13 +12,20 @@
     name="csrf_token"
     value="{{ session.csrf_token }}"
   />
-  <input
-    type="submit"
-    name="continue"
-    class="button button-secondary"
-    value="Jatka"
-  />
-  <input type="submit" name="cancel" class="button" value="Peruuta" />
+  <div class="button-bar">
+    <input
+      type="submit"
+      name="continue"
+      class="button"
+      value="Jatka"
+    />
+    <input
+      type="submit"
+      name="cancel"
+      class="button button-secondary"
+      value="Peruuta"
+    />
+  </div>
 </form>
 
 {% endblock %}
