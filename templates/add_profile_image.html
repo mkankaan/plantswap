@@ -1,14 +1,12 @@
 {% extends "layout.html" %} {% block title %}Vaihda profiilikuva{%
 endblock %} {% block content %}
-<header>
-  <h2>Vaihda profiilikuva</h2>
-</header>
+
+<h2>Vaihda profiilikuva</h2>
 
 <p>Lähetä jpg-tiedosto, jonka koko on enintään 100 kt</p>
 
 <form
   action="/add_profile_image"
-  class="image-form"
   method="post"
   enctype="multipart/form-data"
 >

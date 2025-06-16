@@ -1,8 +1,7 @@
 {% extends "layout.html" %} {% block title %}Muokkaa kommenttia{%
 endblock %} {% block content %}
-<header>
-  <h2>Muokkaa kommenttia</h2>
-</header>
+
+<h2>Muokkaa kommenttia</h2>
 
 <form action="/edit/comment/{{ comment.id }}" method="post">
   <div class="username-image-box">
@@ -19,15 +18,19 @@ endblock %} {% block content %}
     <p class="subheading">{{ comment.username }}</p>
   </div>
 
-  <textarea
-    name="content"
-    rows="5"
-    cols="50"
-    maxlength="{{ restrictions.max_comment }}"
-  >
+  <div>
+    <textarea
+      name="content"
+      rows="5"
+      cols="50"
+      maxlength="{{ restrictions.max_comment }}"
+    >
 {{ filled.content }}</textarea
-  >
-  <p>Korkeintaan {{ restrictions.max_comment }} merkkiä</p>
+    >
+    <p class="text-small textarea-hint">
+      Korkeintaan {{ restrictions.max_comment }} merkkiä
+    </p>
+  </div>
   <input type="hidden" name="comment_id" value="{{ comment.id }}" />
 
   <input
@@ -35,7 +38,9 @@ endblock %} {% block content %}
     name="csrf_token"
     value="{{ session.csrf_token }}"
   />
-  <input type="submit" class="button" value="Tallenna" />
+  <div class="button-bar">
+    <input type="submit" class="button" value="Tallenna" />
+  </div>
 </form>
 
 {% endblock %}
