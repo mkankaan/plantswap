@@ -70,4 +70,4 @@ Sovellus käynnistyy oletusarvoisesti osoitteeseen http://localhost:5000
 - Kaikkien tietokohteiden luontiin, muokkaukseen ja poistamiseen liittyvät toiminnot vaativat sisäänkirjautumisen. Muokkaus ja poisto vaativat lisäksi käyttäjän id:n tarkistuksen.
 - csrf on käytössä kaikissa lomakkeissa, jotka vaativat sisäänkirjautumisen.
 
-
+(CSS kesken)
