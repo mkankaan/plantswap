@@ -56,7 +56,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3rem;
 }
 
 .login-page-content > * {
@@ -72,46 +71,43 @@
   display: grid;
   justify-items: center;
   align-items: center;
-  gap: 2rem;
-}
-
-.login-content form {
-  display: grid;
-  gap: 2rem;
-}
-
-.login-content label {
-  text-align: left;
-}
-
-.login-extra-links {
-  text-align: center;
-}
-
-.login-content h2 {
-  padding-bottom: 0;
-}
-
-.login-extra-links {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.page-content form {
-  display: grid;
   gap: 1rem;
 }
 
-.page-content form {
-  border: 1px solid blue;
+.login-content > * {
+  /* border: 1px solid lightblue; */
+}
+
+.login-content form {
+  /* display: grid;
+  gap: 2rem; */
+}
+
+.login-content label {
+  /* text-align: left; */
+}
+
+.login-content h2 {
+  padding-bottom: 1rem;
+}
+
+.login-page form {
+  text-align: center;
+  align-items: center;
+}
+
+form {
+  display: grid;
+  gap: 1rem;
   max-width: fit-content;
 }
 
+form {
+  /* border: 1px solid blue; */
+}
+
 form > * {
-  border: 1px solid pink;
+  /* border: 1px solid pink; */
 }
 
 .form-grid {
@@ -122,39 +118,31 @@ form > * {
 }
 
 .form-grid-hint {
-  background-color: lightblue;
   row-gap: 0.25rem;
   grid-template-areas:
     ' item1 item2 '
     ' item3 item3 ';
 }
 
-.hint-label {
+.form-grid-hint label {
   grid-area: item1;
 }
 
-.hint-input {
+.form-grid-hint input {
   grid-area: item2;
 }
 
-.hint-text {
+.form-grid-hint p {
   grid-area: item3;
   padding-left: calc(var(--label-width) + 1rem);
   margin-bottom: 0;
-}
-
-.form-grid.label-top {
-  align-items: normal;
+  width: calc(var(--label-width) + var(--input-width) + 1rem);
 }
 
 form input[type='text'],
 form input[type='password'],
 form textarea {
   width: var(--input-width);
-}
-
-.hint-text {
-  width: calc(var(--label-width) + var(--input-width) + 1rem);
 }
 
 .page-content input[type='text'],
@@ -169,12 +157,6 @@ form textarea {
   border-radius: var(--border-radius-big);
   margin-bottom: 0;
   min-height: 100vh;
-}
-
-.form-bottom-text-space,
-.blank {
-  display: inline-block;
-  min-height: 1.5em;
 }
 
 input[type='text'],
@@ -264,11 +246,11 @@ p:not(nav p) {
   margin-bottom: 1em;
 }
 
-.page-content form label {
+form label {
   width: var(--label-width);
 }
 
-.page-content form label,
+form label,
 .subheading {
   font-weight: bold;
   color: var(--clr-primary);
@@ -417,6 +399,10 @@ p:not(nav p) {
 .button-bar-vertical > * > * {
   flex-grow: 1;
   width: 100%;
+}
+
+form .button-bar-vertical {
+  margin: auto;
 }
 
 .no-profile-image {

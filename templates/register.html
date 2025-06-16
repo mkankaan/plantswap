@@ -26,45 +26,42 @@
           <h2>Luo tili</h2>
 
           <form action="/register" method="post">
+            <div class="form-grid form-grid-hint">
+              <label for="username">*Käyttäjätunnus</label>
+              <p class="form-bottom-text-space"></p>
+
+              <input
+                type="text"
+                id="username"
+                name="username"
+                maxlength="{{ restrictions.max_username }}"
+                value="{{ filled.username }}"
+                required
+              />
+              <p class="text-small hint">
+                {{ restrictions.min_username }}-{{
+                restrictions.max_username }} merkkiä
+              </p>
+            </div>
+
+            <div class="form-grid form-grid-hint">
+              <label for="password1">*Salasana</label>
+              <p class="form-bottom-text-space"></p>
+
+              <input
+                type="password"
+                id="password1"
+                name="password1"
+                maxlength="{{ restrictions.max_password }}"
+              />
+              <p class="text-small hint">
+                Salasanassa täytyy olla vähintään {{
+                restrictions.min_password }} merkkiä ja vähintään yksi
+                kirjain, numero ja erikoismerkki.
+              </p>
+            </div>
+
             <div class="form-grid">
-              <div>
-                <label for="username">*Käyttäjätunnus</label>
-                <p class="form-bottom-text-space"></p>
-              </div>
-
-              <div>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  maxlength="{{ restrictions.max_username }}"
-                  value="{{ filled.username }}"
-                  required
-                />
-                <p class="text-small hint">
-                  {{ restrictions.min_username }}-{{
-                  restrictions.max_username }} merkkiä
-                </p>
-              </div>
-
-              <div>
-                <label for="password1">*Salasana</label>
-                <p class="form-bottom-text-space"></p>
-              </div>
-              <div>
-                <input
-                  type="password"
-                  id="password1"
-                  name="password1"
-                  maxlength="{{ restrictions.max_password }}"
-                />
-                <p class="text-small hint">
-                  Salasanassa täytyy olla vähintään {{
-                  restrictions.min_password }} merkkiä ja vähintään
-                  yksi kirjain, numero ja erikoismerkki.
-                </p>
-              </div>
-
               <label for="password2"
                 >*Kirjoita salasana uudestaan</label
               >
@@ -74,9 +71,10 @@
                 name="password2"
                 maxlength="{{ restrictions.max_password }}"
               />
+            </div>
 
+            <div class="form-grid">
               <label for="city">*Paikkakunta</label>
-
               <input
                 type="text"
                 id="city"
@@ -86,7 +84,8 @@
                 required
               />
             </div>
-            <div class="login-extra-links">
+
+            <div class="button-bar-vertical">
               <p class="text-small">* pakollinen kenttä</p>
               <input type="submit" class="button" value="Luo tili" />
             </div>
@@ -97,7 +96,6 @@
               Onko sinulla jo tili?
               <a href="/login">Kirjaudu sisään</a>
             </p>
-            <p><a href="/">Takaisin</a></p>
           </div>
         </div>
       </div>
