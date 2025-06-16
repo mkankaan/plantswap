@@ -1,78 +1,60 @@
 {% extends "layout.html" %} {% block title %}Poista kommentti{%
 endblock %} {% block content %}
-<header>
+<section>
   <h2>Poista kommentti</h2>
-</header>
 
-<form action="/remove/comment/{{ comment.id }}" method="post">
-  <p>Haluatko varmasti poistaa kommentin?</p>
+  <form action="/remove/comment/{{ comment.id }}" method="post">
+    <p>Haluatko varmasti poistaa kommentin?</p>
 
-  <!-- 
-  <div class="username-image-box">
-    {% if comment.user_has_image %}
-    <img
-      src="/image/user/{{ comment.user_id }}"
-      class="profile-image-small"
-      alt="Käyttäjän {{ comment.username }} kuva"
-    />
-    {% else %}
-    <div class="no-profile-image"></div>
-    {% endif %}
+    <div class="comment">
+      <div class="comment-header">
+        <div class="username-image-box">
+          {% if comment.user_has_image %}
+          <img
+            src="/image/user/{{ comment.user_id }}"
+            class="profile-image-small"
+            alt="Käyttäjän {{ comment.username }} kuva"
+          />
+          {% else %}
+          <div class="no-profile-image"></div>
+          {% endif %}
 
-    <p class="subheading">{{ comment.username }}</p>
-  </div>
+          <p class="subheading">{{ comment.username }}</p>
+        </div>
 
-  <p>{{ comment.content}}</p>
--->
+        <div>
+          <p class="text-small">Lähetetty {{ comment.sent_date }}</p>
 
-  <div class="comment">
-    <div class="comment-header">
-      <div class="username-image-box">
-        {% if comment.user_has_image %}
-        <img
-          src="/image/user/{{ comment.user_id }}"
-          class="profile-image-small"
-          alt="Käyttäjän {{ comment.username }} kuva"
-        />
-        {% else %}
-        <div class="no-profile-image"></div>
-        {% endif %}
+          {% if comment.edited_date %}
+          <p class="text-small">Muokattu {{ comment.edited_date }}</p>
 
-        <p class="subheading">{{ comment.username }}</p>
+          {% endif %}
+        </div>
       </div>
 
-      <div>
-        <p class="text-small">Lähetetty {{ comment.sent_date }}</p>
-
-        {% if comment.edited_date %}
-        <p class="text-small">Muokattu {{ comment.edited_date }}</p>
-
-        {% endif %}
-      </div>
+      <p>{{ comment.content | show_lines }}</p>
     </div>
 
-    <p>{{ comment.content | show_lines }}</p>
-  </div>
-
-  <input
-    type="hidden"
-    name="csrf_token"
-    value="{{ session.csrf_token }}"
-  />
-  <div class="button-bar">
     <input
-      type="submit"
-      class="button"
-      name="continue"
-      value="Jatka"
+      type="hidden"
+      name="csrf_token"
+      value="{{ session.csrf_token }}"
     />
-    <input
-      type="submit"
-      class="button button-secondary"
-      name="cancel"
-      value="Peruuta"
-    />
-  </div>
-</form>
+    <div class="button-bar">
+      <input
+        type="submit"
+        class="button"
+        name="continue"
+        value="Jatka"
+      />
+      <input
+        type="submit"
+        class="button button-secondary"
+        name="cancel"
+        value="Peruuta"
+      />
+    </div>
+  </form>
+</section>
 
 {% endblock %}

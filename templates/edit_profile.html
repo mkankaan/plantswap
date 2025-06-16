@@ -1,10 +1,8 @@
 {% extends "layout.html" %} {% block title %}Muokkaa profiilia{%
 endblock %} {% block content %}
-<header>
-  <h2>Muokkaa profiilia</h2>
-</header>
-
 <section>
+  <h2>Muokkaa profiilia</h2>
+
   <form action="/edit_profile/{{ user.id }}" method="post">
     <div class="form-grid form-grid-hint">
       <label class="hint-label" for="username">Käyttäjätunnus</label>
@@ -42,11 +40,9 @@ endblock %} {% block content %}
   </form>
 </section>
 
-<header>
-  <h2>Vaihda salasana</h2>
-</header>
-
 <section>
+  <h2>Vaihda salasana</h2>
+
   <form action="/change_password/{{ user.id }}" method="post">
     <div class="form-grid form-grid-hint">
       <label class="form-label hint-label" for="password1"

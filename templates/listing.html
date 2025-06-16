@@ -1,10 +1,8 @@
 {% extends "layout.html" %} {% block title %}{{ listing.name }}{%
 endblock %} {% block content %}
-<header>
-  <h2>{{ listing.name }}</h2>
-</header>
-
 <section>
+  <h2>{{ listing.name }}</h2>
+
   <div class="item-info">
     <div>
       {% if listing.has_image %}
@@ -17,37 +15,37 @@ endblock %} {% block content %}
       <div>ei kuvaa</div>
       {% endif %} {% if user.id == session.user_id %}
       <p>
-        <a
-          href="/add_listing_image/{{ listing.id }}"
-          class="button button-secondary"
-          >Vaihda kuva</a
-        >
+        <a href="/add_listing_image/{{ listing.id }}">Vaihda kuva</a>
       </p>
 
       {% endif %}
     </div>
 
     <div>
-      <p>Lisätty {{ date_added }}</p>
+      <section class="subsection">
+        <p>Lisätty {{ date_added }}</p>
 
-      <p>
-        Katseltu {{ listing.views }} {% if listing.views == 1%} kerran
-        {% else %} kertaa {% endif %}
-      </p>
+        <p>
+          Katseltu {{ listing.views }} {% if listing.views == 1%}
+          kerran {% else %} kertaa {% endif %}
+        </p>
+      </section>
 
       {% if listing.cutting == 1 %}
-      <p>🌱 Pistokas</p>
+      <section class="subsection">
+        <p>🌱 Pistokas</p>
+      </section>
       {% endif %} {% if listing.info %}
-      <div>
+      <section class="subsection">
         <p class="subheading">Lisätiedot</p>
-        <p class="text-box">{{ listing.info | show_lines }}</p>
-      </div>
+        <p>{{ listing.info | show_lines }}</p>
+      </section>
       {% endif %}
     </div>
   </div>
 
   {% if session.user_id and listing.user_id == session.user_id %}
-  <div class="button-bar-vertical">
+  <div class="button-bar">
     <a href="/edit/listing/{{ listing.id }}" class="button"
       >Muokkaa ilmoitusta</a
     >
@@ -68,30 +66,32 @@ endblock %} {% block content %}
     <div class="no-profile-image"></div>
     {% endif %}
     <div>
-      <p><a href="/user/{{ user.id }}">{{ user.username }}</a></p>
+      <p>
+        <a href="/user/{{ user.id }}">{{ user.username }}</a> 📍 {{
+        user.city }}
+      </p>
     </div>
   </div>
-  <p>📍 {{ user.city }}</p>
 </section>
-<header>
-  <h3>Kommentit ({{ comments | count }})</h3>
-</header>
+
 <section>
+  <h3>Kommentit ({{ comments | count }})</h3>
+
   {% if session.user_id %}
   <div>
     <p class="subheading">Uusi kommentti</p>
 
     <form action="/new_comment" method="post">
-      <textarea
-        name="content"
-        rows="5"
-        cols="50"
-        maxlength="{{ restrictions.max_content }}"
-        required
-      ></textarea>
-      <p class="text-small">
-        Korkeintaan {{ restrictions.max_comment }} merkkiä
-      </p>
+      <div>
+        <textarea
+          name="content"
+          rows="5"
+          cols="50"
+          maxlength="{{ restrictions.max_content }}"
+          required
+        ></textarea>
+        <p class="text-small textarea-hint">{{ hint_text }}</p>
+      </div>
       <input
         type="hidden"
         name="listing_id"
@@ -102,7 +102,9 @@ endblock %} {% block content %}
         name="csrf_token"
         value="{{ session.csrf_token }}"
       />
-      <input type="submit" value="Lähetä" class="button" />
+      <div class="button-bar">
+        <input type="submit" value="Lähetä" class="button" />
+      </div>
     </form>
   </div>
   {% else %}
@@ -112,6 +114,7 @@ endblock %} {% block content %}
 </section>
 
 <section>
+  {% if comments %}
   <ul class="comment-list">
     {% for comment in comments %}
     <li>
@@ -163,6 +166,9 @@ endblock %} {% block content %}
     </li>
     {% endfor %}
   </ul>
+  {% else %}
+  <p class="text-no-results">Ei vielä kommentteja</p>
+  {% endif %}
 </section>
 
 {% endblock %}

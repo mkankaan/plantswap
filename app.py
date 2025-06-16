@@ -426,6 +426,7 @@ def show_listing(listing_id):
 
     date_added = date_formatter.format_date(listing["date"])
     restrictions = form_validation.listing_comment_restrictions
+    hint_text = form_validation.form_hint_text["comment"]
     listing_comments = comments.get_by_listing(listing_id)
 
     formatted_comments = []
@@ -447,7 +448,7 @@ def show_listing(listing_id):
 
         formatted_comments.append(formatted_comment)
 
-    return render_template("listing.html", listing=listing, user=user, comments=formatted_comments, date_added=date_added, restrictions=restrictions)
+    return render_template("listing.html", listing=listing, user=user, comments=formatted_comments, date_added=date_added, restrictions=restrictions, hint_text=hint_text)
 
 # fetch listing image
 @app.route("/image/listing/<int:listing_id>")
@@ -468,6 +469,7 @@ def show_listing_image(listing_id):
 def edit_listing(listing_id):
     require_login()
     listing = listings.get_listing(listing_id)
+    hint_text = form_validation.form_hint_text["comment"]
 
     if not listing:
         abort(404)
@@ -478,7 +480,7 @@ def edit_listing(listing_id):
     if request.method == "GET":
         print("cutting?", listing["cutting"])
         restrictions = form_validation.new_listing_restrictions
-        return render_template("edit_listing.html", listing=listing, restrictions=restrictions)
+        return render_template("edit_listing.html", listing=listing, restrictions=restrictions, hint_text=hint_text)
 
     if request.method == "POST":
         check_csrf()
@@ -487,9 +489,8 @@ def edit_listing(listing_id):
         info = request.form["info"]
         is_cutting = 1 if request.form.getlist("cutting") else 0
 
-        print("edited cutting?", is_cutting)
         listings.update_listing(listing["id"], name, info, is_cutting)
-        print("päivitys onnistui")
+        flash("Muokkaus onnistui")
         return redirect("/listing/" + str(listing["id"]))
 
 # remove listing
@@ -512,13 +513,15 @@ def remove_listing(listing_id):
         check_csrf()
 
         if "continue" in request.form:
-            listings.remove_listing(listing["id"])
+            comments.remove_from_listing(listing["id"])
+            #listings.remove_listing(listing["id"])
 
             if listing["has_image"]:
                 images.remove_image(listing["image_id"])
                 print("deleted image", listing["image_id"])
 
             print("ilmoitus", listing["id"], "poistettu")
+        flash("Ilmoitus poistettiin")
         return redirect("/")
     
 # add comment to listing
@@ -593,6 +596,7 @@ def remove_comment(comment_id):
         if "continue" in request.form:
             comments.remove_comment(comment["id"])
             print("kommentti", comment["id"], "poistettu")
+            flash("Kommentti poistettiin")
         return redirect("/")
 
 # delete user account

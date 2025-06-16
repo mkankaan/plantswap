@@ -1,29 +1,30 @@
 {% extends "layout.html" %} {% block title %}Lisää kuva{% endblock %}
 {% block content %}
+<section>
+  <h2>Lisää kuva</h2>
 
-<h2>Lisää kuva</h2>
+  <p>Lähetä jpg-tiedosto, jonka koko on enintään 200 kt</p>
 
-<p>Lähetä jpg-tiedosto, jonka koko on enintään 200 kt</p>
+  <form
+    action="/add_listing_image/{{ listing.id }}"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <div class="form-grid">
+      <label for="image">Kuva</label>
+      <input type="file" id="image" name="image" accept=".jpg" />
+    </div>
+    <input
+      type="hidden"
+      name="csrf_token"
+      value="{{ session.csrf_token }}"
+    />
 
-<form
-  action="/add_listing_image/{{ listing.id }}"
-  method="post"
-  enctype="multipart/form-data"
->
-  <div class="form-grid">
-    <label for="image">Kuva</label>
-    <input type="file" id="image" name="image" accept=".jpg" />
-  </div>
-  <input
-    type="hidden"
-    name="csrf_token"
-    value="{{ session.csrf_token }}"
-  />
-
-  <div class="button-bar">
-    <input type="submit" class="button" value="Tallenna" />
-    <a href="/listing/{{ listing.id }}">Ohita </a>
-  </div>
-</form>
+    <div class="button-bar">
+      <input type="submit" class="button" value="Tallenna" />
+      <a href="/listing/{{ listing.id }}">Ohita </a>
+    </div>
+  </form>
+</section>
 
 {% endblock %}

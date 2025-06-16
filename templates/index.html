@@ -1,8 +1,12 @@
 {% extends "layout.html" %} {% block title %}PlantSwap{% endblock %}
 {% block content %}
+<section>
+  <h2>Etusivu</h2>
 
-<h2>Etusivu</h2>
-
-{% if session.user_id %} olet kirjautunut sisään {% else %}
-<p><a href="/login">Kirjaudu sisään</a> nähdäksesi suosikkisi.</p>
-{% endif %} {% endblock %}
+  {% if session.user_id %}
+  <p>olet kirjautunut sisään</p>
+  {% else %}
+  <p><a href="/login">Kirjaudu sisään</a> nähdäksesi suosikkisi.</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,10 +1,8 @@
 {% extends "layout.html" %} {% block title %}Käyttäjä {{ user.username
 }}{% endblock %} {% block content %}
-<header>
-  <h2>Käyttäjä {{ user.username }}</h2>
-</header>
-
 <section>
+  <h2>Käyttäjä {{ user.username }}</h2>
+
   <div class="item-info">
     <div class="profile-image-container">
       {% if user.has_image %}
@@ -14,18 +12,15 @@
         alt="Käyttäjän {{ user.username }} kuva"
       />
       {% endif %} {% if user.id == session.user_id %}
-      <div class="button-bar">
-        <a href="/add_profile_image" class="button button-secondary"
-          >Vaihda profiilikuva</a
-        >
+      <div>
+        <p><a href="/add_profile_image">Vaihda profiilikuva</a></p>
 
         {% if user.has_image %}
-
-        <a
-          href="/remove/profile_image/{{ user.id }}"
-          class="button button-secondary"
-          >Poista profiilikuva</a
-        >
+        <p>
+          <a href="/remove/profile_image/{{ user.id }}"
+            >Poista profiilikuva</a
+          >
+        </p>
 
         {% endif %}
       </div>
@@ -37,7 +32,7 @@
     </div>
   </div>
   {% if user.id == session.user_id %}
-  <div class="button-bar-vertical">
+  <div class="button-bar">
     <a href="/edit_profile/{{ user.id }}" class="button"
       >Muokkaa profiilia</a
     >
@@ -45,11 +40,10 @@
   </div>
   {% endif %}
 </section>
-<header>
-  <h3>Käyttäjän ilmoitukset ({{ listings | count }})</h3>
-</header>
 
 <section>
+  <h3>Käyttäjän ilmoitukset ({{ listings | count }})</h3>
+
   <ul>
     {% for listing in listings %}
     <li class="list-item">
