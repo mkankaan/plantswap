@@ -10,6 +10,17 @@
       <nav>
         <ul>
           <div>
+            {% if session.username %}
+            <li>
+              <p>
+                Kirjautunut sisään nimellä
+                <a href="/user/{{ session.user_id }}"
+                  >{{ session.username }}</a
+                >
+              </p>
+            </li>
+            {% endif %}
+
             <li>
               <a href="/search" class="button">Haku</a>
             </li>
@@ -21,28 +32,19 @@
             {% endif %}
           </div>
 
-          <div class="nav-user">
-            {% if session.username %}
-            <li>
-              <p>
-                Kirjautunut sisään nimellä
-                <a href="/user/{{ session.user_id }}"
-                  >{{ session.username }}</a
-                >
-              </p>
-            </li>
-            <li>
-              <a href="/logout" class="button">Kirjaudu ulos</a>
-            </li>
-            {% else %}
-            <li>
-              <a href="/login" class="button">Kirjaudu sisään</a>
-            </li>
-            <li>
-              <a href="/register" class="button">Luo tili</a>
-            </li>
-            {% endif %}
-          </div>
+          {% if session.username %}
+
+          <li>
+            <a href="/logout" class="button">Kirjaudu ulos</a>
+          </li>
+          {% else %}
+          <li>
+            <a href="/login" class="button">Kirjaudu sisään</a>
+          </li>
+          <li>
+            <a href="/register" class="button">Luo tili</a>
+          </li>
+          {% endif %}
         </ul>
       </nav>
     </div>

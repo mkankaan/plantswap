@@ -239,9 +239,10 @@ label,
   /* border-bottom: var(--border-size) solid var(--clr-primary); */
   box-shadow: 0 0 0.75rem 0 rgba(9, 11, 9, 0.15);
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-direction: row;
   padding: 1rem;
+  gap: 1em;
 }
 
 .nav ul div {
