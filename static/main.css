@@ -114,6 +114,10 @@ form .button-bar-vertical > * {
   align-items: center;
 }
 
+.form-grid.label-top {
+  align-items: normal;
+}
+
 .form-grid-hint {
   row-gap: 0.25rem;
   grid-template-areas:
@@ -125,7 +129,8 @@ form .button-bar-vertical > * {
   grid-area: item1;
 }
 
-.form-grid-hint input {
+.form-grid-hint input,
+.form-grid-hint textarea {
   grid-area: item2;
 }
 
@@ -140,6 +145,10 @@ form input[type='text'],
 form input[type='password'],
 form textarea {
   width: var(--input-width);
+}
+
+.form-checkbox {
+  margin-bottom: 0;
 }
 
 .page-content input[type='text'],
@@ -375,11 +384,6 @@ form label,
   max-width: fit-content;
   gap: 1em;
   align-items: center;
-}
-
-.image-form {
-  display: grid;
-  gap: 1rem;
 }
 
 .button-bar .button {

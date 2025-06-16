@@ -1,11 +1,12 @@
 {% extends "layout.html" %} {% block title %}Muokkaa ilmoitusta{%
 endblock %} {% block content %}
 <header>
-<h2>Muokkaa ilmoitusta</h2></header>
+  <h2>Muokkaa ilmoitusta</h2>
+</header>
 
 <form action="/edit/listing/{{ listing.id }}" method="post">
-  <p>
-    <label for="name">Nimi:</label><br />
+  <div class="form-grid">
+    <label for="name">Nimi</label>
     <input
       type="text"
       id="name"
@@ -14,30 +15,39 @@ endblock %} {% block content %}
       maxlength="{{ restrictions.max_name }}"
       required
     />
-  </p>
+  </div>
   {% if listing.cutting == 1 %}
-  <p><input type="checkbox" name="cutting" value="1" checked/> Pistokas</p>
+  <p class="form-checkbox">
+    <input type="checkbox" name="cutting" value="1" checked />
+    Pistokas
+  </p>
   {% else %}
-  <p><input type="checkbox" name="cutting" value="1" /> Pistokas</p>
+  <p class="form-checkbox">
+    <input type="checkbox" name="cutting" value="1" /> Pistokas
+  </p>
   {% endif %}
-  <p>
-    <label for="name">Lisätiedot:</label><br />
+  <div class="form-grid form-grid-hint label-top">
+    <label for="info">Lisätiedot</label>
     <textarea
       name="info"
       rows="5"
       cols="50"
       maxlength="{{ restrictions.max_info }}"
-    >{{ listing.info }}</textarea>
-    <p>pituus korkeintaan {{ restrictions.max_info }} merkkiä</p>
-  </p>
+    >
+{{ listing.info }}</textarea
+    >
+    <p class="text-small">
+      pituus korkeintaan {{ restrictions.max_info }} merkkiä
+    </p>
+  </div>
   <input
     type="hidden"
     name="csrf_token"
     value="{{ session.csrf_token }}"
   />
-  <input type="submit"  class="button"value="Tallenna" />
+  <div class="button-bar">
+    <input type="submit" class="button" value="Tallenna" />
+  </div>
 </form>
-
-<a href="/listing/{{ listing.id }}">Takaisin</a>
 
 {% endblock %}

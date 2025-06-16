@@ -5,56 +5,49 @@
 </header>
 
 <form action="/new_listing" method="post">
-  <section class="subsection">
-    <div class="form-grid">
-      <div>
-        <label class="form-label" for="name">*Nimi</label>
-        <p class="form-bottom-text-space"></p>
-      </div>
+  <div class="form-grid form-grid-hint">
+    <label for="name">*Nimi</label>
 
-      <div>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          maxlength="{{ restrictions.max_name }}"
-          required
-        />
-        <p class="text-small hint">
-          Korkeintaan {{ restrictions.max_name }} merkkiä
-        </p>
-      </div>
-    </div>
-  </section>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      maxlength="{{ restrictions.max_name }}"
+      required
+    />
+    <p class="text-small">
+      Korkeintaan {{ restrictions.max_name }} merkkiä
+    </p>
+  </div>
 
-  <section class="subsection">
-    <p><input type="checkbox" name="cutting" value="1" /> Pistokas</p>
-  </section>
+  <p class="form-checkbox">
+    <input type="checkbox" name="cutting" value="1" />
+    Pistokas
+  </p>
 
-  <section class="subsection">
-    <div class="form-grid label-top">
-      <p class="form-label">Lisätiedot</p>
-      <div>
-        <textarea
-          name="info"
-          rows="5"
-          cols="50"
-          maxlength="{{ restrictions.max_info }}"
-        ></textarea>
-        <p class="text-small hint">
-          Korkeintaan {{ restrictions.max_info }} merkkiä
-        </p>
-      </div>
-    </div>
-  </section>
+  <div class="form-grid form-grid-hint label-top">
+    <label>Lisätiedot</label>
 
-  <p>* pakollinen kenttä</p>
+    <textarea
+      name="info"
+      rows="5"
+      cols="50"
+      maxlength="{{ restrictions.max_info }}"
+    ></textarea>
+    <p class="text-small">
+      Korkeintaan {{ restrictions.max_info }} merkkiä
+    </p>
+  </div>
+
   <input
     type="hidden"
     name="csrf_token"
     value="{{ session.csrf_token }}"
   />
-  <input type="submit" class="button" value="Jatka" />
+  <p class="text-small">* pakollinen kenttä</p>
+  <div class="button-bar">
+    <input type="submit" class="button" value="Jatka" />
+  </div>
 </form>
 
 {% endblock %}
