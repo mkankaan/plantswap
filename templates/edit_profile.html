@@ -1,95 +1,102 @@
 {% extends "layout.html" %} {% block title %}Muokkaa profiilia{%
 endblock %} {% block content %}
 <header>
-<h2>Muokkaa profiilia</h2></header>
+  <h2>Muokkaa profiilia</h2>
+</header>
 
 <section>
+  <form action="/edit_profile/{{ user.id }}" method="post">
+    <div class="form-grid form-grid-hint">
+      <label class="hint-label" for="username">Käyttäjätunnus</label>
+      <input
+        type="text"
+        id="new_username"
+        name="new_username"
+        maxlength="{{ restrictions.max_username }}"
+        value="{{ filled.username }}"
+        class="hint-input"
+        required
+      />
+      <p class="hint-text text-small">
+        {{ restrictions.min_username }}-{{ restrictions.max_username
+        }} merkkiä
+      </p>
+    </div>
 
-<form action="/edit_profile/{{ user.id }}" method="post">
-  <p>
-    <label for="username">Käyttäjätunnus:</label><br />
-    <input
-      type="text"
-      id="new_username"
-      name="new_username"
-      maxlength="{{ restrictions.max_username }}"
-      value="{{ filled.username }}"
-      required
-    />
-  </p>
-
-  <p>
-    pituus: {{ restrictions.min_username }}-{{
-    restrictions.max_username }} merkkiä
-  </p>
-
-  <p>
-    <label for="city">Paikkakunta:</label><br />
-    <input
-      type="text"
-      id="new_city"
-      name="new_city"
-      maxlength=""
-      value="{{ filled.city }}"
-      required
-    />
-  </p>
-  <input
-    type="hidden"
-    name="csrf_token"
-    value="{{ session.csrf_token }}"
-  />
-  <input type="submit"  class="button" value="Tallenna" />
-</form>
+    <div class="form-grid">
+      <label class="form-label" for="city">Paikkakunta</label>
+      <input
+        type="text"
+        id="new_city"
+        name="new_city"
+        maxlength=""
+        value="{{ filled.city }}"
+        required
+      />
+      <input
+        type="hidden"
+        name="csrf_token"
+        value="{{ session.csrf_token }}"
+      />
+    </div>
+    <div class="button-bar">
+      <input type="submit" class="button" value="Tallenna" />
+    </div>
+  </form>
 </section>
 
 <header>
-<h2>Vaihda salasana</h2></header>
+  <h2>Vaihda salasana</h2>
+</header>
 
 <section>
-<form action="/change_password/{{ user.id }}" method="post">
-    <p>
-        <label for="password1">Uusi salasana:</label><br />
-        <input
-          type="password"
-          id="new_password1"
-          name="new_password1"
-          maxlength="{{ restrictions.max_password }}"
-          required
-        />
-        <p>pituus: {{ restrictions.min_password }}-{{ restrictions.max_password }} merkkiä</p>
+  <form action="/change_password/{{ user.id }}" method="post">
+    <div class="form-grid form-grid-hint">
+      <label class="form-label hint-label" for="password1"
+        >Uusi salasana</label
+      ><br />
+      <input
+        type="password"
+        id="new_password1"
+        name="new_password1"
+        maxlength="{{ restrictions.max_password }}"
+        class="hint-input"
+        required
+      />
+      <p class="hint-text text-small">
+        Salasanassa täytyy olla vähintään {{ restrictions.min_password
+        }} merkkiä ja vähintään yksi kirjain, numero ja erikoismerkki.
       </p>
-      <p>
-        <label for="password2">Kirjoita uusi salasana uudestaan:</label
-        ><br />
-        <input
-          type="password"
-          id="new_password2"
-          name="new_password2"
-          maxlength="{{ restrictions.max_password }}"
-          required
-        />
-      </p>
-      <p>
-        <label for="password2">Nykyinen salasana:</label
-        ><br />
-        <input
-          type="password"
-          id="old_password"
-          name="old_password"
-          required
-        />
-      </p>
+    </div>
+
+    <div class="form-grid">
+      <label for="password2">Kirjoita uusi salasana uudestaan</label>
+      <input
+        type="password"
+        id="new_password2"
+        name="new_password2"
+        maxlength="{{ restrictions.max_password }}"
+        required
+      />
+    </div>
+    <div class="form-grid">
+      <label for="password2">Nykyinen salasana</label>
+      <input
+        type="password"
+        id="old_password"
+        name="old_password"
+        required
+      />
+    </div>
     <input
       type="hidden"
       name="csrf_token"
       value="{{ session.csrf_token }}"
     />
-    <input type="submit" class="button" value="Tallenna" />
+    <div class="button-bar">
+      <input type="submit" class="button" value="Tallenna" />
+    </div>
   </form>
-  </section>
-
-<a href="/user/{{ user.id }}">Takaisin</a>
-
+</section>
 
 {% endblock %}
