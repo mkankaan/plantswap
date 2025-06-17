@@ -1,11 +1,10 @@
 {% extends "layout.html" %} {% block title %}Haku{% endblock%} {%
 block content %}
-<header>
-  <h2>Haku</h2>
-</header>
 <section>
+  <h2>Haku</h2>
+
   <form action="/search" method="get">
-    <section class="subsection">
+    <fieldset>
       <div class="form-grid">
         <label for="query">Hakusana</label> {% if query %}
         <input
@@ -18,12 +17,10 @@ block content %}
         <input type="text" id="query" name="query" />
         {% endif %}
       </div>
-    </section>
-    <header>
-      <h3>Rajaa hakua</h3>
-    </header>
+    </fieldset>
 
-    <section class="subsection">
+    <fieldset>
+      <h3>Rajaa hakua</h3>
       <div class="form-grid">
         <label for="city">Sijainti</label> {% if city %}
         <input type="text" id="city" name="city" value="{{ city }}" />
@@ -31,16 +28,15 @@ block content %}
         <input type="text" id="city" name="city" />
         {% endif %}
       </div>
-      <div>
-        <input type="submit" class="button" value="Hae" />
-      </div>
-    </section>
+    </fieldset>
+    <div class="button-bar">
+      <input type="submit" class="button" value="Hae" />
+    </div>
   </form>
 </section>
-<header>
-  <h3>Hakutulokset ({{ results | count }})</h3>
-</header>
 <section>
+  <h3>Hakutulokset ({{ results | count }})</h3>
+
   <ul>
     {% for result in results %}
     <li class="list-item">
