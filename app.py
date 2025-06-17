@@ -514,7 +514,7 @@ def remove_listing(listing_id):
 
         if "continue" in request.form:
             comments.remove_from_listing(listing["id"])
-            #listings.remove_listing(listing["id"])
+            listings.remove_listing(listing["id"])
 
             if listing["has_image"]:
                 images.remove_image(listing["image_id"])

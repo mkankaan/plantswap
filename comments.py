@@ -27,3 +27,7 @@ def update_comment(comment_id, content):
 def remove_comment(comment_id):
     sql = "UPDATE comments SET status = 0 WHERE id = ?"
     db.execute(sql, [comment_id])
+
+def remove_from_listing(listing_id):
+    sql = "DELETE FROM comments WHERE listing_id = ?"
+    db.execute(sql, [listing_id])
