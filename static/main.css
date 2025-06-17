@@ -74,10 +74,6 @@
   gap: 1rem;
 }
 
-.login-content > * {
-  border: 1px solid lightblue;
-}
-
 .login-content h2 {
   padding-bottom: 1rem;
 }
@@ -101,6 +97,10 @@ fieldset h3 {
   margin-bottom: 1rem;
 }
 
+fieldset {
+  border: 0;
+}
+
 .image-form {
   gap: 2rem;
 }
@@ -108,20 +108,6 @@ fieldset h3 {
 .image-form p {
   margin: 0;
 }
-
-/*       */
-form {
-  border: 1px solid blue;
-}
-
-form > * {
-  border: 1px solid pink;
-}
-
-form .button-bar-vertical > * {
-  border: 1px solid pink;
-}
-/*       */
 
 .form-grid {
   display: grid;
@@ -226,8 +212,6 @@ textarea {
   border: var(--border-size) solid var(--clr-primary);
 }
 
-/* */
-
 .header {
   text-align: center;
   padding: 2rem;
@@ -251,13 +235,8 @@ h3 {
 }
 
 section:not(.subsection) {
-  border: 1px solid purple;
   display: grid;
   gap: 1rem;
-}
-
-section:not(.subsection) > * {
-  border: 1px dashed blue;
 }
 
 section:not(.subsection) + section:not(.subsection) {
@@ -267,16 +246,6 @@ section:not(.subsection) + section:not(.subsection) {
 .subsection + .subsection {
   margin-top: 2rem;
 }
-
-/*
-.page-content header {
-  border-left: 5px solid var(--clr-primary);
-  margin-bottom: 1rem;
-  padding-left: 0.5rem;
-  display: grid;
-  align-items: center;
-}
-  */
 
 a,
 a:visited {
@@ -307,7 +276,6 @@ form label,
 }
 
 .nav ul {
-  /* border-bottom: var(--border-size) solid var(--clr-primary); */
   box-shadow: 0 0 0.75rem 0 rgba(9, 11, 9, 0.15);
   display: flex;
   justify-content: flex-end;
@@ -455,7 +423,32 @@ form .button-bar-vertical {
   width: var(--profile-img--small);
   height: var(--profile-img--small);
   border-radius: 100%;
-  background-color: lightgrey;
+  background-color: var(--clr-neutral-light);
+}
+
+.no-profile-image-large {
+  width: var(--image-large);
+  height: var(--image-large);
+  border-radius: 100%;
+  background-color: var(--clr-neutral-light);
+  display: grid;
+  align-items: center;
+}
+
+.no-listing-image-large {
+  width: var(--image-large);
+  height: var(--image-large);
+  background-color: var(--clr-neutral-light);
+  display: grid;
+  align-items: center;
+  border-radius: 0.5em;
+}
+
+.no-profile-image p,
+.no-listing-image-large p,
+.no-profile-image-large p {
+  color: var(--clr-neutral-dark);
+  margin: 0;
 }
 
 .text-small {
@@ -479,6 +472,7 @@ form .button-bar-vertical {
   display: grid;
   gap: 1rem;
   text-align: center;
+  justify-content: center;
 }
 
 .item-info > *:first-child p {

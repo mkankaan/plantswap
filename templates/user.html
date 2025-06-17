@@ -11,6 +11,8 @@
         class="profile-image-large"
         alt="Käyttäjän {{ user.username }} kuva"
       />
+      {% else %}
+      <div class="no-profile-image-large"><p>Ei kuvaa</p></div>
       {% endif %} {% if user.id == session.user_id %}
       <div>
         <p><a href="/add_profile_image">Vaihda profiilikuva</a></p>
