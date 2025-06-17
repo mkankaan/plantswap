@@ -93,6 +93,14 @@ form {
   max-width: fit-content;
 }
 
+.image-form {
+  gap: 2rem;
+}
+
+.image-form p {
+  margin: 0;
+}
+
 /*       */
 form {
   border: 1px solid blue;

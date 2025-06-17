@@ -1,27 +1,29 @@
 {% extends "layout.html" %} {% block title %}Vaihda profiilikuva{%
 endblock %} {% block content %}
+<section>
+  <h2>Vaihda profiilikuva</h2>
 
-<h2>Vaihda profiilikuva</h2>
+  <p>Lähetä jpg-tiedosto, jonka koko on enintään 100 kt</p>
 
-<p>Lähetä jpg-tiedosto, jonka koko on enintään 100 kt</p>
-
-<form
-  action="/add_profile_image"
-  method="post"
-  enctype="multipart/form-data"
->
-  <div class="form-grid">
-    <label for="image">Kuva</label>
-    <input type="file" id="image" name="image" accept=".jpg" />
-  </div>
-  <input
-    type="hidden"
-    name="csrf_token"
-    value="{{ session.csrf_token }}"
-  />
-  <div class="button-bar">
-    <input type="submit" class="button" value="Lähetä" />
-  </div>
-</form>
+  <form
+    action="/add_profile_image"
+    method="post"
+    enctype="multipart/form-data"
+    class="image-form"
+  >
+    <div class="form-grid">
+      <label for="image">Kuva</label>
+      <input type="file" id="image" name="image" accept=".jpg" />
+    </div>
+    <input
+      type="hidden"
+      name="csrf_token"
+      value="{{ session.csrf_token }}"
+    />
+    <div class="button-bar">
+      <input type="submit" class="button" value="Lähetä" />
+    </div>
+  </form>
+</section>
 
 {% endblock %}
