@@ -100,12 +100,9 @@ def register():
             return render_template("register.html", restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
         
         try:
-            #users.create_user(username, password1, city_id)
-            print("user", username, "city", city)
             users.create_user(username, password1, city)
-            print("käyttäjä", username, "luotu")
             flash("Tunnuksen luonti onnistui. Voit nyt kirjautua sisään.")
-            return redirect("/") # redirect to next page
+            return redirect("/login")
         except sqlite3.IntegrityError:
             filled = { "city": city }
             flash("Käyttäjätunnus varattu")
