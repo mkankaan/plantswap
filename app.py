@@ -625,9 +625,16 @@ def delete_account():
 def search():
     query = request.args.get("query")
     city = request.args.get("city")
+    plant_type = request.args.get("type")
+
+    if not plant_type or not (plant_type.lower() == "cutting" or plant_type.lower() == "plant"):
+        plant_type = "all"
+    else:
+        plant_type = plant_type.lower()
 
     print("query:", query)
     print("city:", city)
+    print("type:", plant_type)
 
     results = []
 
@@ -640,10 +647,11 @@ def search():
     else:
         results = listings.fetch_all()
 
+    print()
     print("results:", len(results))
 
     if results:
         print("result:", results[0]["city"])
 
-    return render_template("search.html", query=query, city=city, results=results)
+    return render_template("search.html", query=query, city=city, plant_type=plant_type, results=results)
 

@@ -4,7 +4,6 @@
   padding: 0;
   list-style-type: none;
   font-family: 'Roboto Mono', verdana, monospace;
-  font-size: 0.95rem;
   color: var(--clr-text);
 }
 
@@ -83,7 +82,8 @@
   align-items: center;
 }
 
-form {
+form,
+fieldset {
   display: grid;
   gap: 1rem;
   max-width: fit-content;
@@ -93,12 +93,13 @@ fieldset + fieldset {
   margin-top: 1rem;
 }
 
-fieldset h3 {
-  margin-bottom: 1rem;
-}
-
 fieldset {
   border: 0;
+}
+
+.radio-buttons-container {
+  display: grid;
+  gap: 0.5rem;
 }
 
 .image-form {
@@ -114,6 +115,14 @@ fieldset {
   grid-template-columns: auto 1fr;
   gap: 1rem;
   align-items: center;
+}
+
+fieldset {
+  border: 1px solid lightblue;
+}
+.form-grid,
+.form-grid {
+  border: 1px solid pink;
 }
 
 .form-grid.label-top {
