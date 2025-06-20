@@ -81,7 +81,7 @@
 
 form {
   display: grid;
-  gap: 1rem;
+  gap: 2rem;
   max-width: fit-content;
 }
 
@@ -96,6 +96,23 @@ fieldset + fieldset {
 
 fieldset {
   border: 0;
+}
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.slider-container input {
+  min-width: calc(var(--input-width) * 0.8);
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .radio-buttons-container {

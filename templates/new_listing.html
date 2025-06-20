@@ -24,6 +24,25 @@
       Pistokas
     </p>
 
+    <div class="form-grid label-top">
+      <label>Valon tarve</label>
+
+      <div class="slider-container">
+        <input
+          type="range"
+          min="1"
+          max="{{ light_options | length }}"
+          value="{{ initial_value }}"
+          step="1"
+        />
+        <div class="slider-labels">
+          {% for option in light_options %}
+          <span class="slider-label text-small">{{ option }}</span>{%
+          endfor %}
+        </div>
+      </div>
+    </div>
+
     <div class="form-grid form-grid-hint label-top">
       <label>Lisätiedot</label>
 

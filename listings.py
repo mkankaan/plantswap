@@ -66,3 +66,7 @@ def fetch_all():
              WHERE u.id = l.user_id
              ORDER BY l.date DESC"""
     return db.query(sql)
+
+def fetch_light_options():
+    sql = "SELECT * FROM classes WHERE option_title = 'light'"
+    return db.query(sql)

@@ -43,3 +43,9 @@ CREATE TABLE cities (
     id INTEGER PRIMARY KEY,
     name TEXT
 );
+
+CREATE TABLE classes (
+    id INTEGER PRIMARY KEY,
+    option_title TEXT,
+    option_value TEXT
+);

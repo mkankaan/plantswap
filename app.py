@@ -1,7 +1,9 @@
+
 from flask import Flask
 from flask import render_template, request, redirect, session, abort, make_response, flash
 import db, users, config, listings, comments, images, cities
 import sqlite3, secrets, markupsafe
+from math import ceil
 from utils import form_validation, date_formatter
 
 app = Flask(__name__)
@@ -335,9 +337,18 @@ def new_listing():
     require_login()
 
     restrictions = form_validation.new_listing_restrictions
+    light_class = listings.fetch_light_options()
+    light_options = []
+
+    for option in light_class:
+        light_options.append(option[2])
+
+    print("light options:", light_options)
+    initial_value = ceil(len(light_options)/2)
+    print("initial:", initial_value)
 
     if request.method == "GET":
-        return render_template("new_listing.html", restrictions=restrictions)
+        return render_template("new_listing.html", restrictions=restrictions, light_options=light_options, initial_value=initial_value)
     
     if request.method == "POST":
         check_csrf()
