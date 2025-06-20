@@ -339,7 +339,11 @@ def new_listing():
     restrictions = form_validation.new_listing_restrictions
     classes = listings.get_all_classes()
 
-    light_options = classes['light']
+    print("classes from db:")
+    for c in classes:
+        print(c)
+
+    light_options = classes["Valon tarve"]
     light_initial_value = ceil(len(light_options)/2)
 
     if request.method == "GET":
@@ -349,10 +353,11 @@ def new_listing():
         check_csrf()
         name = request.form["name"]
         is_cutting = request.form.getlist("cutting")
-        light_amount = request.form["light"]
         info = request.form["info"]
         user_id = session["user_id"]
-        listing_classes = [('light', light_amount)]
+
+        listing_type = "Kasvi" if request.form.getlist("cutting") == [] else "Pistokas"
+        listing_classes = [("Valon tarve", request.form["light"]), ("Tyyppi", listing_type)]
 
         if not name or len(name) > restrictions["max_name"]:
             print("listing name length incorrect")

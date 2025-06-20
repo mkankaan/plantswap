@@ -8,6 +8,7 @@ def create_listing(name, user_id, cutting, info, classes):
     listing_id = db.last_insert_id()
 
     for option_title, option_value in classes:
+        print("listing:", name, "add class:", option_title, "value:", option_value)
         db.execute(sql, [listing_id, option_title, option_value])
     
 def get_listing(id):
@@ -90,3 +91,8 @@ def get_all_classes():
             classes[class_title] = [class_option]
 
     return classes
+
+def get_classes(listing_id):
+    sql = "SELECT option_title, option_value FROM listing_classes WHERE listing_id = ?"
+    return db.query(sql, [listing_id])
+

@@ -12,13 +12,12 @@
   --profile-img--small: 3rem;
   --image-large: 20rem;
   --clr-neutral-dark: rgb(60, 60, 60);
-  --clr-primary: #116617;
+  --clr-primary: #0e5813;
   --clr-light: #fdffee;
-  --clr-bg: #b1ebae;
+  --clr-bg: #b8eea9;
   --clr-text: #090b09;
   --clr-neutral-light: #eaeadd;
   --border-size: 1.5px;
-  --clr-alert: rgb(212, 0, 0);
   --border-radius-small: 0.3rem;
   --border-radius-big: 0.75rem;
   --listing-thumbnail-size: 11rem;
@@ -207,7 +206,6 @@ textarea {
   border: var(--border-size) solid var(--clr-primary);
   padding: 0.5rem 1rem;
   border-radius: 0.75rem;
-  font-weight: bold;
   display: inline-block;
   text-decoration: none;
   text-align: center;
@@ -398,7 +396,6 @@ form:has(.comment) {
 }
 
 .flash {
-  color: var(--clr-alert);
   background-color: var(--clr-light);
   margin-bottom: 1rem;
   border-radius: var(--border-radius-big);

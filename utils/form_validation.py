@@ -2,9 +2,9 @@ import re
 
 registration_restrictions = { "min_username": 3, "max_username": 20, "min_password": 8, "max_password": 100 }
 
-new_listing_restrictions = { "max_name": 30, "max_info": 5000 }
+new_listing_restrictions = { "max_name": 30, "max_info": 500 }
 
-listing_comment_restrictions = { "max_comment": 5000 }
+listing_comment_restrictions = { "max_comment": 500 }
 
 form_hint_text = {
     "username": f"Pituus {registration_restrictions['min_username']}-{registration_restrictions['max_username']} merkkiä",
