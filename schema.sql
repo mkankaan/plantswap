@@ -49,3 +49,11 @@ CREATE TABLE classes (
     option_title TEXT,
     option_value TEXT
 );
+
+CREATE TABLE listing_classes (
+    id INTEGER PRIMARY KEY,
+    listing_id INTEGER REFERENCES listings(id),
+    option_title TEXT,
+    option_value TEXT
+);
+

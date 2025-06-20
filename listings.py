@@ -1,9 +1,15 @@
 import db
 
-def create_listing(name, user_id, cutting, info):
+def create_listing(name, user_id, cutting, info, classes):
     sql = "INSERT INTO listings (name, user_id, views, date, cutting, info) VALUES (?, ?, -1, datetime('now'), ?, ?)"
     db.execute(sql, [name, user_id, cutting, info])
 
+    sql = "INSERT INTO listing_classes (listing_id, option_title, option_value) VALUES (?, ?, ?)"
+    listing_id = db.last_insert_id()
+
+    for option_title, option_value in classes:
+        db.execute(sql, [listing_id, option_title, option_value])
+    
 def get_listing(id):
     sql = """SELECT l.id, l.name, l.date, l.user_id, u.username, l.views, l.image_id IS NOT NULL has_image, l.image_id, l.cutting, l.info
              FROM listings l, users u
@@ -11,6 +17,11 @@ def get_listing(id):
              AND l.id = ?"""
     result = db.query(sql, [id])
     return result[0] if result else None
+
+def get_listing_classes(listing_id):
+    sql = "SELECT option_title, option_value FROM classes WHERE listing_id = ?"
+    return db.query(sql, [listing_id])
+
 
 def update_image(listing_id, image_id):
     sql = "UPDATE listings SET image_id = ? WHERE id = ?"
@@ -67,6 +78,15 @@ def fetch_all():
              ORDER BY l.date DESC"""
     return db.query(sql)
 
-def fetch_light_options():
-    sql = "SELECT * FROM classes WHERE option_title = 'light'"
-    return db.query(sql)
+def get_all_classes():
+    sql = "SELECT option_title, option_value FROM classes"
+    class_info = db.query(sql)
+    classes = {}
+
+    for class_title, class_option in class_info:
+        if class_title in classes:
+            classes[class_title].append(class_option)
+        else:
+            classes[class_title] = [class_option]
+
+    return classes

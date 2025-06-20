@@ -337,25 +337,22 @@ def new_listing():
     require_login()
 
     restrictions = form_validation.new_listing_restrictions
-    light_class = listings.fetch_light_options()
-    light_options = []
+    classes = listings.get_all_classes()
 
-    for option in light_class:
-        light_options.append(option[2])
-
-    print("light options:", light_options)
-    initial_value = ceil(len(light_options)/2)
-    print("initial:", initial_value)
+    light_options = classes['light']
+    light_initial_value = ceil(len(light_options)/2)
 
     if request.method == "GET":
-        return render_template("new_listing.html", restrictions=restrictions, light_options=light_options, initial_value=initial_value)
+        return render_template("new_listing.html", restrictions=restrictions, light_options=light_options, light_initial_value=light_initial_value)
     
     if request.method == "POST":
         check_csrf()
         name = request.form["name"]
         is_cutting = request.form.getlist("cutting")
+        light_amount = request.form["light"]
         info = request.form["info"]
         user_id = session["user_id"]
+        listing_classes = [('light', light_amount)]
 
         if not name or len(name) > restrictions["max_name"]:
             print("listing name length incorrect")
@@ -368,7 +365,7 @@ def new_listing():
         cutting = 0 if is_cutting == [] else 1
 
         try:
-            listings.create_listing(name, user_id, cutting, info)
+            listings.create_listing(name, user_id, cutting, info, listing_classes)
             listing = users.newest_listing(user_id)
             return redirect("/add_listing_image/" + str(listing))
         except:
