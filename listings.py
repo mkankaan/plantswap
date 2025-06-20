@@ -38,35 +38,7 @@ def remove_listing(listing_id):
     sql = "DELETE FROM listings WHERE id = ?"
     db.execute(sql, [listing_id])
 
-def search_query(query):
-    sql = """SELECT l.id listing_id,
-                    l.name,
-                    l.date,
-                    l.cutting,
-                    l.image_id IS NOT NULL has_image,
-                    u.username,
-                    u.city
-             FROM listings l, users u
-             WHERE u.id = l.user_id AND
-                   l.name LIKE ?
-             ORDER BY l.date DESC"""
-    return db.query(sql, ["%" + query + "%"])
-
-def search_city(city):
-    sql = """SELECT l.id listing_id,
-                    l.name,
-                    l.date,
-                    l.cutting,
-                    l.image_id IS NOT NULL has_image,
-                    u.username,
-                    u.city
-             FROM listings l, users u
-             WHERE u.id = l.user_id AND
-                   u.city LIKE ?
-             ORDER BY l.date DESC"""
-    return db.query(sql, ["%" + city + "%"])
-
-def search_query_city(query, city):
+def search(query, city):
     sql = """SELECT l.id listing_id,
                     l.name,
                     l.date,

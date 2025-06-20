@@ -46,7 +46,7 @@ def login():
                 session["user_id"] = user_id
                 session["username"] = username
                 session["csrf_token"] = secrets.token_hex(16)
-                return redirect(next_page)
+                return redirect("/")
             else:
                 filled = { "username": username }
                 flash("Väärä käyttäjätunnus tai salasana")
@@ -623,8 +623,8 @@ def delete_account():
     
 @app.route("/search")
 def search():
-    query = request.args.get("query")
-    city = request.args.get("city")
+    query = request.args.get("query") if request.args.get("query") else ""
+    city = request.args.get("city") if request.args.get("city") else ""
     plant_type = request.args.get("type")
 
     if not plant_type or not (plant_type.lower() == "cutting" or plant_type.lower() == "plant"):
@@ -636,22 +636,7 @@ def search():
     print("city:", city)
     print("type:", plant_type)
 
-    results = []
-
-    if query and city:
-        results = listings.search_query_city(query, city)
-    elif query:
-        results = listings.search_query(query)
-    elif city:
-        results = listings.search_city(city)
-    else:
-        results = listings.fetch_all()
-
-    print()
-    print("results:", len(results))
-
-    if results:
-        print("result:", results[0]["city"])
+    results = listings.search(query, city)
 
     return render_template("search.html", query=query, city=city, plant_type=plant_type, results=results)
 

@@ -11,7 +11,6 @@
   --profile-img--small: 3rem;
   --image-large: 20rem;
   --clr-neutral-dark: rgb(60, 60, 60);
-  --clr-primary: #25a12d;
   --clr-primary: #116617;
   --clr-light: #fdffee;
   --clr-bg: #b1ebae;
@@ -25,8 +24,6 @@
   --label-width: 12rem;
   --input-width: 16rem;
 }
-
-/* */
 
 .bg {
   background: linear-gradient(
@@ -82,11 +79,15 @@
   align-items: center;
 }
 
-form,
-fieldset {
+form {
   display: grid;
   gap: 1rem;
   max-width: fit-content;
+}
+
+fieldset {
+  display: grid;
+  gap: 2rem;
 }
 
 fieldset + fieldset {
@@ -115,14 +116,6 @@ fieldset {
   grid-template-columns: auto 1fr;
   gap: 1rem;
   align-items: center;
-}
-
-fieldset {
-  border: 1px solid lightblue;
-}
-.form-grid,
-.form-grid {
-  border: 1px solid pink;
 }
 
 .form-grid.label-top {
