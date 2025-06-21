@@ -19,30 +19,21 @@
       </p>
     </div>
 
+    {% for class in classes %} {% if class == 'Tyyppi' %}
     <p class="form-checkbox">
-      <input type="checkbox" name="cutting" value="1" />
-      Pistokas
+      <input type="checkbox" name="{{ class }}" value="1" /> Pistokas
     </p>
-
-    <div class="form-grid label-top">
-      <label>Valon tarve</label>
-
-      <div class="slider-container">
-        <input
-          type="range"
-          name="light"
-          min="1"
-          max="{{ light_options | length }}"
-          value="{{ light_initial_value }}"
-          step="1"
-        />
-        <div class="slider-labels">
-          {% for option in light_options %}
-          <span class="slider-label text-small">{{ option }}</span>{%
-          endfor %}
-        </div>
-      </div>
+    {% else %}
+    <div class="form-grid">
+      <label>{{ class}}</label>
+      <select name="{{ class }}">
+        <option disabled>- Valitse -</option>
+        {% for option in classes[class] %}
+        <option value="{{ option }}">{{ option }}</option>
+        {% endfor %}
+      </select>
     </div>
+    {% endif %} {% endfor %}
 
     <div class="form-grid form-grid-hint label-top">
       <label>Lisätiedot</label>

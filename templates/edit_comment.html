@@ -1,46 +1,47 @@
 {% extends "layout.html" %} {% block title %}Muokkaa kommenttia{%
 endblock %} {% block content %}
+<section>
+  <h2>Muokkaa kommenttia</h2>
 
-<h2>Muokkaa kommenttia</h2>
+  <form action="/edit/comment/{{ comment.id }}" method="post">
+    <div class="username-image-box">
+      {% if comment.user_has_image %}
+      <img
+        src="/image/user/{{ comment.user_id }}"
+        class="profile-image-small"
+        alt="Käyttäjän {{ comment.username }} kuva"
+      />
+      {% else %}
+      <div class="no-profile-image"></div>
+      {% endif %}
 
-<form action="/edit/comment/{{ comment.id }}" method="post">
-  <div class="username-image-box">
-    {% if comment.user_has_image %}
-    <img
-      src="/image/user/{{ comment.user_id }}"
-      class="profile-image-small"
-      alt="Käyttäjän {{ comment.username }} kuva"
-    />
-    {% else %}
-    <div class="no-profile-image"></div>
-    {% endif %}
+      <p class="subheading">{{ comment.username }}</p>
+    </div>
 
-    <p class="subheading">{{ comment.username }}</p>
-  </div>
-
-  <div>
-    <textarea
-      name="content"
-      rows="5"
-      cols="50"
-      maxlength="{{ restrictions.max_comment }}"
-    >
+    <div>
+      <textarea
+        name="content"
+        rows="5"
+        cols="50"
+        maxlength="{{ restrictions.max_comment }}"
+      >
 {{ filled.content }}</textarea
-    >
-    <p class="text-small textarea-hint">
-      Korkeintaan {{ restrictions.max_comment }} merkkiä
-    </p>
-  </div>
-  <input type="hidden" name="comment_id" value="{{ comment.id }}" />
+      >
+      <p class="text-small textarea-hint">
+        Korkeintaan {{ restrictions.max_comment }} merkkiä
+      </p>
+    </div>
+    <input type="hidden" name="comment_id" value="{{ comment.id }}" />
 
-  <input
-    type="hidden"
-    name="csrf_token"
-    value="{{ session.csrf_token }}"
-  />
-  <div class="button-bar">
-    <input type="submit" class="button" value="Tallenna" />
-  </div>
-</form>
+    <input
+      type="hidden"
+      name="csrf_token"
+      value="{{ session.csrf_token }}"
+    />
+    <div class="button-bar">
+      <input type="submit" class="button" value="Tallenna" />
+    </div>
+  </form>
+</section>
 
 {% endblock %}

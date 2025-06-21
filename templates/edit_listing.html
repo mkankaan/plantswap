@@ -1,50 +1,63 @@
 {% extends "layout.html" %} {% block title %}Muokkaa ilmoitusta{%
 endblock %} {% block content %}
+<section>
+  <h2>Muokkaa ilmoitusta</h2>
 
-<h2>Muokkaa ilmoitusta</h2>
+  <form action="/edit/listing/{{ listing.id }}" method="post">
+    <div class="form-grid">
+      <label for="name">Nimi</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        value="{{ listing.name }}"
+        maxlength="{{ restrictions.max_name }}"
+        required
+      />
+    </div>
 
-<form action="/edit/listing/{{ listing.id }}" method="post">
-  <div class="form-grid">
-    <label for="name">Nimi</label>
-    <input
-      type="text"
-      id="name"
-      name="name"
-      value="{{ listing.name }}"
-      maxlength="{{ restrictions.max_name }}"
-      required
-    />
-  </div>
-  {% if listing.cutting == 1 %}
-  <p class="form-checkbox">
-    <input type="checkbox" name="cutting" value="1" checked />
-    Pistokas
-  </p>
-  {% else %}
-  <p class="form-checkbox">
-    <input type="checkbox" name="cutting" value="1" /> Pistokas
-  </p>
-  {% endif %}
-  <div class="form-grid form-grid-hint label-top">
-    <label for="info">Lisätiedot</label>
-    <textarea
-      name="info"
-      rows="5"
-      cols="50"
-      maxlength="{{ restrictions.max_info }}"
-    >
+    {% for class, value in listing_classes %} {% if class == "Tyyppi"
+    %}
+    <p class="form-checkbox">
+      {% if value == 'Pistokas' %}
+      <input type="checkbox" name="cutting" value="1" checked />
+      {% else %}
+      <input type="checkbox" name="cutting" value="1" />
+      {% endif %} Pistokas
+    </p>
+    {% else %}
+    <div class="form-grid">
+      <label>{{ class }}</label>
+      <select name="{{ class }}">
+        <option disabled>(Valitse)</option>
+        {% for option in classes[class] %}
+        <option value="{{ option }}">{{ option }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endif %} {% endfor %}
+
+    <div class="form-grid form-grid-hint label-top">
+      <label for="info">Lisätiedot</label>
+      <textarea
+        name="info"
+        rows="5"
+        cols="50"
+        maxlength="{{ restrictions.max_info }}"
+      >
 {{ listing.info }}</textarea
-    >
-    <p class="text-small">{{ hint_text }}</p>
-  </div>
-  <input
-    type="hidden"
-    name="csrf_token"
-    value="{{ session.csrf_token }}"
-  />
-  <div class="button-bar">
-    <input type="submit" class="button" value="Tallenna" />
-  </div>
-</form>
+      >
+      <p class="text-small">{{ hint_text }}</p>
+    </div>
+    <input
+      type="hidden"
+      name="csrf_token"
+      value="{{ session.csrf_token }}"
+    />
+    <div class="button-bar">
+      <input type="submit" class="button" value="Tallenna" />
+    </div>
+  </form>
+</section>
 
 {% endblock %}

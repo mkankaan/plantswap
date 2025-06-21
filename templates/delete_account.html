@@ -1,30 +1,31 @@
 {% extends "layout.html" %} {% block title %}Poista tili{% endblock %}
 {% block content %}
+<section>
+  <h2>Poista tili</h2>
 
-<h2>Poista tili</h2>
+  <form action="/delete_account" method="post">
+    <p>Haluatko varmasti poistaa tilisi?</p>
 
-<form action="/delete_account" method="post">
-  <p>Haluatko varmasti poistaa tilisi?</p>
-
-  <input
-    type="hidden"
-    name="csrf_token"
-    value="{{ session.csrf_token }}"
-  />
-  <div class="button-bar">
     <input
-      type="submit"
-      name="continue"
-      class="button"
-      value="Jatka"
+      type="hidden"
+      name="csrf_token"
+      value="{{ session.csrf_token }}"
     />
-    <input
-      type="submit"
-      name="cancel"
-      class="button button-secondary"
-      value="Peruuta"
-    />
-  </div>
-</form>
+    <div class="button-bar">
+      <input
+        type="submit"
+        name="continue"
+        class="button"
+        value="Jatka"
+      />
+      <input
+        type="submit"
+        name="cancel"
+        class="button button-secondary"
+        value="Peruuta"
+      />
+    </div>
+  </form>
+</section>
 
 {% endblock %}

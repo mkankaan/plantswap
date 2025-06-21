@@ -339,15 +339,8 @@ def new_listing():
     restrictions = form_validation.new_listing_restrictions
     classes = listings.get_all_classes()
 
-    print("classes from db:")
-    for c in classes:
-        print(c)
-
-    light_options = classes["Valon tarve"]
-    light_initial_value = ceil(len(light_options)/2)
-
     if request.method == "GET":
-        return render_template("new_listing.html", restrictions=restrictions, light_options=light_options, light_initial_value=light_initial_value)
+        return render_template("new_listing.html", restrictions=restrictions, classes=classes)
     
     if request.method == "POST":
         check_csrf()
@@ -356,10 +349,15 @@ def new_listing():
         info = request.form["info"]
         user_id = session["user_id"]
 
-        listing_type = "Kasvi" if request.form.getlist("cutting") == [] else "Pistokas"
-        light_amount = light_options[int(request.form["light"])-1]
-        listing_classes = [ ("Tyyppi", listing_type), ("Valon tarve", light_amount)]
+        listing_classes = []
 
+        for listing_class in classes:
+            if listing_class == "Tyyppi":
+                listing_type = "Kasvi" if request.form.getlist("Tyyppi") == [] else "Pistokas"
+                listing_classes.append((listing_class, listing_type))
+            elif request.form[listing_class]:
+                listing_classes.append((listing_class, request.form[listing_class]))
+        
         if not name or len(name) > restrictions["max_name"]:
             print("listing name length incorrect")
             abort(403)
@@ -494,10 +492,13 @@ def edit_listing(listing_id):
     if listing["user_id"] != session["user_id"]:
         abort(403)
 
+    listing_classes = listings.get_classes(listing_id)
+    all_classes = listings.get_all_classes()
+
     if request.method == "GET":
         print("cutting?", listing["cutting"])
         restrictions = form_validation.new_listing_restrictions
-        return render_template("edit_listing.html", listing=listing, restrictions=restrictions, hint_text=hint_text)
+        return render_template("edit_listing.html", listing=listing, restrictions=restrictions, hint_text=hint_text, classes=all_classes, listing_classes=listing_classes)
 
     if request.method == "POST":
         check_csrf()
