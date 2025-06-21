@@ -357,7 +357,8 @@ def new_listing():
         user_id = session["user_id"]
 
         listing_type = "Kasvi" if request.form.getlist("cutting") == [] else "Pistokas"
-        listing_classes = [("Valon tarve", request.form["light"]), ("Tyyppi", listing_type)]
+        light_amount = light_options[int(request.form["light"])-1]
+        listing_classes = [ ("Tyyppi", listing_type), ("Valon tarve", light_amount)]
 
         if not name or len(name) > restrictions["max_name"]:
             print("listing name length incorrect")
@@ -428,6 +429,12 @@ def show_listing(listing_id):
     if not listing:
         abort(404)
 
+    classes = listings.get_classes(listing_id)
+
+    print("listing", listing_id, "classes:")
+    for a, b in classes:
+        print(a, b)
+
     listings.add_view(listing_id)
     listing = listings.get_listing(listing_id)
 
@@ -458,7 +465,7 @@ def show_listing(listing_id):
 
         formatted_comments.append(formatted_comment)
 
-    return render_template("listing.html", listing=listing, user=user, comments=formatted_comments, date_added=date_added, restrictions=restrictions, hint_text=hint_text)
+    return render_template("listing.html", listing=listing, user=user, comments=formatted_comments, date_added=date_added, restrictions=restrictions, hint_text=hint_text, classes=classes)
 
 # fetch listing image
 @app.route("/image/listing/<int:listing_id>")

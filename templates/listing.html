@@ -31,11 +31,17 @@ endblock %} {% block content %}
         </p>
       </section>
 
-      {% if listing.cutting == 1 %}
+      {% for class, value in classes %}
       <section class="subsection">
+        {% if class == 'Tyyppi' %} {% if value == 'Pistokas' %}
         <p>🌱 Pistokas</p>
+        {% endif %} {% else %}
+        <p>
+          <span class="subheading">{{ class }}:</span> {{ value }}
+        </p>
+        {% endif %}
       </section>
-      {% endif %} {% if listing.info %}
+      {% endfor %} {% if listing.info %}
       <section class="subsection">
         <p class="subheading">Lisätiedot</p>
         <p>{{ listing.info | show_lines }}</p>
