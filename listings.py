@@ -42,9 +42,17 @@ def get_user(listing_id):
     result = db.query(sql, [listing_id])
     return result[0][0] if result else None
 
-def update_listing(listing_id, name, info, cutting):
+def update_listing(listing_id, name, info, cutting, classes):
     sql = "UPDATE listings SET (name, info, cutting) = (?, ?, ?) WHERE id = ?"
     db.execute(sql, [name, info, cutting, listing_id])
+
+    sql = "DELETE FROM listing_classes WHERE listing_id = ?"
+    db.execute(sql, [listing_id])
+
+    sql = "INSERT INTO listing_classes (listing_id, option_title, option_value) VALUES (?, ?, ?)"
+
+    for option_title, option_value in classes:
+        db.execute(sql, [listing_id, option_title, option_value])
 
 def remove_listing(listing_id):
     sql = "DELETE FROM listings WHERE id = ?"

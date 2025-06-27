@@ -492,13 +492,17 @@ def edit_listing(listing_id):
     if listing["user_id"] != session["user_id"]:
         abort(403)
 
-    listing_classes = listings.get_classes(listing_id)
+    class_data = listings.get_classes(listing_id)
     all_classes = listings.get_all_classes()
 
+    listing_classes = {}
+
+    for option_title, option_value in class_data:
+        listing_classes[option_title] = option_value
+
     if request.method == "GET":
-        print("cutting?", listing["cutting"])
         restrictions = form_validation.new_listing_restrictions
-        return render_template("edit_listing.html", listing=listing, restrictions=restrictions, hint_text=hint_text, classes=all_classes, listing_classes=listing_classes)
+        return render_template("edit_listing.html", listing=listing, restrictions=restrictions, hint_text=hint_text, all_classes=all_classes, listing_classes=listing_classes)
 
     if request.method == "POST":
         check_csrf()
@@ -507,7 +511,22 @@ def edit_listing(listing_id):
         info = request.form["info"]
         is_cutting = 1 if request.form.getlist("cutting") else 0
 
-        listings.update_listing(listing["id"], name, info, is_cutting)
+        plant_type = request.form.getlist("cutting")
+
+        if plant_type == []:
+            plant_type = "Tyyppi:Kasvi"
+        else:
+            plant_type = plant_type[0]
+
+        new_classes = [plant_type] + request.form.getlist("classes")
+        updated_classes = []
+
+        for entry in new_classes:
+            if entry:
+                parts = entry.split(":")
+                updated_classes.append((parts[0], parts[1]))
+
+        listings.update_listing(listing["id"], name, info, is_cutting, updated_classes)
         flash("Muokkaus onnistui")
         return redirect("/listing/" + str(listing["id"]))
 

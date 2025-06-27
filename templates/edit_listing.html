@@ -16,23 +16,36 @@ endblock %} {% block content %}
       />
     </div>
 
-    {% for class, value in listing_classes %} {% if class == "Tyyppi"
-    %}
+    {% for class in all_classes %} {% if class == "Tyyppi" %}
     <p class="form-checkbox">
-      {% if value == 'Pistokas' %}
-      <input type="checkbox" name="cutting" value="1" checked />
+      {% if listing_classes[class] == 'Pistokas' %}
+      <input
+        type="checkbox"
+        name="cutting"
+        value="{{ class }}:Pistokas"
+        checked
+      />
       {% else %}
-      <input type="checkbox" name="cutting" value="1" />
+      <input
+        type="checkbox"
+        name="cutting"
+        value="{{ class }}:Pistokas"
+      />
       {% endif %} Pistokas
     </p>
     {% else %}
     <div class="form-grid">
       <label>{{ class }}</label>
-      <select name="{{ class }}">
+      <select name="classes">
         <option disabled>(Valitse)</option>
-        {% for option in classes[class] %}
-        <option value="{{ option }}">{{ option }}</option>
-        {% endfor %}
+        {% for option in all_classes[class] %} {% if
+        listing_classes[class] == option %}
+        <option value="{{ class }}:{{ option }}" selected>
+          {{ option }}
+        </option>
+        {% else %}
+        <option value="{{ class }}:{{ option }}">{{ option }}</option>
+        {% endif %} {% endfor %}
       </select>
     </div>
     {% endif %} {% endfor %}
