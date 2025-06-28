@@ -337,10 +337,10 @@ def new_listing():
     require_login()
 
     restrictions = form_validation.new_listing_restrictions
-    classes = listings.get_all_classes()
+    all_classes = listings.get_all_classes()
 
     if request.method == "GET":
-        return render_template("new_listing.html", restrictions=restrictions, classes=classes)
+        return render_template("new_listing.html", restrictions=restrictions, classes=all_classes)
     
     if request.method == "POST":
         check_csrf()
@@ -372,8 +372,14 @@ def new_listing():
 
         for entry in classes:
             if entry:
-                parts = entry.split(":")
-                listing_classes.append((parts[0], parts[1]))
+                option_title, option_value = entry.split(":")
+
+                if option_title not in all_classes:
+                    abort(403)
+                elif option_value not in all_classes[option_title]:
+                    abort(403)
+
+                listing_classes.append((option_title, option_value))
 
         try:
             listings.create_listing(name, user_id, cutting, info, listing_classes)
@@ -530,8 +536,14 @@ def edit_listing(listing_id):
 
         for entry in new_classes:
             if entry:
-                parts = entry.split(":")
-                updated_classes.append((parts[0], parts[1]))
+                option_title, option_value = entry.split(":")
+
+                if option_title not in all_classes:
+                    abort(403)
+                elif option_value not in all_classes[option_title]:
+                    abort(403)
+
+                updated_classes.append((option_title, option_value))
 
         listings.update_listing(listing["id"], name, info, is_cutting, updated_classes)
         flash("Muokkaus onnistui")
