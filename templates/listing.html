@@ -14,10 +14,22 @@ endblock %} {% block content %}
       {% else %}
       <div class="no-listing-image-large"><p>Ei kuvaa</p></div>
       {% endif %} {% if user.id == session.user_id %}
-      <p>
-        <a href="/add_listing_image/{{ listing.id }}">Vaihda kuva</a>
-      </p>
+      <div>
+        <p>
+          <a href="/add_listing_image/{{ listing.id }}"
+            >Vaihda kuva</a
+          >
+        </p>
 
+        {% if listing.has_image %}
+        <p>
+          <a href="/remove/listing_image/{{ listing.id }}"
+            >Poista kuva</a
+          >
+        </p>
+
+        {% endif %}
+      </div>
       {% endif %}
     </div>
 

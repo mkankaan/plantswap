@@ -46,6 +46,7 @@
 <section>
   <h3>Käyttäjän ilmoitukset ({{ listings | count }})</h3>
 
+  {% if listings %}
   <ul>
     {% for listing in listings %}
     <li class="list-item">
@@ -67,5 +68,8 @@
     </li>
     {% endfor %}
   </ul>
+  {% else %}
+  <p class="text-no-results">Ei ilmoituksia</p>
+  {% endif %}
 </section>
 {% endblock %}

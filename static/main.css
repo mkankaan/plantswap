@@ -225,16 +225,16 @@ textarea {
 
 .header {
   text-align: center;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 h1 a {
-  font-size: 3rem;
+  font-size: 3.5rem;
   color: var(--clr-primary);
   padding-bottom: 1rem;
   text-decoration: none;
   font-family: 'DM Serif Display', serif;
-  font-weight: 400;
+  font-weight: bold;
 }
 
 h2 {

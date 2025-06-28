@@ -414,6 +414,39 @@ def add_listing_image(listing_id):
         flash("Kuvan lisääminen onnistui")
         return redirect("/listing/" + str(listing_id))
     
+# remove listing image
+@app.route("/remove/listing_image/<int:listing_id>", methods=["GET", "POST"])
+def remove_listing_image(listing_id):
+    require_login()
+    listing = listings.get_listing(listing_id)
+
+    if not listing:
+        abort(404)
+        
+    if listing["user_id"] != session["user_id"]:
+        print("wrong user logged in")
+        abort(403)
+
+    if request.method == "GET":
+        return render_template("remove_listing_image.html", listing=listing)
+
+    if request.method == "POST":
+        check_csrf()
+
+        if "continue" in request.form:
+            image_id = listing["image_id"]
+            print("delete image_id", image_id, "from listing", listing["name"])
+            
+            images.remove_image(image_id)
+
+            if listing["has_image"]:
+                listings.remove_image(listing_id)
+
+            print("ilmoituksen", listing["name"], "kuva", image_id, "poistettu")
+            flash("Kuva poistettiin")
+        return redirect("/")
+
+    
 # listing page
 @app.route("/listing/<int:listing_id>")
 def show_listing(listing_id):
@@ -550,7 +583,7 @@ def remove_listing(listing_id):
                 print("deleted image", listing["image_id"])
 
             print("ilmoitus", listing["id"], "poistettu")
-        flash("Ilmoitus poistettiin")
+            flash("Ilmoitus poistettiin")
         return redirect("/")
     
 # add comment to listing

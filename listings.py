@@ -28,6 +28,10 @@ def update_image(listing_id, image_id):
     sql = "UPDATE listings SET image_id = ? WHERE id = ?"
     db.execute(sql, [image_id, listing_id])
 
+def remove_image(listing_id):
+    sql = "UPDATE listings SET image_id = NULL WHERE id = ?"
+    db.execute(sql, [listing_id])
+
 def get_image_id(listing_id):
     sql = "SELECT image_id FROM listings WHERE id = ?"
     result = db.query(sql, [listing_id])
@@ -65,6 +69,7 @@ def search(query, city):
                     l.date,
                     l.image_id IS NOT NULL has_image,
                     u.username,
+                    u.id user_id,
                     u.city
              FROM listings l, users u
              WHERE u.id = l.user_id AND

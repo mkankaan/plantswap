@@ -1,21 +1,21 @@
-{% extends "layout.html" %} {% block title %}Poista ilmoitus{%
+{% extends "layout.html" %} {% block title %}Poista profiilikuva{%
 endblock %} {% block content %}
 <section>
-  <h2>Poista ilmoitus</h2>
+  <h2>Poista ilmoituksen kuva</h2>
 
   <form
     class="image-form"
-    action="/remove/listing/{{ listing.id }}"
+    action="/remove/listing_image/{{ listing.id }}"
     method="post"
   >
-    <p>Haluatko varmasti poistaa ilmotuksen?</p>
+    <p>Haluatko varmasti poistaa kuvan ilmoituksesta?</p>
     <p class="subheading">{{ listing.name }}</p>
 
     {% if listing.has_image %}
     <img
       src="/image/listing/{{ listing.id }}"
       class="listing-image"
-      alt="Ilmoituksen {{ listing.username }} kuva"
+      alt="Ilmoituksen {{ listing.namename }} kuva"
     />
     {% endif %}
 
