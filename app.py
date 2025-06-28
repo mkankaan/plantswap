@@ -1,7 +1,7 @@
 
 from flask import Flask
 from flask import render_template, request, redirect, session, abort, make_response, flash
-import db, users, config, listings, comments, images, cities
+import db, users, config, listings, comments, images
 import sqlite3, secrets, markupsafe
 from math import ceil
 from utils import form_validation, date_formatter
@@ -64,12 +64,9 @@ def logout():
 def register():
     restrictions = form_validation.registration_restrictions
     hint_text = form_validation.form_hint_text
-    all_cities = []
 
     if request.method == "GET":
-        print("all cities:", all_cities)
-        
-        return render_template("register.html", restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled={})
+        return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled={})
     
     if request.method == "POST":
         username = request.form["username"]
@@ -81,19 +78,19 @@ def register():
 
         if password1 != password2:
             flash("Salasanat eivät täsmää")
-            return render_template("register.html", restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+            return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled=filled)
 
         username_valid, username_error_message = form_validation.validate_username(username)
 
         if not username_valid:
             flash(username_error_message)
-            return render_template("register.html", restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+            return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled=filled)
         
         password_valid, password_error_message = form_validation.validate_password(password1)
 
         if not password_valid:
             flash(password_error_message)
-            return render_template("register.html", restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+            return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled=filled)
         
         try:
             users.create_user(username, password1, city)
@@ -102,7 +99,7 @@ def register():
         except sqlite3.IntegrityError:
             filled = { "city": city }
             flash("Käyttäjätunnus varattu")
-            return render_template("register.html", restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+            return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled=filled)
 
 # user profile page
 @app.route("/user/<int:user_id>")
@@ -131,12 +128,11 @@ def edit_profile(user_id):
 
     restrictions = form_validation.registration_restrictions
     hint_text = form_validation.form_hint_text
-    all_cities = []
 
     if request.method == "GET":
         filled = { "username": user["username"], "city": user["city"] }
 
-        return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+        return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
 
     if request.method == "POST":
         check_csrf()
@@ -150,7 +146,7 @@ def edit_profile(user_id):
 
         if not username_valid:
             flash(username_error_message)
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
         
         try:
             users.update_user(user_id, new_username, new_city)
@@ -158,10 +154,10 @@ def edit_profile(user_id):
             flash("Muutokset tallennettu")
             session["username"] = new_username
             filled = { "username": new_username, "city": new_city }
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
         except sqlite3.IntegrityError:
             flash("Käyttäjätunnus varattu")
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
 
 # change password
 @app.route("/change_password/<int:user_id>", methods=["POST"])
@@ -179,7 +175,6 @@ def change_password(user_id):
 
     restrictions = form_validation.registration_restrictions
     hint_text = form_validation.form_hint_text
-    all_cities = []
 
     if request.method == "POST":
         new_password1 = request.form["new_password1"]
@@ -192,60 +187,27 @@ def change_password(user_id):
 
         if not password_correct:
             flash("Väärä salasana")
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
 
         if new_password1 != new_password2:
             flash("Salasanat eivät täsmää")
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
 
         new_password_valid, new_password_error_message = form_validation.validate_password(new_password1)
 
         if not new_password_valid:
             flash(new_password_error_message)
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
         
         if old_password == new_password1:
             flash("Uusi salasana ei voi olla sama kuin vanha salasana")
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
 
         users.change_password(user_id, new_password1)
         print("käyttäjän", user["username"], "salasana vaihdettu")
         flash("Salasana vaihdettu")
-        return render_template("edit_profile.html", user=user, restrictions=restrictions, cities=all_cities, hint_text=hint_text, filled=filled)
+        return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
         
-
-
-        if new_password1 != new_password2:
-            flash("Salasanat eivät täsmää")
-            return render_template("register.html", restrictions=restrictions, cities=all_cities, filled=filled)
-
-
-        if new_password1 != new_password2:
-            flash("Salasanat eivät täsmää")
-            return render_template("register.html", restrictions=restrictions, cities=all_cities, filled=filled)
-
-        username_valid, username_error_message = form_validation.validate_username(username)
-
-        if not username_valid:
-            flash(username_error_message)
-            return render_template("register.html", restrictions=restrictions, cities=all_cities, filled=filled)
-        
-        password_valid, password_error_message = form_validation.validate_password(password1)
-
-        if not password_valid:
-            flash(password_error_message)
-            return render_template("register.html", restrictions=restrictions, cities=all_cities, filled=filled)
-        
-        try:
-            users.create_user(username, password1, city_id)
-            print("käyttäjä", username, "luotu")
-            flash("Tunnuksen luonti onnistui")
-            return redirect("/") # redirect to next page
-        except sqlite3.IntegrityError:
-            filled = { "city": city_id }
-            flash("Käyttäjätunnus varattu")
-            return render_template("register.html", restrictions=restrictions, cities=all_cities, filled=filled)
-
 # add profile image
 @app.route("/add_profile_image", methods=["GET", "POST"])
 def add_image():
