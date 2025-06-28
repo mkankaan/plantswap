@@ -46,8 +46,7 @@ def update_listing(listing_id, name, info, cutting, classes):
     sql = "UPDATE listings SET (name, info, cutting) = (?, ?, ?) WHERE id = ?"
     db.execute(sql, [name, info, cutting, listing_id])
 
-    sql = "DELETE FROM listing_classes WHERE listing_id = ?"
-    db.execute(sql, [listing_id])
+    delete_classes(listing_id)
 
     sql = "INSERT INTO listing_classes (listing_id, option_title, option_value) VALUES (?, ?, ?)"
 
@@ -55,6 +54,8 @@ def update_listing(listing_id, name, info, cutting, classes):
         db.execute(sql, [listing_id, option_title, option_value])
 
 def remove_listing(listing_id):
+    delete_classes(listing_id)
+
     sql = "DELETE FROM listings WHERE id = ?"
     db.execute(sql, [listing_id])
 
@@ -103,4 +104,8 @@ def get_all_classes():
 def get_classes(listing_id):
     sql = "SELECT option_title, option_value FROM listing_classes WHERE listing_id = ?"
     return db.query(sql, [listing_id])
+
+def delete_classes(listing_id):
+    sql = "DELETE FROM listing_classes WHERE listing_id = ?"
+    db.execute(sql, [listing_id])
 
