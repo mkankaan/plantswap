@@ -14,7 +14,6 @@ CREATE TABLE listings (
     user_id INTEGER,
     date TEXT,
     views INTEGER,
-    cutting INTEGER,
     info TEXT,
     image_id INTEGER DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)

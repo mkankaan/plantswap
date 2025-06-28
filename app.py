@@ -64,7 +64,6 @@ def logout():
 def register():
     restrictions = form_validation.registration_restrictions
     hint_text = form_validation.form_hint_text
-    #all_cities = cities.fetch_all()
     all_cities = []
 
     if request.method == "GET":
@@ -365,7 +364,7 @@ def new_listing():
                 listing_classes.append((option_title, option_value))
 
         try:
-            listings.create_listing(name, user_id, 0, info, listing_classes)
+            listings.create_listing(name, user_id, info, listing_classes)
             listing = users.newest_listing(user_id)
             return redirect("/add_listing_image/" + str(listing))
         except:
@@ -519,7 +518,7 @@ def edit_listing(listing_id):
 
                 updated_classes.append((option_title, option_value))
 
-        listings.update_listing(listing["id"], name, info, 0, updated_classes)
+        listings.update_listing(listing["id"], name, info, updated_classes)
         flash("Muokkaus onnistui")
         return redirect("/listing/" + str(listing["id"]))
 
@@ -659,18 +658,6 @@ def delete_account():
 def search():
     query = request.args.get("query") if request.args.get("query") else ""
     city = request.args.get("city") if request.args.get("city") else ""
-    plant_type = request.args.get("type")
-
-    if not plant_type or not (plant_type.lower() == "cutting" or plant_type.lower() == "plant"):
-        plant_type = "all"
-    else:
-        plant_type = plant_type.lower()
-
-    print("query:", query)
-    print("city:", city)
-    print("type:", plant_type)
-
     results = listings.search(query, city)
-
-    return render_template("search.html", query=query, city=city, plant_type=plant_type, results=results)
+    return render_template("search.html", query=query, city=city, results=results)
 

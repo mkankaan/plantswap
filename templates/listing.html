@@ -24,7 +24,9 @@ endblock %} {% block content %}
     <div>
       <section class="subsection">
         <p>Lisätty {{ date_added }}</p>
+      </section>
 
+      <section class="subsection">
         <p>
           Katseltu {{ listing.views }} {% if listing.views == 1%}
           kerran {% else %} kertaa {% endif %}

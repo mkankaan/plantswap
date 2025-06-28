@@ -1,8 +1,8 @@
 import db
 
-def create_listing(name, user_id, cutting, info, classes):
-    sql = "INSERT INTO listings (name, user_id, views, date, cutting, info) VALUES (?, ?, -1, datetime('now'), ?, ?)"
-    db.execute(sql, [name, user_id, cutting, info])
+def create_listing(name, user_id, info, classes):
+    sql = "INSERT INTO listings (name, user_id, views, date, info) VALUES (?, ?, -1, datetime('now'), ?)"
+    db.execute(sql, [name, user_id, info])
 
     sql = "INSERT INTO listing_classes (listing_id, option_title, option_value) VALUES (?, ?, ?)"
     listing_id = db.last_insert_id()
@@ -12,7 +12,7 @@ def create_listing(name, user_id, cutting, info, classes):
         db.execute(sql, [listing_id, option_title, option_value])
     
 def get_listing(id):
-    sql = """SELECT l.id, l.name, l.date, l.user_id, u.username, l.views, l.image_id IS NOT NULL has_image, l.image_id, l.cutting, l.info
+    sql = """SELECT l.id, l.name, l.date, l.user_id, u.username, l.views, l.image_id IS NOT NULL has_image, l.image_id, l.info
              FROM listings l, users u
              WHERE l.user_id = u.id
              AND l.id = ?"""
@@ -42,9 +42,9 @@ def get_user(listing_id):
     result = db.query(sql, [listing_id])
     return result[0][0] if result else None
 
-def update_listing(listing_id, name, info, cutting, classes):
-    sql = "UPDATE listings SET (name, info, cutting) = (?, ?, ?) WHERE id = ?"
-    db.execute(sql, [name, info, cutting, listing_id])
+def update_listing(listing_id, name, info, classes):
+    sql = "UPDATE listings SET (name, info) = (?, ?) WHERE id = ?"
+    db.execute(sql, [name, info, listing_id])
 
     delete_classes(listing_id)
 
@@ -63,7 +63,6 @@ def search(query, city):
     sql = """SELECT l.id listing_id,
                     l.name,
                     l.date,
-                    l.cutting,
                     l.image_id IS NOT NULL has_image,
                     u.username,
                     u.city
@@ -78,7 +77,6 @@ def fetch_all():
     sql = """SELECT l.id listing_id,
                     l.name,
                     l.date,
-                    l.cutting,
                     l.image_id IS NOT NULL has_image,
                     u.id user_id,
                     u.username,
