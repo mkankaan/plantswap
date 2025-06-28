@@ -28,48 +28,6 @@ block content %}
         <input type="text" id="city" name="city" />
         {% endif %}
       </div>
-
-      <div class="form-grid label-top">
-        <label for="type">Tyyppi</label>
-        <div class="radio-buttons-container">
-          <div>
-            {% if plant_type == "plant" %}
-            <input
-              type="radio"
-              name="plant_type"
-              value="plant"
-              checked
-            />
-            {% else %}
-            <input type="radio" name="plant_type" value="plant" />
-            {% endif %} Kasvi
-          </div>
-          <div>
-            {% if plant_type == "cutting" %}
-            <input
-              type="radio"
-              name="plant_type"
-              value="cutting"
-              checked
-            />
-            {% else %}
-            <input type="radio" name="plant_type" value="cutting" />
-            {% endif %} Pistokas
-          </div>
-          <div>
-            {% if plant_type == "all" %}
-            <input
-              type="radio"
-              name="plant_type"
-              value="all"
-              checked
-            />
-            {% else %}
-            <input type="radio" name="plant_type" value="all" />
-            {% endif %} Kaikki
-          </div>
-        </div>
-      </div>
     </fieldset>
     <div class="button-bar">
       <input type="submit" class="button" value="Hae" />

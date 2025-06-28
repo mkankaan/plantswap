@@ -348,16 +348,7 @@ def new_listing():
         is_cutting = request.form.getlist("cutting")
         info = request.form["info"]
         user_id = session["user_id"]
-
-        listing_classes = []
-
-        for listing_class in classes:
-            if listing_class == "Tyyppi":
-                listing_type = "Kasvi" if request.form.getlist("Tyyppi") == [] else "Pistokas"
-                listing_classes.append((listing_class, listing_type))
-            elif request.form[listing_class]:
-                listing_classes.append((listing_class, request.form[listing_class]))
-        
+                
         if not name or len(name) > restrictions["max_name"]:
             print("listing name length incorrect")
             abort(403)
@@ -367,6 +358,22 @@ def new_listing():
             abort(403)
 
         cutting = 0 if is_cutting == [] else 1
+
+        plant_type = request.form.getlist("cutting")
+        print("plant type:", plant_type)
+
+        if plant_type == []:
+            plant_type = "Tyyppi:Kasvi"
+        else:
+            plant_type = plant_type[0]
+
+        classes = [plant_type] + request.form.getlist("classes")
+        listing_classes = []
+
+        for entry in classes:
+            if entry:
+                parts = entry.split(":")
+                listing_classes.append((parts[0], parts[1]))
 
         try:
             listings.create_listing(name, user_id, cutting, info, listing_classes)
