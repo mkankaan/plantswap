@@ -143,7 +143,6 @@ def edit_profile(user_id):
         check_csrf()
 
         new_username = request.form["new_username"]
-
         new_city = request.form["new_city"]
 
         filled = { "username": new_username, "city": new_city }
@@ -340,7 +339,6 @@ def new_listing():
     if request.method == "POST":
         check_csrf()
         name = request.form["name"]
-        is_cutting = request.form.getlist("cutting")
         info = request.form["info"]
         user_id = session["user_id"]
                 
@@ -352,17 +350,7 @@ def new_listing():
             print("info length incorrect")
             abort(403)
 
-        cutting = 0 if is_cutting == [] else 1
-
-        plant_type = request.form.getlist("cutting")
-        print("plant type:", plant_type)
-
-        if plant_type == []:
-            plant_type = "Tyyppi:Kasvi"
-        else:
-            plant_type = plant_type[0]
-
-        classes = [plant_type] + request.form.getlist("classes")
+        classes = request.form.getlist("cutting") + request.form.getlist("classes")        
         listing_classes = []
 
         for entry in classes:
@@ -377,7 +365,7 @@ def new_listing():
                 listing_classes.append((option_title, option_value))
 
         try:
-            listings.create_listing(name, user_id, cutting, info, listing_classes)
+            listings.create_listing(name, user_id, 0, info, listing_classes)
             listing = users.newest_listing(user_id)
             return redirect("/add_listing_image/" + str(listing))
         except:
@@ -514,19 +502,10 @@ def edit_listing(listing_id):
 
     if request.method == "POST":
         check_csrf()
-
         name = request.form["name"]
         info = request.form["info"]
-        is_cutting = 1 if request.form.getlist("cutting") else 0
 
-        plant_type = request.form.getlist("cutting")
-
-        if plant_type == []:
-            plant_type = "Tyyppi:Kasvi"
-        else:
-            plant_type = plant_type[0]
-
-        new_classes = [plant_type] + request.form.getlist("classes")
+        new_classes = request.form.getlist("cutting") + request.form.getlist("classes")
         updated_classes = []
 
         for entry in new_classes:
@@ -540,7 +519,7 @@ def edit_listing(listing_id):
 
                 updated_classes.append((option_title, option_value))
 
-        listings.update_listing(listing["id"], name, info, is_cutting, updated_classes)
+        listings.update_listing(listing["id"], name, info, 0, updated_classes)
         flash("Muokkaus onnistui")
         return redirect("/listing/" + str(listing["id"]))
 
