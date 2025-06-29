@@ -192,7 +192,8 @@ textarea {
   color: var(--clr-text);
 }
 
-.button {
+.button,
+.button:visited {
   background-color: var(--clr-primary);
   color: var(--clr-light);
   border: var(--border-size) solid var(--clr-primary);
