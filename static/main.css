@@ -395,7 +395,7 @@ form:has(.comment) {
   background-color: var(--clr-light);
   margin-bottom: 1rem;
   border-radius: var(--border-radius-big);
-  padding: 1rem;
+  padding: 1rem 3.5rem;
   text-align: center;
 }
 

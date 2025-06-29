@@ -23,6 +23,10 @@ def show_lines(content):
     content = content.replace("\n", "<br />")
     return markupsafe.Markup(content)
 
+@app.route("/")
+def index():
+    return redirect("/search")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
@@ -672,7 +676,6 @@ def delete_account():
             return redirect("/")
         return redirect("/user/" + str(user_id))
     
-@app.route("/")
 @app.route("/search")
 def search():
     query = request.args.get("query") if request.args.get("query") else ""
