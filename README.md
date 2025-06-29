@@ -55,7 +55,7 @@ Sovellus käynnistyy oletusarvoisesti osoitteeseen http://localhost:5000
 
 - Käyttäjä voi lisätä, muokata ja poistaa ilmoituksia. Ilmoitus poistuu tietokannasta pysyvästi.
 - Käyttäjä voi vaihtaa ja poistaa ilmoituksen kuvan.
-- Kasville voi lisätä luokitteluja: tyyppi (pistokas/kokonainen kasvi) ja valon tarve (vähäinen/keskitaso/runsas). Luokkia voi päivittää jälkeenpäin.
+- Kasville voi lisätä luokitteluja: tyyppi (pistokas/kokonainen kasvi) ja valon tarve (vähäinen/keskitaso/runsas). Luokkia voi päivittää myöhemmin.
 - Jokaisen ilmoituksen voi klikata auki omalle sivulleen, jossa näkyy siihen liittyvät tiedot: lisäyspäivä, luokittelut, katselukerrat ja kommentit.
 
 ### Kommentit (toissijainen tietokohde)
