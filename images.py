@@ -9,7 +9,7 @@ def newest_image_from_user(user_id):
              FROM images
              WHERE user_id = ?
              ORDER BY id DESC
-            LIMIT 1 """
+             LIMIT 1 """
     result = db.query(sql, [user_id])
     return result[0][0] if result else None
 

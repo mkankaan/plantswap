@@ -1,4 +1,3 @@
-
 from flask import Flask
 from flask import render_template, request, redirect, session, abort, make_response, flash
 import db, users, config, listings, comments, images
@@ -41,7 +40,6 @@ def login():
 
         if user_id:
             active = users.check_status(user_id)
-            print("user id:", user_id, "active:", active)
 
             if active:
                 session["user_id"] = user_id
@@ -120,7 +118,6 @@ def show_user(user_id):
         abort(404)
     
     listings = users.get_listings(user_id)
-
     joined_date = date_formatter.format_date(user["joined"])
     return render_template("user.html", user=user, listings=listings, joined_date=joined_date)
 
@@ -128,8 +125,8 @@ def show_user(user_id):
 @app.route("/edit_profile/<int:user_id>", methods=["GET", "POST"])
 def edit_profile(user_id):
     require_login()
-
     user =  users.get_user(user_id)
+
     if not user:
         abort(404)
         
@@ -146,7 +143,6 @@ def edit_profile(user_id):
 
     if request.method == "POST":
         check_csrf()
-
         new_username = request.form["new_username"]
         new_city = request.form["new_city"]
 
@@ -166,7 +162,6 @@ def edit_profile(user_id):
         
         try:
             users.update_user(user_id, new_username, new_city)
-            print("käyttäjä", user_id, "päivitetty")
             flash("Muutokset tallennettu")
             session["username"] = new_username
             filled = { "username": new_username, "city": new_city }
@@ -180,7 +175,6 @@ def edit_profile(user_id):
 def change_password(user_id):
     require_login()
     check_csrf()
-
     user =  users.get_user(user_id)
 
     if not user:
@@ -220,7 +214,6 @@ def change_password(user_id):
             return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
 
         users.change_password(user_id, new_password1)
-        print("käyttäjän", user["username"], "salasana vaihdettu")
         flash("Salasana vaihdettu")
         return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
         
@@ -251,7 +244,6 @@ def add_image():
 
         if user["has_image"]:
             images.remove_image(user["image_id"])
-            print("deleted user's image")
 
         images.add_image(image, user_id)
         image_id = images.newest_image_from_user(user_id)
@@ -294,19 +286,13 @@ def remove_profile_image(user_id):
         if "continue" in request.form:
             image_id = user["image_id"]
             images.remove_image(image_id)
-
-            if user["has_image"]:
-                users.remove_image(user_id)
-                print("deleted image")
-
-            print("käyttäjän", user["id"], "kuva", image_id, "poistettu")
+            users.remove_image(user_id)
         return redirect("/")
 
 # add listing
 @app.route("/new_listing", methods=["GET", "POST"])
 def new_listing():
     require_login()
-
     restrictions = form_validation.new_listing_restrictions
     all_classes = listings.get_all_classes()
 
@@ -323,11 +309,9 @@ def new_listing():
             info = ""
                 
         if not name or len(name) > restrictions["max_name"]:
-            print("listing name length incorrect")
             abort(403)
 
         if len(info) > restrictions["max_info"]:
-            print("info length incorrect")
             abort(403)
 
         classes = request.form.getlist("cutting") + request.form.getlist("classes")        
@@ -349,13 +333,12 @@ def new_listing():
             listing = users.newest_listing(user_id)
             return redirect("/add_listing_image/" + str(listing))
         except:
-            return "jotain meni vikaan"
+            return "Tapahtui virhe"
 
 # add listing image
 @app.route("/add_listing_image/<int:listing_id>", methods=["GET", "POST"])
 def add_listing_image(listing_id):
     require_login()
-
     listing = listings.get_listing(listing_id)
 
     if not listing:
@@ -385,12 +368,9 @@ def add_listing_image(listing_id):
 
         if listing["has_image"]:
             images.remove_image(listing["image_id"])
-            print("deleted old image")
 
         images.add_image(image, user_id)
-        print("added image")
         image_id = images.newest_image_from_user(user_id)
-        print(user_id, "added image", image_id)
         listings.update_image(listing_id, image_id)
         flash("Kuvan lisääminen onnistui")
         return redirect("/listing/" + str(listing_id))
@@ -414,15 +394,9 @@ def remove_listing_image(listing_id):
         check_csrf()
 
         if "continue" in request.form:
-            image_id = listing["image_id"]
-            print("delete image_id", image_id, "from listing", listing["name"])
-            
+            image_id = listing["image_id"]            
             images.remove_image(image_id)
-
-            if listing["has_image"]:
-                listings.remove_image(listing_id)
-
-            print("ilmoituksen", listing["name"], "kuva", image_id, "poistettu")
+            listings.remove_image(listing_id)
             flash("Kuva poistettiin")
         return redirect("/")
 
@@ -436,17 +410,10 @@ def show_listing(listing_id):
         abort(404)
 
     classes = listings.get_classes(listing_id)
-
-    print("listing", listing_id, "classes:")
-    for a, b in classes:
-        print(a, b)
-
     listings.add_view(listing_id)
     listing = listings.get_listing(listing_id)
-
     user_id = listings.get_user(listing_id)
     user = users.get_user(user_id)
-
     date_added = date_formatter.format_date(listing["date"])
     restrictions = form_validation.listing_comment_restrictions
     hint_text = form_validation.form_hint_text["comment"]
@@ -467,17 +434,13 @@ def show_listing(listing_id):
         if comment["edited_date"]:
             formatted_comment["edited_date"] = date_formatter.format_date_time(comment["edited_date"])
         
-        print("new comment:", formatted_comment)
-
         formatted_comments.append(formatted_comment)
-
     return render_template("listing.html", listing=listing, user=user, comments=formatted_comments, date_added=date_added, restrictions=restrictions, hint_text=hint_text, classes=classes)
 
 # fetch listing image
 @app.route("/image/listing/<int:listing_id>")
 def show_listing_image(listing_id):
     image_id = listings.get_image_id(listing_id)
-    #print("listing", listing_id, "has image", image_id)
     image = images.get_image(image_id)
 
     if not image:
@@ -542,7 +505,6 @@ def edit_listing(listing_id):
 @app.route("/remove/listing/<int:listing_id>", methods=["GET", "POST"])
 def remove_listing(listing_id):
     require_login()
-
     listing = listings.get_listing(listing_id)
 
     if not listing:
@@ -560,12 +522,7 @@ def remove_listing(listing_id):
         if "continue" in request.form:
             comments.remove_from_listing(listing["id"])
             listings.remove_listing(listing["id"])
-
-            if listing["has_image"]:
-                images.remove_image(listing["image_id"])
-                print("deleted image", listing["image_id"])
-
-            print("ilmoitus", listing["id"], "poistettu")
+            images.remove_image(listing["image_id"])
             flash("Ilmoitus poistettiin")
         return redirect("/")
     
@@ -577,7 +534,7 @@ def new_comment():
     
     if request.method == "POST":
         content = request.form["content"]
-        user_id = str(session["user_id"]) # ?
+        user_id = str(session["user_id"])
         listing_id = request.form["listing_id"]
 
         content_valid, content_error_message = form_validation.validate_comment(content)
@@ -588,16 +545,14 @@ def new_comment():
                
         try:
             comments.create_comment(user_id, listing_id, content)
-            print("added comment")
             return redirect("/listing/" + str(listing_id))
         except:
-            return "jotain meni vikaan"
+            return "Tapahtui virhe"
         
 # edit comment
 @app.route("/edit/comment/<int:comment_id>", methods=["GET", "POST"])
 def edit_comment(comment_id):
     require_login()
-
     comment = comments.get_comment(comment_id)
 
     if not comment:
@@ -630,7 +585,6 @@ def edit_comment(comment_id):
 @app.route("/remove/comment/<int:comment_id>", methods=["GET", "POST"])
 def remove_comment(comment_id):
     require_login()
-
     comment = comments.get_comment(comment_id)
 
     if not comment:
@@ -647,7 +601,6 @@ def remove_comment(comment_id):
 
         if "continue" in request.form:
             comments.remove_comment(comment["id"])
-            print("kommentti", comment["id"], "poistettu")
             flash("Kommentti poistettiin")
         return redirect("/")
 
@@ -666,11 +619,9 @@ def delete_account():
 
         if "continue" in request.form:
             users.delete_account(user_id)
-            print(user_id, "poistettu")
 
             if user["has_image"]:
                 images.remove_image(user["image_id"])
-                print("deleted user's image")
 
             logout()
             return redirect("/")
