@@ -47,7 +47,7 @@ def validate_password(password):
         message = "Salasana ei saa sisältää välilyöntejä"
         return (False, message)
     
-    if not re.match(r'^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#%&=+-_?^])', password):
+    if not (re.match(r'^(?=.*[a-zA-Z])', password) and re.match(r'^(?=.*[0-9])', password) and re.match(r'^(?=.*[!@#%&=+-_?^*])', password)):
         message = "Salasanan täytyy sisältää vähintään yksi kirjain, yksi numero ja yksi erikoismerkki"
         return (False, message)
     
