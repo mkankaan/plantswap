@@ -43,7 +43,7 @@ def get_image(user_id):
     return result[0][0] if result else None
 
 def get_listings(user_id):
-    sql = "SELECT id, name, date, image_id IS NOT NULL has_image FROM listings WHERE user_id = ?"
+    sql = "SELECT id, name, date, image_id IS NOT NULL has_image FROM listings WHERE user_id = ? ORDER BY date DESC"
     return db.query(sql, [user_id])
 
 # fetches the newest listing posted by the user

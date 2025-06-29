@@ -78,19 +78,6 @@ def search(query, city):
              ORDER BY l.date DESC"""
     return db.query(sql, ["%" + query + "%", "%" + city + "%"])
 
-def fetch_all():
-    sql = """SELECT l.id listing_id,
-                    l.name,
-                    l.date,
-                    l.image_id IS NOT NULL has_image,
-                    u.id user_id,
-                    u.username,
-                    u.city
-             FROM listings l, users u
-             WHERE u.id = l.user_id
-             ORDER BY l.date DESC"""
-    return db.query(sql)
-
 def get_all_classes():
     sql = "SELECT option_title, option_value FROM classes"
     class_info = db.query(sql)

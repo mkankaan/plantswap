@@ -9,7 +9,8 @@ def get_by_listing(listing_id):
              FROM comments c, users u
              WHERE u.id = c.user_id AND
              c.status = 1 AND
-             c.listing_id = ?"""
+             c.listing_id = ?
+             ORDER BY c.sent_date DESC"""
     return db.query(sql, [listing_id])
 
 def get_comment(comment_id):
