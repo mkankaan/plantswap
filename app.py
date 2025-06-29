@@ -92,6 +92,12 @@ def register():
             flash(password_error_message)
             return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled=filled)
         
+        city_valid, city_error_message = form_validation.validate_city(city)
+
+        if not city_valid:
+            flash(city_error_message)
+            return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled=filled)
+        
         try:
             users.create_user(username, password1, city)
             flash("Tunnuksen luonti onnistui. Voit nyt kirjautua sisään.")
@@ -146,6 +152,12 @@ def edit_profile(user_id):
 
         if not username_valid:
             flash(username_error_message)
+            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
+        
+        city_valid, city_error_message = form_validation.validate_city(new_city)
+
+        if not city_valid:
+            flash(city_error_message)
             return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
         
         try:

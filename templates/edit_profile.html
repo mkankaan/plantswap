@@ -24,7 +24,7 @@ endblock %} {% block content %}
         type="text"
         id="new_city"
         name="new_city"
-        maxlength=""
+        maxlength="{{ restrictions.max_city }}"
         value="{{ filled.city }}"
         required
       />

@@ -1,14 +1,15 @@
 import re
 
-registration_restrictions = { "min_username": 3, "max_username": 20, "min_password": 8, "max_password": 100 }
+registration_restrictions = { "min_username": 3, "max_username": 20, "min_password": 8, "max_password": 100, "max_city": 50 }
 
-new_listing_restrictions = { "max_name": 30, "max_info": 500 }
+new_listing_restrictions = { "max_name": 50, "max_info": 500 }
 
 listing_comment_restrictions = { "max_comment": 500 }
 
 form_hint_text = {
     "username": f"Pituus {registration_restrictions['min_username']}-{registration_restrictions['max_username']} merkkiä",
     "password": f"Pituus {registration_restrictions['min_password']}-{registration_restrictions['max_password']} merkkiä ja vähintään yksi kirjain, numero ja erikoismerkki",
+    "city": f"Korkeintaan {registration_restrictions['max_city']} merkkiä",
     "comment": f"Korkeintaan {listing_comment_restrictions['max_comment']} merkkiä"
 }
 
@@ -44,6 +45,15 @@ def validate_password(password):
     
     if not re.match(r'^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#%&=+-_?^])', password):
         message = "Salasanan täytyy sisältää vähintään yksi kirjain, yksi numero ja yksi erikoismerkki"
+        return (False, message)
+    
+    return (True, "")
+
+def validate_city(city):
+    max_length = registration_restrictions["max_city"]
+
+    if not 1 <= len(city) <= max_length:
+        message = "Kaupungin nimen on oltava vähintään 1 ja korkeintaan " + str(max_length) + " merkkiä pitkä"
         return (False, message)
     
     return (True, "")
