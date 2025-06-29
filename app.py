@@ -55,9 +55,9 @@ def login():
         
 @app.route("/logout")
 def logout():
-    del session["user_id"]
-    del session["username"]
-    print("logged out")
+    if "user_id" in session:
+        del session["user_id"]
+        del session["username"]
     return redirect("/")
 
 @app.route("/register", methods=["GET", "POST"])
@@ -386,7 +386,6 @@ def remove_listing_image(listing_id):
         abort(404)
         
     if listing["user_id"] != session["user_id"]:
-        print("wrong user logged in")
         abort(403)
 
     if request.method == "GET":
