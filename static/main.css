@@ -316,7 +316,7 @@ form label {
 .profile-image-large {
   object-fit: cover;
   width: var(--image-large);
-  max-height: var(--image-large);
+  height: var(--image-large);
   border-radius: 100%;
   margin: 0 auto;
 }
