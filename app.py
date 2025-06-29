@@ -314,6 +314,9 @@ def new_listing():
         name = request.form["name"]
         info = request.form["info"]
         user_id = session["user_id"]
+
+        if info.strip() == "":
+            info = ""
                 
         if not name or len(name) > restrictions["max_name"]:
             print("listing name length incorrect")
@@ -510,6 +513,9 @@ def edit_listing(listing_id):
         name = request.form["name"]
         info = request.form["info"]
 
+        if info.strip() == "":
+            info = ""
+
         new_classes = request.form.getlist("cutting") + request.form.getlist("classes")
         updated_classes = []
 
@@ -564,18 +570,18 @@ def remove_listing(listing_id):
 def new_comment():
     check_csrf()
     require_login()
-
-    restrictions = form_validation.listing_comment_restrictions
     
     if request.method == "POST":
         content = request.form["content"]
         user_id = str(session["user_id"]) # ?
         listing_id = request.form["listing_id"]
 
-        if not content or len(content) > restrictions["max_comment"]:
-            print("comment length incorrect")
-            abort(403)
+        content_valid, content_error_message = form_validation.validate_comment(content)
 
+        if not content_valid:
+            flash(content_error_message)
+            return redirect("/listing/" + str(listing_id)) 
+               
         try:
             comments.create_comment(user_id, listing_id, content)
             print("added comment")
@@ -605,8 +611,15 @@ def edit_comment(comment_id):
     if request.method == "POST":
         check_csrf()
         content = request.form["content"]
+
+        content_valid, content_error_message = form_validation.validate_comment(content)
+
+        if not content_valid:
+            flash(content_error_message)
+            return redirect("/edit/comment/" + str(comment["listing_id"])) 
+               
         comments.update_comment(comment_id, content)
-        print("päivitys onnistui")
+        flash("Muokkaus onnistui")
         return redirect("/listing/" + str(comment["listing_id"]))
     
 # remove comment

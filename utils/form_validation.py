@@ -43,6 +43,10 @@ def validate_password(password):
         message = "Salasanan on oltava vähintään " + str(min_length) + " ja korkeintaan " + str(max_length) + " merkkiä pitkä"
         return (False, message)
     
+    if len(password) != len(password.replace(" ", "")):
+        message = "Salasana ei saa sisältää välilyöntejä"
+        return (False, message)
+    
     if not re.match(r'^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#%&=+-_?^])', password):
         message = "Salasanan täytyy sisältää vähintään yksi kirjain, yksi numero ja yksi erikoismerkki"
         return (False, message)
@@ -51,9 +55,23 @@ def validate_password(password):
 
 def validate_city(city):
     max_length = registration_restrictions["max_city"]
+    city = city.strip()
 
     if not 1 <= len(city) <= max_length:
         message = "Kaupungin nimen on oltava vähintään 1 ja korkeintaan " + str(max_length) + " merkkiä pitkä"
+        return (False, message)
+    
+    return (True, "")
+
+def validate_comment(content):
+    max_length = listing_comment_restrictions["max_comment"]
+
+    if not content or content.strip() == "":
+        message = "Kommentti ei voi olla tyhjä"
+        return (False, message)
+
+    if len(content) > max_length:
+        message = "Kommentin maksimipituus on " + str(max_length) + " merkkiä"
         return (False, message)
     
     return (True, "")
