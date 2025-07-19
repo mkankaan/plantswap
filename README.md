@@ -1,8 +1,10 @@
 # 🔄 PlantSwap 🪴
 
+### (Jatkan edellisellä toteutuksella kesken jäänyttä projektia)
+
 🌵 [Kuvaus](#kuvaus) <br/>
 🌵 [Ajo-ohjeet](#ajo-ohjeet) <br/>
-🌵 [Sovelluksen tila (loppupalautus)](#loppupalautus) <br/>
+🌵 [Sovelluksen tila](#tila) <br/>
 
 ## <a name="kuvaus"></a> Kuvaus
 
@@ -41,7 +43,7 @@ flask run
 
 Sovellus käynnistyy oletusarvoisesti osoitteeseen http://localhost:5000
 
-## <a name="loppupalautus"></a> Sovelluksen tila (loppupalautus)
+## <a name="tila"></a> Sovelluksen tila
 
 ### Kirjautuminen ja profiili
 
