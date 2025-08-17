@@ -1,7 +1,5 @@
 # 🔄 PlantSwap 🪴
 
-### (Jatkan edellisellä toteutuksella kesken jäänyttä projektia)
-
 🌵 [Kuvaus](#kuvaus) <br/>
 🌵 [Ajo-ohjeet](#ajo-ohjeet) <br/>
 🌵 [Sovelluksen tila](#tila) <br/>
