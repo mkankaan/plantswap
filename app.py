@@ -546,6 +546,8 @@ def new_comment():
         try:
             comments.create_comment(user_id, listing_id, content)
             return redirect("/listing/" + str(listing_id))
+        except sqlite3.IntegrityError:
+            abort(403)
         except:
             return "Tapahtui virhe"
         
