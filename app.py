@@ -1,8 +1,7 @@
 from flask import Flask
 from flask import render_template, request, redirect, session, abort, make_response, flash
-import db, users, config, listings, comments, images
+import users, config, listings, comments, images
 import sqlite3, secrets, markupsafe
-from math import ceil
 from utils import form_validation, date_formatter
 
 app = Flask(__name__)

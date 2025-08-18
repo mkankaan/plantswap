@@ -13,7 +13,7 @@ CREATE TABLE listings (
     name TEXT,
     user_id INTEGER,
     date TEXT,
-    views INTEGER,
+    views INTEGER DEFAULT 0,
     info TEXT,
     image_id INTEGER DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
