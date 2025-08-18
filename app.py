@@ -36,7 +36,8 @@ def show_lines(content):
 
 @app.route("/")
 def index():
-    return redirect("/search")
+    all_listings = listings.get_all_listings()
+    return render_template("index.html", listings=all_listings)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

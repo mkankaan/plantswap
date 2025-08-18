@@ -1,12 +1,38 @@
-{% extends "layout.html" %} {% block title %}PlantSwap{% endblock %}
-{% block content %}
+{% extends "layout.html" %} {% block title %}PlantSwap{% endblock%} {%
+block content %}
 <section>
   <h2>Etusivu</h2>
+  <ul>
+    {% for listing in listings %}
+    <li class="list-item">
+      <div class="listing-thumbnail-container">
+        {% if listing.has_image %}
+        <img
+          class="listing-thumbnail"
+          src="/image/listing/{{ listing.listing_id }}"
+        />
+        {% else %}
+        <p class="text-small">Ei kuvaa</p>
+        {% endif %}
+      </div>
 
-  {% if session.user_id %}
-  <p>olet kirjautunut sisään</p>
-  {% else %}
-  <p><a href="/login">Kirjaudu sisään</a> nähdäksesi suosikkisi.</p>
-  {% endif %}
+      <div>
+        <p>
+          <a href="/listing/{{ listing.listing_id }}"
+            >{{ listing.name }}</a
+          >
+        </p>
+        <p>
+          <a href="/user/{{ listing.user_id }}"
+            >{{ listing.username }}</a
+          >
+          📍 {{ listing.city }}
+        </p>
+
+        <p>{{ listing.date }}</p>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
 </section>
 {% endblock %}

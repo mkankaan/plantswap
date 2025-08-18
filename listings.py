@@ -23,6 +23,18 @@ def get_listing_classes(listing_id):
     sql = "SELECT option_title, option_value FROM classes WHERE listing_id = ?"
     return db.query(sql, [listing_id])
 
+def get_all_listings():
+    sql = """SELECT l.id listing_id,
+                    l.name,
+                    l.date,
+                    l.image_id IS NOT NULL has_image,
+                    u.username,
+                    u.id user_id,
+                    u.city
+             FROM listings l, users u
+             WHERE u.id = l.user_id
+             ORDER BY l.date DESC"""
+    return db.query(sql)
 
 def update_image(listing_id, image_id):
     sql = "UPDATE listings SET image_id = ? WHERE id = ?"
