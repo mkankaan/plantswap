@@ -35,16 +35,19 @@ block content %}
   </form>
 </section>
 <section>
-  <h3>Hakutulokset ({{ results | count }})</h3>
+  <h3>
+    Hakutulokset {% if query or city %}({{ results | count }}){% endif
+    %}
+  </h3>
 
   {% if query and city %}
   <p>Näytetään tulokset hakutekijöillä "{{ query }}", "{{ city }}"</p>
   {% elif query %}
   <p>Näytetään tulokset hakusanalla "{{ query }}"</p>
   {% elif city %}
-  <p>Näytetään tulokset kaupungista "{{ city }}"</p>
+  <p>Näytetään tulokset sijainnista "{{ city }}"</p>
   {% else %}
-  <p>Näytetään kaikki</p>
+  <p>Syötä hakusana tai sijainti.</p>
   {% endif %} {% if results %}
   <ul>
     {% for result in results %}
@@ -78,8 +81,8 @@ block content %}
     </li>
     {% endfor %}
   </ul>
-  {% else %}
+  {% else %} {% if query or city %}
   <p class="text-no-results">Ei tuloksia</p>
-  {% endif %}
+  {% endif %} {% endif %}
 </section>
 {% endblock %}

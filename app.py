@@ -664,6 +664,6 @@ def delete_account():
 def search():
     query = request.args.get("query") if request.args.get("query") else ""
     city = request.args.get("city") if request.args.get("city") else ""
-    results = listings.search(query, city)
+    results = listings.search(query, city) if query or city else []
     return render_template("search.html", query=query, city=city, results=results)
 
