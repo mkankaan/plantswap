@@ -314,7 +314,8 @@ def remove_profile_image(user_id):
             image_id = user["image_id"]
             images.remove_image(image_id)
             users.remove_image(user_id)
-        return redirect("/")
+        return redirect("/user/" + str(user_id))
+
 
 # add listing
 @app.route("/new_listing", methods=["GET", "POST"])
