@@ -4,7 +4,7 @@ import users, config, listings, comments, images
 import sqlite3, secrets, markupsafe
 from utils import form_validation, date_formatter
 
-import time
+import time, math
 from flask import g
 
 app = Flask(__name__)
@@ -35,9 +35,20 @@ def show_lines(content):
     return markupsafe.Markup(content)
 
 @app.route("/")
-def index():
-    all_listings = listings.get_all_listings()
-    return render_template("index.html", listings=all_listings)
+@app.route("/<int:page>")
+def index(page=1):
+    page_size = 20
+    listing_count = listings.listing_count()
+    page_count = math.ceil(listing_count / page_size)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect("/1")
+    if page > page_count:
+        return redirect("/" + str(page_count))
+    
+    all_listings = listings.get_listings_by_page(page, page_size)
+    return render_template("index.html", listings=all_listings, page=page, page_count=page_count)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

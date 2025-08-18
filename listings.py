@@ -23,7 +23,7 @@ def get_listing_classes(listing_id):
     sql = "SELECT option_title, option_value FROM classes WHERE listing_id = ?"
     return db.query(sql, [listing_id])
 
-def get_all_listings():
+def get_listings_by_page(page, page_size):
     sql = """SELECT l.id listing_id,
                     l.name,
                     l.date,
@@ -33,8 +33,15 @@ def get_all_listings():
                     u.city
              FROM listings l, users u
              WHERE u.id = l.user_id
-             ORDER BY l.date DESC"""
-    return db.query(sql)
+             ORDER BY l.date DESC
+             LIMIT ? OFFSET ?"""
+    limit = page_size
+    offset = page_size*(page-1)
+    return db.query(sql, [limit, offset])
+
+def listing_count():
+    sql = "SELECT COUNT(*) FROM listings"
+    return db.query(sql)[0][0]
 
 def update_image(listing_id, image_id):
     sql = "UPDATE listings SET image_id = ? WHERE id = ?"
