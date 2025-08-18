@@ -1,7 +1,17 @@
 {% extends "layout.html" %} {% block title %}PlantSwap{% endblock%} {%
 block content %}
 <section>
-  <h2>Etusivu</h2>
+  <h2>Ilmoitukset</h2>
+  {% if listings and not session.username %}
+  <p>
+    <a href="/login">Kirjaudu sisään</a> lisätäksesi ilmoituksia ja
+    kommentteja.
+  </p>
+  {% endif %} {% if listings %}
+  <p>
+    Näytetään {{ first_listing_number}}-{{last_listing_number}}/{{
+    total_count }}
+  </p>
   <ul>
     {% for listing in listings %}
     <li class="list-item">
@@ -28,16 +38,30 @@ block content %}
           >
           📍 {{ listing.city }}
         </p>
-
         <p>{{ listing.date }}</p>
       </div>
     </li>
     {% endfor %}
   </ul>
-  <p>
+  <p class="page-selection">
+    {% if page > 1 %}
     <a href="/{{ page - 1 }}">&lt;&lt;</a>
-    Sivu {{ page }}/{{ page_count }}
+    {% endif %} Sivu {{ page }}/{{ page_count }} {% if page_count >
+    page %}
     <a href="/{{ page + 1 }}">&gt;&gt;</a>
+    {% endif %}
   </p>
+  {% else %} {% if session.username %}
+  <p class="text-no-results">
+    Ei ilmoituksia. Lisää uusi ilmoitus
+    <a href="/new_listing">tästä</a>.
+  </p>
+  {% else %}
+  <p class="text-no-results">
+    Ei ilmoituksia. <a href="/login">Kirjaudu sisään</a> tai
+    <a href="/register">luo tili</a> lisätäksesi ilmoituksia ja
+    kommentteja.
+  </p>
+  {% endif %} {% endif %}
 </section>
 {% endblock %}

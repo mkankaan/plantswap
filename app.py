@@ -47,8 +47,15 @@ def index(page=1):
     if page > page_count:
         return redirect("/" + str(page_count))
     
+    first_listing_number = page_size*(page-1)+1
+
+    if page < page_count:
+        last_listing_number = first_listing_number + (page_size-1)
+    else:
+        last_listing_number = first_listing_number + (listing_count%page_size) - 1
+    
     all_listings = listings.get_listings_by_page(page, page_size)
-    return render_template("index.html", listings=all_listings, page=page, page_count=page_count)
+    return render_template("index.html", listings=all_listings, page=page, page_count=page_count, first_listing_number=first_listing_number, last_listing_number=last_listing_number, total_count=listing_count)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
