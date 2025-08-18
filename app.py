@@ -1,11 +1,8 @@
 from flask import Flask
-from flask import render_template, request, redirect, session, abort, make_response, flash
+from flask import render_template, request, redirect, session, abort, make_response, flash, g
 import users, config, listings, comments, images
-import sqlite3, secrets, markupsafe
+import sqlite3, secrets, markupsafe, time, math
 from utils import form_validation, date_formatter
-
-import time, math
-from flask import g
 
 app = Flask(__name__)
 app.secret_key = config.secret_key

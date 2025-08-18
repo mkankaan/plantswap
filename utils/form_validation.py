@@ -8,7 +8,7 @@ listing_comment_restrictions = { "max_comment": 500 }
 
 form_hint_text = {
     "username": f"Pituus {registration_restrictions['min_username']}-{registration_restrictions['max_username']} merkkiä",
-    "password": f"Pituus {registration_restrictions['min_password']}-{registration_restrictions['max_password']} merkkiä ja vähintään yksi kirjain, numero ja erikoismerkki",
+    "password": f"Pituus {registration_restrictions['min_password']}-{registration_restrictions['max_password']} merkkiä, vähintään yksi kirjain ja numero",
     "city": f"Korkeintaan {registration_restrictions['max_city']} merkkiä",
     "comment": f"Korkeintaan {listing_comment_restrictions['max_comment']} merkkiä"
 }
@@ -47,8 +47,8 @@ def validate_password(password):
         message = "Salasana ei saa sisältää välilyöntejä"
         return (False, message)
     
-    if not (re.match(r'^(?=.*[a-zA-Z])', password) and re.match(r'^(?=.*[0-9])', password) and re.match(r'^(?=.*[!@#%&=+-_?^*])', password)):
-        message = "Salasanan täytyy sisältää vähintään yksi kirjain, yksi numero ja yksi erikoismerkki (!@#%&=+-_?^*)"
+    if not (re.match(r'^(?=.*[a-zA-Z])', password) and re.match(r'^(?=.*[0-9])', password)):
+        message = "Salasanan täytyy sisältää vähintään yksi kirjain ja yksi numero."
         return (False, message)
     
     return (True, "")
