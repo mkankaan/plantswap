@@ -166,7 +166,6 @@ def edit_profile(user_id):
 
     if request.method == "GET":
         filled = { "username": user["username"], "city": user["city"] }
-
         return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
 
     if request.method == "POST":
@@ -426,8 +425,7 @@ def remove_listing_image(listing_id):
             images.remove_image(image_id)
             listings.remove_image(listing_id)
             flash("Kuva poistettiin")
-        return redirect("/")
-
+        return redirect("/listing/" + str(listing_id))
     
 # listing page
 @app.route("/listing/<int:listing_id>")
