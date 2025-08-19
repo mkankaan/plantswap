@@ -41,11 +41,17 @@ block content %}
   </h3>
 
   {% if query and city %}
-  <p>Näytetään tulokset hakutekijöillä "{{ query }}", "{{ city }}"</p>
+  <p class="text-small">
+    Näytetään tulokset hakutekijöillä "{{ query }}", "{{ city }}"
+  </p>
   {% elif query %}
-  <p>Näytetään tulokset hakusanalla "{{ query }}"</p>
+  <p class="text-small">
+    Näytetään tulokset hakusanalla "{{ query }}"
+  </p>
   {% elif city %}
-  <p>Näytetään tulokset sijainnista "{{ city }}"</p>
+  <p class="text-small">
+    Näytetään tulokset sijainnista "{{ city }}"
+  </p>
   {% else %}
   <p>Syötä hakusana tai sijainti.</p>
   {% endif %} {% if results %}
