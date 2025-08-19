@@ -349,6 +349,7 @@ form label {
   border: 1px solid var(--clr-neutral-light);
   border-radius: 0.5rem;
   min-width: 100%;
+  max-width: calc(700px - 6rem);
 }
 
 form:has(.comment) {
