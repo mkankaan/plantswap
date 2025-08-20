@@ -484,6 +484,9 @@ form .button-bar-vertical {
 .text-no-results {
   color: var(--clr-neutral-dark);
   font-style: italic;
+}
+
+.text-no-results:not(.comment *) {
   text-align: center;
   padding: 0 20%;
 }

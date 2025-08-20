@@ -148,13 +148,15 @@ endblock %} {% block content %}
             />
             {% else %}
             <div class="no-profile-image"></div>
-            {% endif %}
-
+            {% endif %} {% if comment.user_status == 1 %}
             <p>
               <a href="/user/{{ comment.user_id }}"
                 >{{ comment.username }}</a
               >
             </p>
+            {% else %}
+            <p class="text-no-results">Käyttäjä poistettu</p>
+            {% endif %}
           </div>
 
           <div>

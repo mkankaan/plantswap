@@ -667,6 +667,7 @@ def delete_account():
                 images.remove_image(user["image_id"])
 
             logout()
+            flash("Tili poistettiin")
             return redirect("/")
         return redirect("/user/" + str(user_id))
     
