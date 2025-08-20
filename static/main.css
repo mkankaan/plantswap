@@ -24,6 +24,7 @@
   --listing-thumbnail-size: 11rem;
   --label-width: 12rem;
   --input-width: 16rem;
+  --textarea-width: 24rem;
   --font-weight-bold: 500;
 }
 
@@ -105,6 +106,7 @@ select {
   background-color: var(--clr-light);
   border: 1px solid var(--clr-neutral-dark);
   border-radius: var(--border-radius-small);
+  max-width: var(--input-width);
 }
 
 .radio-buttons-container {
@@ -164,9 +166,12 @@ select {
 }
 
 form input[type='text'],
-form input[type='password'],
-form textarea {
+form input[type='password'] {
   width: var(--input-width);
+}
+
+form textarea {
+  width: min(var(--textarea-width), 100%);
 }
 
 .form-checkbox {

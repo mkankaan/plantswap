@@ -52,7 +52,21 @@ def index(page=1):
         last_listing_number = first_listing_number + (listing_count%page_size) - 1
     
     all_listings = listings.get_listings_by_page(page, page_size)
-    return render_template("index.html", listings=all_listings, page=page, page_count=page_count, first_listing_number=first_listing_number, last_listing_number=last_listing_number, total_count=listing_count)
+    formatted_listings = []
+
+    for listing in all_listings:
+        formatted_listing = {
+            "listing_id": listing["listing_id"],
+            "name": listing["name"],
+            "date": date_formatter.format_date(listing["date"]),
+            "has_image": listing["has_image"],
+            "username": listing["username"],
+            "user_id": listing["user_id"],
+            "city": listing["city"]
+        }
+        formatted_listings.append(formatted_listing)
+
+    return render_template("index.html", listings=formatted_listings, page=page, page_count=page_count, first_listing_number=first_listing_number, last_listing_number=last_listing_number, total_count=listing_count)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -456,7 +470,7 @@ def show_listing(listing_id):
                        "username": comment["username"],
                        "sent_date": date_formatter.format_date_time(comment["sent_date"]),
                        "user_status": comment["user_status"],
-                       "user_has_image": comment["user_has_image"]                       }
+                       "user_has_image": comment["user_has_image"]}
         
         if comment["edited_date"]:
             formatted_comment["edited_date"] = date_formatter.format_date_time(comment["edited_date"])
@@ -661,5 +675,21 @@ def search():
     query = request.args.get("query") if request.args.get("query") else ""
     city = request.args.get("city") if request.args.get("city") else ""
     results = listings.search(query, city) if query or city else []
+
+    if results:
+        formatted_results = []
+
+        for result in results:
+            formatted_result = {
+                "result_id": result["listing_id"],
+                "name": result["name"],
+                "date": date_formatter.format_date(result["date"]),
+                "has_image": result["has_image"],
+                "username": result["username"],
+                "user_id": result["user_id"],
+                "city": result["city"]
+            }
+            formatted_results.append(formatted_result)
+
     return render_template("search.html", query=query, city=city, results=results)
 
