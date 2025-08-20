@@ -11,31 +11,27 @@ CREATE TABLE users (
 CREATE TABLE listings (
     id INTEGER PRIMARY KEY,
     name TEXT,
-    user_id INTEGER,
+    user_id INTEGER REFERENCES users,
     date TEXT,
     views INTEGER DEFAULT 0,
     info TEXT,
-    image_id INTEGER DEFAULT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    image_id INTEGER DEFAULT NULL
 );
 
 CREATE TABLE comments (
     id INTEGER PRIMARY KEY,
     content TEXT,
-    user_id INTEGER,
-    listing_id INTEGER,
+    user_id INTEGER REFERENCES users,
+    listing_id INTEGER REFERENCES listings,
     sent_date TEXT,
     edited_date TEXT DEFAULT NULL,
-    status INTEGER DEFAULT 1,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (listing_id) REFERENCES listings(id)
+    status INTEGER DEFAULT 1
 );
 
 CREATE TABLE images (
     id INTEGER PRIMARY KEY,
-    user_id INTEGER, 
-    image BLOB,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    user_id INTEGER REFERENCES users, 
+    image BLOB
 );
 
 CREATE TABLE cities (
@@ -51,7 +47,7 @@ CREATE TABLE classes (
 
 CREATE TABLE listing_classes (
     id INTEGER PRIMARY KEY,
-    listing_id INTEGER REFERENCES listings(id),
+    listing_id INTEGER REFERENCES listings,
     option_title TEXT,
     option_value TEXT
 );
