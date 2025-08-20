@@ -681,7 +681,7 @@ def search():
 
         for result in results:
             formatted_result = {
-                "result_id": result["listing_id"],
+                "listing_id": result["listing_id"],
                 "name": result["name"],
                 "date": date_formatter.format_date(result["date"]),
                 "has_image": result["has_image"],
@@ -690,6 +690,7 @@ def search():
                 "city": result["city"]
             }
             formatted_results.append(formatted_result)
+        results = formatted_results
 
-    return render_template("search.html", query=query, city=city, results=formatted_results)
+    return render_template("search.html", query=query, city=city, results=results)
 

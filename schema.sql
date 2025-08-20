@@ -24,8 +24,7 @@ CREATE TABLE comments (
     user_id INTEGER REFERENCES users,
     listing_id INTEGER REFERENCES listings,
     sent_date TEXT,
-    edited_date TEXT DEFAULT NULL,
-    status INTEGER DEFAULT 1
+    edited_date TEXT DEFAULT NULL
 );
 
 CREATE TABLE images (
