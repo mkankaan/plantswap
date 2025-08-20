@@ -60,7 +60,8 @@ Sovellus käynnistyy oletusarvoisesti osoitteeseen http://localhost:5000
 
 ### Kommentit (toissijainen tietokohde)
 
-- Käyttäjä voi lisätä kommentin ilmoitukseen. Käyttäjä pystyy muokkaamaan ja poistamaan omia kommenttejaan.
+- Käyttäjä voi lisätä kommentin ilmoitukseen.
+- Käyttäjä pystyy muokkaamaan ja poistamaan omia kommenttejaan. Kommentti poistuu tietokannasta pysyvästi.
 
 ### Haku
 
