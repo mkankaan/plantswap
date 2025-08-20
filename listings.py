@@ -33,6 +33,7 @@ def get_listings_by_page(page, page_size):
                     u.city
              FROM listings l, users u
              WHERE u.id = l.user_id
+             AND u.status = 1
              ORDER BY l.date DESC
              LIMIT ? OFFSET ?"""
     limit = page_size
@@ -92,6 +93,7 @@ def search(query, city):
                     u.city
              FROM listings l, users u
              WHERE u.id = l.user_id AND
+             u.status = 1 AND
              l.name LIKE ? AND
                    u.city LIKE ?
              ORDER BY l.date DESC"""
