@@ -99,10 +99,9 @@ endblock %} {% block content %}
 
   {% if session.user_id %}
   <div>
-    <p class="subheading">Uusi kommentti</p>
-
     <form action="/new_comment" method="post">
-      <div>
+      <div class="form-grid-vertical">
+        <label for="content">Uusi kommentti</label>
         <textarea
           name="content"
           rows="5"

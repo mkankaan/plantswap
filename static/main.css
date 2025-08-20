@@ -127,6 +127,11 @@ select {
   align-items: center;
 }
 
+.form-grid-vertical {
+  display: grid;
+  gap: 0.5rem;
+}
+
 .form-grid.label-top {
   align-items: normal;
 }

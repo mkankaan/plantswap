@@ -17,25 +17,29 @@ endblock %} {% block content %}
     </div>
 
     {% for class in all_classes %} {% if class == "Tyyppi" %}
-    <p class="form-checkbox">
-      {% if listing_classes[class] == "Pistokas" %}
-      <input
-        type="checkbox"
-        name="cutting"
-        value="{{ class }}:Pistokas"
-        checked
-      />
-      {% else %}
-      <input
-        type="checkbox"
-        name="cutting"
-        value="{{ class }}:Pistokas"
-      />
-      {% endif %} Pistokas
-    </p>
+    <div class="form-grid">
+      <label for="{{ class }}">{{ class }}</label>
+      <p class="form-checkbox">
+        {% if listing_classes[class] == "Pistokas" %}
+        <input
+          type="checkbox"
+          name="cutting"
+          value="{{ class }}:Pistokas"
+          checked
+        />
+        {% else %}
+        <input
+          type="checkbox"
+          name="cutting"
+          value="{{ class }}:Pistokas"
+        />
+        {% endif %} Pistokas
+      </p>
+    </div>
+
     {% else %}
     <div class="form-grid">
-      <label>{{ class }}</label>
+      <label for="{{ class }}">{{ class }}</label>
       <select name="classes">
         <option value="" selected>- Valitse -</option>
         {% for option in all_classes[class] %} {% if

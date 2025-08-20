@@ -20,17 +20,21 @@
     </div>
 
     {% for class in classes %} {% if class == 'Tyyppi' %}
-    <p class="form-checkbox">
-      <input
-        type="checkbox"
-        name="cutting"
-        value="{{ class }}:Pistokas"
-      />
-      Pistokas
-    </p>
+    <div class="form-grid">
+      <label for="{{ class }}">{{ class }}</label>
+      <p class="form-checkbox">
+        <input
+          type="checkbox"
+          name="cutting"
+          value="{{ class }}:Pistokas"
+        />
+        Pistokas
+      </p>
+    </div>
+
     {% else %}
     <div class="form-grid">
-      <label>{{ class}}</label>
+      <label for="{{ class }}">{{ class}}</label>
       <select name="classes">
         <option value="" selected>- Valitse -</option>
         {% for option in classes[class] %}
