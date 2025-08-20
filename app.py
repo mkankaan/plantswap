@@ -34,7 +34,7 @@ def show_lines(content):
 @app.route("/")
 @app.route("/<int:page>")
 def index(page=1):
-    page_size = 20
+    page_size = 10
     listing_count = listings.listing_count()
     page_count = math.ceil(listing_count / page_size)
     page_count = max(page_count, 1)
