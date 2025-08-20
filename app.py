@@ -645,7 +645,7 @@ def remove_comment(comment_id):
         if "continue" in request.form:
             comments.remove_comment(comment["id"])
             flash("Kommentti poistettiin")
-        return redirect("/")
+        return redirect("/listing/" + str(comment["listing_id"]))
 
 # delete user account
 @app.route("/delete_account", methods=["GET", "POST"])
@@ -691,5 +691,5 @@ def search():
             }
             formatted_results.append(formatted_result)
 
-    return render_template("search.html", query=query, city=city, results=results)
+    return render_template("search.html", query=query, city=city, results=formatted_results)
 
