@@ -1,22 +1,28 @@
 import db
 
 def create_listing(name, user_id, info, classes):
-    sql = "INSERT INTO listings (name, user_id, views, date, info) VALUES (?, ?, -1, datetime('now'), ?)"
+    sql = """INSERT INTO listings (name, user_id, views, date, info)
+             VALUES (?, ?, -1, datetime('now'), ?)"""
     db.execute(sql, [name, user_id, info])
 
-    sql = "INSERT INTO listing_classes (listing_id, option_title, option_value) VALUES (?, ?, ?)"
+    sql = """INSERT INTO listing_classes
+         (listing_id, option_title, option_value)
+         VALUES (?, ?, ?)"""
     listing_id = db.last_insert_id()
 
     for option_title, option_value in classes:
         print("listing:", name, "add class:", option_title, "value:", option_value)
         db.execute(sql, [listing_id, option_title, option_value])
-    
-def get_listing(id):
-    sql = """SELECT l.id, l.name, l.date, l.user_id, u.username, l.views, l.image_id IS NOT NULL has_image, l.image_id, l.info
+
+def get_listing(listing_id):
+    sql = """SELECT l.id, l.name, l.date,
+             l.user_id, u.username, l.views,
+             l.image_id IS NOT NULL has_image,
+             l.image_id, l.info
              FROM listings l, users u
              WHERE l.user_id = u.id
              AND l.id = ?"""
-    result = db.query(sql, [id])
+    result = db.query(sql, [listing_id])
     return result[0] if result else None
 
 def get_listing_classes(listing_id):
@@ -121,4 +127,3 @@ def get_classes(listing_id):
 def delete_classes(listing_id):
     sql = "DELETE FROM listing_classes WHERE listing_id = ?"
     db.execute(sql, [listing_id])
-

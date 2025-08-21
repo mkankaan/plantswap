@@ -5,7 +5,7 @@ def add_image(image, user_id):
     db.execute(sql, [image, user_id])
 
 def newest_image_from_user(user_id):
-    sql = """SELECT id 
+    sql = """SELECT id
              FROM images
              WHERE user_id = ?
              ORDER BY id DESC

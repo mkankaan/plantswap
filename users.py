@@ -9,21 +9,23 @@ def check_login(username, password):
         user_id, password_hash = result[0]
         if check_password_hash(password_hash, password):
             return user_id
-        
     return None
-    
+
 def check_status(user_id):
     sql = "SELECT status FROM users WHERE id = ?"
     result = db.query(sql, [user_id])
     return result[0][0] == 1 if result else None
-        
+
 def create_user(username, password, city):
     password_hash = generate_password_hash(password)
-    sql = "INSERT INTO users (username, password_hash, city, joined) VALUES (?, ?, ?, datetime('now'))"
+    sql = """INSERT INTO users (username, password_hash, city, joined)
+             VALUES (?, ?, ?, datetime('now'))"""
     db.execute(sql, [username, password_hash, city])
 
 def get_user(user_id):
-    sql = """SELECT u.id, u.username, u.city, u.joined, u.image_id IS NOT NULL has_image, u.image_id, u.status
+    sql = """SELECT u.id, u.username, u.city, u.joined,
+             u.image_id IS NOT NULL has_image,
+             u.image_id, u.status
              FROM users u
              WHERE u.id = ?"""
     result = db.query(sql, [user_id])
@@ -43,12 +45,15 @@ def get_image(user_id):
     return result[0][0] if result else None
 
 def get_listings(user_id):
-    sql = "SELECT id, name, date, image_id IS NOT NULL has_image FROM listings WHERE user_id = ? ORDER BY date DESC"
+    sql = """SELECT id, name, date, image_id IS NOT NULL has_image
+             FROM listings
+             WHERE user_id = ?
+             ORDER BY date DESC"""
     return db.query(sql, [user_id])
 
 # fetches the newest listing posted by the user
 def newest_listing(user_id):
-    sql = """SELECT id 
+    sql = """SELECT id
              FROM listings
              WHERE user_id = ?
              ORDER BY id DESC
@@ -68,4 +73,3 @@ def change_password(user_id, new_password):
     new_password_hash = generate_password_hash(new_password)
     sql = "UPDATE users SET password_hash = ? WHERE id = ?"
     db.execute(sql, [new_password_hash, user_id])
-

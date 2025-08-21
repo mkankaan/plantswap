@@ -25,11 +25,11 @@ def validate_username(username):
         message = "Käyttäjätunnus ei saa sisältää välilyöntejä"
         return (False, message)
     
-    if not re.search(r'[A-Za-z]{1,}', username):
+    if not re.search(r"[A-Za-z]{1,}", username):
         message = "Käyttäjätunnuksen täytyy sisältää vähintään yksi kirjain"
         return (False, message)
     
-    if not (re.fullmatch(r'^[A-Za-z0-9]*$', username) or re.fullmatch(r'^[A-Za-z]*$', username)):
+    if not (re.fullmatch(r"^[A-Za-z0-9]*$", username) or re.fullmatch(r"^[A-Za-z]*$", username)):
         message = "Käyttäjätunnuksessa saa olla vain kirjaimia ja numeroita"
         return (False, message)
     
@@ -47,7 +47,7 @@ def validate_password(password):
         message = "Salasana ei saa sisältää välilyöntejä"
         return (False, message)
     
-    if not (re.match(r'^(?=.*[a-zA-Z])', password) and re.match(r'^(?=.*[0-9])', password)):
+    if not (re.match(r"^(?=.*[a-zA-Z])", password) and re.match(r"^(?=.*[0-9])", password)):
         message = "Salasanan täytyy sisältää vähintään yksi kirjain ja yksi numero."
         return (False, message)
     
