@@ -64,6 +64,11 @@ def index(page=1):
             "user_id": listing["user_id"],
             "city": listing["city"]
         }
+        classes = listings.get_classes(listing["listing_id"])
+
+        for option_title, option_value in classes:
+            formatted_listing[option_title] = option_value
+
         formatted_listings.append(formatted_listing)
 
     return render_template("index.html", listings=formatted_listings, page=page, page_count=page_count, first_listing_number=first_listing_number, last_listing_number=last_listing_number, total_count=listing_count)

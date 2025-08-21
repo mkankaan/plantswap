@@ -51,3 +51,4 @@ CREATE TABLE listing_classes (
     option_value TEXT
 );
 
+CREATE INDEX idx_listing_id ON listing_classes (listing_id);
