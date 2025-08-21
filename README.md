@@ -3,6 +3,7 @@
 🌵 [Kuvaus](#kuvaus) <br/>
 🌵 [Ajo-ohjeet](#ajo-ohjeet) <br/>
 🌵 [Sovelluksen tila](#tila) <br/>
+🌵 [Testaus suurella tietomäärällä](#testaus) <br/>
 
 ## <a name="kuvaus"></a> Kuvaus
 
@@ -14,7 +15,7 @@
 - Käyttäjä voi muokata ja poistaa omia ilmoituksiaan ja kommenttejaan.
 - Ilmoituksen sivulla näkyy katselukertojen määrä.
 
-## <a name="ajo-ohjeet"></a> Ajo-ohjeet
+## <a name="ajo-ohjeet"></a> Ajo-ohjeet (Linux)
 
 Suorita seuraavat komennot projektikansiossa.
 
@@ -39,7 +40,7 @@ Käynnistä sovellus komennolla
 flask run
 ```
 
-Sovellus käynnistyy oletusarvoisesti osoitteeseen http://localhost:5000
+Sovellus käynnistyy oletusarvoisesti osoitteeseen http://127.0.0.1:5000
 
 ## <a name="tila"></a> Sovelluksen tila
 
@@ -71,3 +72,5 @@ Sovellus käynnistyy oletusarvoisesti osoitteeseen http://localhost:5000
 
 - Kaikkien tietokohteiden luontiin, muokkaukseen ja poistamiseen liittyvät toiminnot vaativat sisäänkirjautumisen. Muokkaus ja poisto vaativat lisäksi käyttäjän id:n tarkistuksen.
 - csrf on käytössä kaikissa lomakkeissa, jotka vaativat sisäänkirjautumisen.
+
+## <a name="testaus"></a> Testaus suurella tietomäärällä

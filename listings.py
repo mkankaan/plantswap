@@ -41,7 +41,9 @@ def get_listings_by_page(page, page_size):
     return db.query(sql, [limit, offset])
 
 def listing_count():
-    sql = "SELECT COUNT(*) FROM listings"
+    sql = """SELECT COUNT(*) FROM listings
+            LEFT JOIN users on users.id = listings.user_id
+            WHERE users.status = 1"""
     return db.query(sql)[0][0]
 
 def update_image(listing_id, image_id):
