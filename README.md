@@ -1,7 +1,7 @@
 # 🔄 PlantSwap 🪴
 
 🌵 [Kuvaus](#kuvaus) <br/>
-🌵 [Asennusohjeet](#asennusohjeet) <br/>
+🌵 [Asennusohjeet (Linux)](#asennusohjeet) <br/>
 🌵 [Sovelluksen tila](#tila) <br/>
 🌵 [Sovelluksen testaus](#testaus) <br/>
 
