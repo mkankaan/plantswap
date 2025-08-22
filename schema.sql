@@ -51,4 +51,5 @@ CREATE TABLE listing_classes (
     option_value TEXT
 );
 
-CREATE INDEX idx_listing_id ON listing_classes (listing_id);
+CREATE INDEX idx_class_listing_id ON listing_classes (listing_id);
+CREATE INDEX idx_comment_listing_id ON comments (listing_id);
