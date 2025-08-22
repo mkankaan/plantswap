@@ -36,7 +36,10 @@ def get_listings_by_page(page, page_size):
                     l.image_id IS NOT NULL has_image,
                     u.username,
                     u.id user_id,
-                    u.city
+                    u.city,
+                    (SELECT COUNT(*)
+                    FROM comments
+                    WHERE listing_id = l.id) comment_count
              FROM listings l, users u
              WHERE u.id = l.user_id
              AND u.status = 1

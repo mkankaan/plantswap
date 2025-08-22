@@ -118,7 +118,8 @@ select {
   gap: 2rem;
 }
 
-.image-form p {
+.image-form p,
+.list-item-footer p {
   margin: 0;
 }
 
@@ -519,6 +520,19 @@ form .button-bar-vertical {
   gap: 1rem;
   padding: 1rem;
   border-radius: var(--border-radius-small);
+}
+
+.list-item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-item-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .list-item:not(:last-child) {
