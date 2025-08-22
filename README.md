@@ -1,9 +1,9 @@
 # 🔄 PlantSwap 🪴
 
 🌵 [Kuvaus](#kuvaus) <br/>
-🌵 [Ajo-ohjeet](#ajo-ohjeet) <br/>
+🌵 [Asennusohjeet](#asennusohjeet) <br/>
 🌵 [Sovelluksen tila](#tila) <br/>
-🌵 [Testaus suurella tietomäärällä](#testaus) <br/>
+🌵 [Sovelluksen testaus](#testaus) <br/>
 
 ## <a name="kuvaus"></a> Kuvaus
 
@@ -15,7 +15,7 @@
 - Käyttäjä voi muokata ja poistaa omia ilmoituksiaan ja kommenttejaan.
 - Ilmoituksen sivulla näkyy katselukertojen määrä.
 
-## <a name="ajo-ohjeet"></a> Ajo-ohjeet (Linux)
+## <a name="asennusohjeet"></a> Asennusohjeet (Linux)
 
 Suorita seuraavat komennot projektikansiossa.
 
@@ -73,4 +73,4 @@ Sovellus käynnistyy oletusarvoisesti osoitteeseen http://127.0.0.1:5000
 - Kaikkien tietokohteiden luontiin, muokkaukseen ja poistamiseen liittyvät toiminnot vaativat sisäänkirjautumisen. Muokkaus ja poisto vaativat lisäksi käyttäjän id:n tarkistuksen.
 - csrf on käytössä kaikissa lomakkeissa, jotka vaativat sisäänkirjautumisen.
 
-## <a name="testaus"></a> Testaus suurella tietomäärällä
+## <a name="testaus"></a> Sovelluksen testaus
