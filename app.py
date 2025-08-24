@@ -157,7 +157,6 @@ def register():
             flash("Käyttäjätunnus varattu")
             return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled=filled)
 
-# user profile page
 @app.route("/user/<int:user_id>")
 def show_user(user_id):
     user = users.get_user(user_id)
@@ -169,7 +168,6 @@ def show_user(user_id):
     joined_date = date_formatter.format_date(user["joined"])
     return render_template("user.html", user=user, listings=listings, joined_date=joined_date)
 
-# edit profile
 @app.route("/edit_profile/<int:user_id>", methods=["GET", "POST"])
 def edit_profile(user_id):
     require_login()
@@ -217,7 +215,6 @@ def edit_profile(user_id):
             flash("Käyttäjätunnus varattu")
             return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
 
-# change password
 @app.route("/change_password/<int:user_id>", methods=["POST"])
 def change_password(user_id):
     require_login()
@@ -264,7 +261,6 @@ def change_password(user_id):
         flash("Salasana vaihdettu")
         return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
         
-# add profile image
 @app.route("/add_profile_image", methods=["GET", "POST"])
 def add_image():
     require_login()
@@ -298,7 +294,6 @@ def add_image():
         flash("Kuvan lisääminen onnistui")
         return redirect("/user/" + str(user_id))
     
-# fetch profile image
 @app.route("/image/user/<int:user_id>")
 def show_profile_image(user_id):
     image_id = users.get_image(user_id)
@@ -311,7 +306,6 @@ def show_profile_image(user_id):
     response.headers.set("Content-Type", "image/jpeg")
     return response
 
-# remove profile image
 @app.route("/remove/profile_image/<int:user_id>", methods=["GET", "POST"])
 def remove_profile_image(user_id):
     require_login()
@@ -336,8 +330,6 @@ def remove_profile_image(user_id):
             users.remove_image(user_id)
         return redirect("/user/" + str(user_id))
 
-
-# add listing
 @app.route("/new_listing", methods=["GET", "POST"])
 def new_listing():
     require_login()
@@ -373,7 +365,6 @@ def new_listing():
                     abort(403)
                 elif option_value not in all_classes[option_title]:
                     abort(403)
-
                 listing_classes.append((option_title, option_value))
 
         try:
@@ -381,9 +372,8 @@ def new_listing():
             listing = users.newest_listing(user_id)
             return redirect("/add_listing_image/" + str(listing))
         except:
-            return "Tapahtui virhe"
+            abort(403)
 
-# add listing image
 @app.route("/add_listing_image/<int:listing_id>", methods=["GET", "POST"])
 def add_listing_image(listing_id):
     require_login()
@@ -423,7 +413,6 @@ def add_listing_image(listing_id):
         flash("Kuvan lisääminen onnistui")
         return redirect("/listing/" + str(listing_id))
     
-# remove listing image
 @app.route("/remove/listing_image/<int:listing_id>", methods=["GET", "POST"])
 def remove_listing_image(listing_id):
     require_login()
@@ -448,7 +437,6 @@ def remove_listing_image(listing_id):
             flash("Kuva poistettiin")
         return redirect("/listing/" + str(listing_id))
     
-# listing page
 @app.route("/listing/<int:listing_id>")
 def show_listing(listing_id):
     listing = listings.get_listing(listing_id)
@@ -465,18 +453,17 @@ def show_listing(listing_id):
     restrictions = form_validation.listing_comment_restrictions
     hint_text = form_validation.form_hint_text["comment"]
     listing_comments = comments.get_by_listing(listing_id)
-
     formatted_comments = []
 
     for comment in listing_comments:
         formatted_comment = { 
                         "comment_id": comment["comment_id"],
                         "content": comment["content"],
-                       "user_id": comment["user_id"],
-                       "username": comment["username"],
-                       "sent_date": date_formatter.format_date_time(comment["sent_date"]),
-                       "user_status": comment["user_status"],
-                       "user_has_image": comment["user_has_image"]}
+                        "user_id": comment["user_id"],
+                        "username": comment["username"],
+                        "sent_date": date_formatter.format_date_time(comment["sent_date"]),
+                        "user_status": comment["user_status"],
+                        "user_has_image": comment["user_has_image"]}
         
         if comment["edited_date"]:
             formatted_comment["edited_date"] = date_formatter.format_date_time(comment["edited_date"])
@@ -484,7 +471,6 @@ def show_listing(listing_id):
         formatted_comments.append(formatted_comment)
     return render_template("listing.html", listing=listing, user=user, comments=formatted_comments, date_added=date_added, restrictions=restrictions, hint_text=hint_text, classes=classes)
 
-# fetch listing image
 @app.route("/image/listing/<int:listing_id>")
 def show_listing_image(listing_id):
     image_id = listings.get_image_id(listing_id)
@@ -497,7 +483,6 @@ def show_listing_image(listing_id):
     response.headers.set("Content-Type", "image/jpeg")
     return response
 
-# edit listing
 @app.route("/edit/listing/<int:listing_id>", methods=["GET", "POST"])
 def edit_listing(listing_id):
     require_login()
@@ -548,7 +533,6 @@ def edit_listing(listing_id):
         flash("Muokkaus onnistui")
         return redirect("/listing/" + str(listing["id"]))
 
-# remove listing
 @app.route("/remove/listing/<int:listing_id>", methods=["GET", "POST"])
 def remove_listing(listing_id):
     require_login()
@@ -573,11 +557,10 @@ def remove_listing(listing_id):
             flash("Ilmoitus poistettiin")
         return redirect("/")
     
-# add comment to listing
 @app.route("/new_comment", methods=["POST"])
 def new_comment():
-    check_csrf()
     require_login()
+    check_csrf()
     
     if request.method == "POST":
         content = request.form["content"]
@@ -595,10 +578,7 @@ def new_comment():
             return redirect("/listing/" + str(listing_id))
         except sqlite3.IntegrityError:
             abort(403)
-        except:
-            return "Tapahtui virhe"
         
-# edit comment
 @app.route("/edit/comment/<int:comment_id>", methods=["GET", "POST"])
 def edit_comment(comment_id):
     require_login()
@@ -630,7 +610,6 @@ def edit_comment(comment_id):
         flash("Muokkaus onnistui")
         return redirect("/listing/" + str(comment["listing_id"]))
     
-# remove comment
 @app.route("/remove/comment/<int:comment_id>", methods=["GET", "POST"])
 def remove_comment(comment_id):
     require_login()
@@ -653,7 +632,6 @@ def remove_comment(comment_id):
             flash("Kommentti poistettiin")
         return redirect("/listing/" + str(comment["listing_id"]))
 
-# delete user account
 @app.route("/delete_account", methods=["GET", "POST"])
 def delete_account():
     require_login()
@@ -700,4 +678,3 @@ def search():
         results = formatted_results
 
     return render_template("search.html", query=query, city=city, results=results)
-
