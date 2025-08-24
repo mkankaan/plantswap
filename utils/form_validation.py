@@ -11,7 +11,7 @@ listing_restrictions = {"max_name": 50,
 
 comment_restrictions = {"max_comment": 500}
 
-form_hint_text = {
+form_hint = {
     "username": f"""Pituus {registration_restrictions['min_username']}-
                 {registration_restrictions['max_username']} merkkiä""",
     "password": f"""Pituus {registration_restrictions['min_password']}-
