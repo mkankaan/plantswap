@@ -324,7 +324,7 @@ def change_password(user_id):
 
 
 @app.route("/add_profile_image", methods=["GET", "POST"])
-def add_image():
+def add_profile_image():
     require_login()
 
     if request.method == "GET":
@@ -350,11 +350,14 @@ def add_image():
         if user["has_image"]:
             images.remove_image(user["image_id"])
 
-        images.add_image(image, user_id)
-        image_id = images.newest_image_from_user(user_id)
-        users.update_image(user_id, image_id)
-        flash("Kuvan lisääminen onnistui")
-        return redirect("/user/" + str(user_id))
+        try:
+            images.add_image(image, user_id)
+            image_id = images.newest_image_from_user(user_id)
+            users.update_image(user_id, image_id)
+            flash("Kuvan lisääminen onnistui")
+            return redirect("/user/" + str(user_id))
+        except sqlite3.IntegrityError:
+            abort(403)
 
 
 @app.route("/image/user/<int:user_id>")
@@ -433,12 +436,9 @@ def new_listing():
                     abort(403)
                 listing_classes.append((option_title, option_value))
 
-        try:
-            listings.create_listing(name, user_id, info, listing_classes)
-            listing = users.newest_listing(user_id)
-            return redirect("/add_listing_image/" + str(listing))
-        except:
-            abort(403)
+        listings.create_listing(name, user_id, info, listing_classes)
+        listing = users.newest_listing(user_id)
+        return redirect("/add_listing_image/" + str(listing))
 
 
 @app.route("/add_listing_image/<int:listing_id>", methods=["GET", "POST"])
@@ -474,11 +474,14 @@ def add_listing_image(listing_id):
         if listing["has_image"]:
             images.remove_image(listing["image_id"])
 
-        images.add_image(image, user_id)
-        image_id = images.newest_image_from_user(user_id)
-        listings.update_image(listing_id, image_id)
-        flash("Kuvan lisääminen onnistui")
-        return redirect("/listing/" + str(listing_id))
+        try:
+            images.add_image(image, user_id)
+            image_id = images.newest_image_from_user(user_id)
+            listings.update_image(listing_id, image_id)
+            flash("Kuvan lisääminen onnistui")
+            return redirect("/listing/" + str(listing_id))
+        except sqlite3.IntegrityError:
+            abort(403)
 
 
 @app.route("/remove/listing_image/<int:listing_id>", methods=["GET", "POST"])
