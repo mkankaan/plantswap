@@ -1,8 +1,26 @@
+import sqlite3
+import secrets
+import time
+import math
+import markupsafe
+
 from flask import Flask
-from flask import render_template, request, redirect, session, abort, make_response, flash, g
-import users, config, listings, comments, images
-import sqlite3, secrets, markupsafe, time, math
-from utils import form_validation, date_formatter
+from flask import render_template
+from flask import request
+from flask import redirect
+from flask import session
+from flask import abort
+from flask import make_response
+from flask import flash
+from flask import g
+
+import users
+import config
+import listings
+import comments
+import images
+from utils import form_validation
+from utils import date_formatter
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -171,7 +189,7 @@ def show_user(user_id):
 @app.route("/edit_profile/<int:user_id>", methods=["GET", "POST"])
 def edit_profile(user_id):
     require_login()
-    user =  users.get_user(user_id)
+    user = users.get_user(user_id)
 
     if not user:
         abort(404)
