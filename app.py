@@ -152,19 +152,20 @@ def register():
             return render_template("register.html", restrictions=restrictions,
                                    hint_text=hint_text, filled=filled)
 
-        username_valid, username_error_message = form_validation.validate_username(username)
+        username_valid, username_error = form_validation.validate_username(username)
 
         if not username_valid:
-            flash(username_error_message)
+            flash(username_error)
             return render_template("register.html", restrictions=restrictions,
                                    hint_text=hint_text, filled=filled)
 
-        password_valid, password_error_message = form_validation.validate_password(password1)
+        password_valid, password_error = form_validation.validate_password(password1)
 
         if not password_valid:
-            flash(password_error_message)
-            return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled=filled)
-        
+            flash(password_error)
+            return render_template("register.html", restrictions=restrictions,
+                                   hint_text=hint_text, filled=filled)
+
         city_valid, city_error_message = form_validation.validate_city(city)
 
         if not city_valid:
@@ -191,7 +192,8 @@ def show_user(user_id):
 
     user_listings = users.get_listings(user_id)
     joined_date = date_formatter.format_date(user["joined"])
-    return render_template("user.html", user=user, listings=user_listings, joined_date=joined_date)
+    return render_template("user.html", user=user, listings=user_listings,
+                           joined_date=joined_date)
 
 @app.route("/edit_profile/<int:user_id>", methods=["GET", "POST"])
 def edit_profile(user_id):
@@ -220,31 +222,34 @@ def edit_profile(user_id):
 
         filled = { "username": new_username, "city": new_city }
 
-        username_valid, username_error_message = form_validation.validate_username(new_username)
+        username_valid, username_error = form_validation.validate_username(new_username)
 
         if not username_valid:
-            flash(username_error_message)
+            flash(username_error)
             return render_template("edit_profile.html", user=user,
-                                   restrictions=restrictions, hint_text=hint_text,
-                                   filled=filled)
-        
-        city_valid, city_error_message = form_validation.validate_city(new_city)
+                                   restrictions=restrictions,
+                                   hint_text=hint_text, filled=filled)
+
+        city_valid, city_error = form_validation.validate_city(new_city)
 
         if not city_valid:
-            flash(city_error_message)
-            return render_template("edit_profile.html", user=user, restrictions=restrictions,
+            flash(city_error)
+            return render_template("edit_profile.html", user=user,
+                                   restrictions=restrictions,
                                    hint_text=hint_text, filled=filled)
-        
+ 
         try:
             users.update_user(user_id, new_username, new_city)
             flash("Muutokset tallennettu")
             session["username"] = new_username
             filled = { "username": new_username, "city": new_city }
-            return render_template("edit_profile.html", user=user, restrictions=restrictions,
+            return render_template("edit_profile.html", user=user,
+                                   restrictions=restrictions,
                                    hint_text=hint_text, filled=filled)
         except sqlite3.IntegrityError:
             flash("Käyttäjätunnus varattu")
-            return render_template("edit_profile.html", user=user, restrictions=restrictions,
+            return render_template("edit_profile.html", user=user,
+                                   restrictions=restrictions,
                                    hint_text=hint_text, filled=filled)
 
 @app.route("/change_password/<int:user_id>", methods=["POST"])
@@ -281,10 +286,10 @@ def change_password(user_id):
                                    restrictions=restrictions, hint_text=hint_text,
                                    filled=filled)
 
-        new_password_valid, new_password_error_message = form_validation.validate_password(new_password1)
+        password_valid, password_error = form_validation.validate_password(new_password1)
 
-        if not new_password_valid:
-            flash(new_password_error_message)
+        if not password_valid:
+            flash(password_error)
             return render_template("edit_profile.html", user=user,
                                    restrictions=restrictions, hint_text=hint_text,
                                    filled=filled)
@@ -394,7 +399,7 @@ def new_listing():
         if len(info) > restrictions["max_info"]:
             abort(403)
 
-        classes = request.form.getlist("cutting") + request.form.getlist("classes")     
+        classes = request.form.getlist("cutting") + request.form.getlist("classes")
         listing_classes = []
 
         for entry in classes:
@@ -616,8 +621,8 @@ def new_comment():
 
         if not content_valid:
             flash(content_error_message)
-            return redirect("/listing/" + str(listing_id)) 
- 
+            return redirect("/listing/" + str(listing_id))
+
         try:
             comments.create_comment(user_id, listing_id, content)
             return redirect("/listing/" + str(listing_id))
