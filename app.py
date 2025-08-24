@@ -61,14 +61,14 @@ def index(page=1):
         return redirect("/1")
     if page > page_count:
         return redirect("/" + str(page_count))
-    
+
     first_listing_number = page_size*(page-1)+1
 
     if page < page_count:
         last_listing_number = first_listing_number + (page_size-1)
     else:
         last_listing_number = first_listing_number + (listing_count%page_size) - 1
-    
+
     all_listings = listings.get_listings_by_page(page, page_size)
     formatted_listings = []
 
@@ -90,18 +90,21 @@ def index(page=1):
 
         formatted_listings.append(formatted_listing)
 
-    return render_template("index.html", listings=formatted_listings, page=page, page_count=page_count, first_listing_number=first_listing_number, last_listing_number=last_listing_number, total_count=listing_count)
+    return render_template("index.html", listings=formatted_listings,
+                           page=page, page_count=page_count,
+                           first_listing_number=first_listing_number,
+                           last_listing_number=last_listing_number,
+                           total_count=listing_count)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
         return render_template("login.html", filled={}, next_page=request.referrer)
-    
+
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
         next_page = request.form["next_page"]
-        
         user_id = users.check_login(username, password)
 
         if user_id:
@@ -120,7 +123,7 @@ def login():
             filled = { "username": username }
             flash("Väärä käyttäjätunnus tai salasana")
             return render_template("login.html", filled=filled, next_page=next_page)
-        
+
 @app.route("/logout")
 def logout():
     if "user_id" in session:
@@ -134,26 +137,28 @@ def register():
     hint_text = form_validation.form_hint_text
 
     if request.method == "GET":
-        return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled={})
-    
+        return render_template("register.html", restrictions=restrictions,
+                               hint_text=hint_text, filled={})
+
     if request.method == "POST":
         username = request.form["username"]
         password1 = request.form["password1"]
         password2 = request.form["password2"]
         city = request.form["city"]
-
         filled = { "username": username, "city": city }
 
         if password1 != password2:
             flash("Salasanat eivät täsmää")
-            return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled=filled)
+            return render_template("register.html", restrictions=restrictions,
+                                   hint_text=hint_text, filled=filled)
 
         username_valid, username_error_message = form_validation.validate_username(username)
 
         if not username_valid:
             flash(username_error_message)
-            return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled=filled)
-        
+            return render_template("register.html", restrictions=restrictions,
+                                   hint_text=hint_text, filled=filled)
+
         password_valid, password_error_message = form_validation.validate_password(password1)
 
         if not password_valid:
@@ -164,8 +169,9 @@ def register():
 
         if not city_valid:
             flash(city_error_message)
-            return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled=filled)
-        
+            return render_template("register.html", restrictions=restrictions,
+                                   hint_text=hint_text, filled=filled)
+
         try:
             users.create_user(username, password1, city)
             flash("Tunnuksen luonti onnistui. Voit nyt kirjautua sisään.")
@@ -173,7 +179,8 @@ def register():
         except sqlite3.IntegrityError:
             filled = { "city": city }
             flash("Käyttäjätunnus varattu")
-            return render_template("register.html", restrictions=restrictions, hint_text=hint_text, filled=filled)
+            return render_template("register.html", restrictions=restrictions,
+                                   hint_text=hint_text, filled=filled)
 
 @app.route("/user/<int:user_id>")
 def show_user(user_id):
@@ -181,10 +188,10 @@ def show_user(user_id):
 
     if not user or user["status"] == 0:
         abort(404)
-    
-    listings = users.get_listings(user_id)
+
+    user_listings = users.get_listings(user_id)
     joined_date = date_formatter.format_date(user["joined"])
-    return render_template("user.html", user=user, listings=listings, joined_date=joined_date)
+    return render_template("user.html", user=user, listings=user_listings, joined_date=joined_date)
 
 @app.route("/edit_profile/<int:user_id>", methods=["GET", "POST"])
 def edit_profile(user_id):
@@ -193,7 +200,7 @@ def edit_profile(user_id):
 
     if not user:
         abort(404)
-        
+ 
     if user["id"] != session["user_id"]:
         abort(403)
 
@@ -202,7 +209,9 @@ def edit_profile(user_id):
 
     if request.method == "GET":
         filled = { "username": user["username"], "city": user["city"] }
-        return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
+        return render_template("edit_profile.html", user=user,
+                               restrictions=restrictions, hint_text=hint_text,
+                               filled=filled)
 
     if request.method == "POST":
         check_csrf()
@@ -215,23 +224,28 @@ def edit_profile(user_id):
 
         if not username_valid:
             flash(username_error_message)
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user,
+                                   restrictions=restrictions, hint_text=hint_text,
+                                   filled=filled)
         
         city_valid, city_error_message = form_validation.validate_city(new_city)
 
         if not city_valid:
             flash(city_error_message)
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user, restrictions=restrictions,
+                                   hint_text=hint_text, filled=filled)
         
         try:
             users.update_user(user_id, new_username, new_city)
             flash("Muutokset tallennettu")
             session["username"] = new_username
             filled = { "username": new_username, "city": new_city }
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user, restrictions=restrictions,
+                                   hint_text=hint_text, filled=filled)
         except sqlite3.IntegrityError:
             flash("Käyttäjätunnus varattu")
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user, restrictions=restrictions,
+                                   hint_text=hint_text, filled=filled)
 
 @app.route("/change_password/<int:user_id>", methods=["POST"])
 def change_password(user_id):
@@ -241,7 +255,7 @@ def change_password(user_id):
 
     if not user:
         abort(404)
-        
+
     if user["id"] != session["user_id"]:
         abort(403)
 
@@ -252,32 +266,40 @@ def change_password(user_id):
         new_password1 = request.form["new_password1"]
         new_password2 = request.form["new_password2"]
         old_password = request.form["old_password"]
-
         filled = { "username": user["username"], "city": user["city"] }
-
         password_correct = users.check_login(user["username"], old_password)
 
         if not password_correct:
             flash("Väärä salasana")
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user,
+                                   restrictions=restrictions, hint_text=hint_text,
+                                   filled=filled)
 
         if new_password1 != new_password2:
             flash("Salasanat eivät täsmää")
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user,
+                                   restrictions=restrictions, hint_text=hint_text,
+                                   filled=filled)
 
         new_password_valid, new_password_error_message = form_validation.validate_password(new_password1)
 
         if not new_password_valid:
             flash(new_password_error_message)
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user,
+                                   restrictions=restrictions, hint_text=hint_text,
+                                   filled=filled)
         
         if old_password == new_password1:
             flash("Uusi salasana ei voi olla sama kuin vanha salasana")
-            return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
+            return render_template("edit_profile.html", user=user,
+                                   restrictions=restrictions, hint_text=hint_text,
+                                   filled=filled)
 
         users.change_password(user_id, new_password1)
         flash("Salasana vaihdettu")
-        return render_template("edit_profile.html", user=user, restrictions=restrictions, hint_text=hint_text, filled=filled)
+        return render_template("edit_profile.html", user=user,
+                               restrictions=restrictions, hint_text=hint_text,
+                               filled=filled)
         
 @app.route("/add_profile_image", methods=["GET", "POST"])
 def add_image():
@@ -311,7 +333,7 @@ def add_image():
         users.update_image(user_id, image_id)
         flash("Kuvan lisääminen onnistui")
         return redirect("/user/" + str(user_id))
-    
+
 @app.route("/image/user/<int:user_id>")
 def show_profile_image(user_id):
     image_id = users.get_image(user_id)
@@ -327,7 +349,6 @@ def show_profile_image(user_id):
 @app.route("/remove/profile_image/<int:user_id>", methods=["GET", "POST"])
 def remove_profile_image(user_id):
     require_login()
-
     user = users.get_user(user_id)
 
     if not user:
@@ -355,8 +376,9 @@ def new_listing():
     all_classes = listings.get_all_classes()
 
     if request.method == "GET":
-        return render_template("new_listing.html", restrictions=restrictions, classes=all_classes)
-    
+        return render_template("new_listing.html", restrictions=restrictions,
+                               classes=all_classes)
+
     if request.method == "POST":
         check_csrf()
         name = request.form["name"]
@@ -365,14 +387,14 @@ def new_listing():
 
         if info.strip() == "":
             info = ""
-                
+  
         if not name or len(name) > restrictions["max_name"]:
             abort(403)
 
         if len(info) > restrictions["max_info"]:
             abort(403)
 
-        classes = request.form.getlist("cutting") + request.form.getlist("classes")        
+        classes = request.form.getlist("cutting") + request.form.getlist("classes")     
         listing_classes = []
 
         for entry in classes:
@@ -399,7 +421,7 @@ def add_listing_image(listing_id):
 
     if not listing:
         abort(404)
-    
+
     if listing["user_id"] != session["user_id"]:
         abort(403)
 
@@ -409,7 +431,7 @@ def add_listing_image(listing_id):
     if request.method == "POST":
         check_csrf()
         file = request.files["image"]
-        
+
         if not file.filename.endswith(".jpg"):
             flash("Lähettämäsi tiedosto ei ole jpg-tiedosto")
             return redirect("/add_listing_image/" + str(listing_id))
@@ -419,7 +441,7 @@ def add_listing_image(listing_id):
         if len(image) > 200 * 1024:
             flash("Lähettämäsi tiedosto on liian suuri")
             return redirect("/add_listing_image/" + str(listing_id))
-        
+
         user_id = listing["user_id"]
 
         if listing["has_image"]:
@@ -430,7 +452,7 @@ def add_listing_image(listing_id):
         listings.update_image(listing_id, image_id)
         flash("Kuvan lisääminen onnistui")
         return redirect("/listing/" + str(listing_id))
-    
+
 @app.route("/remove/listing_image/<int:listing_id>", methods=["GET", "POST"])
 def remove_listing_image(listing_id):
     require_login()
@@ -438,7 +460,7 @@ def remove_listing_image(listing_id):
 
     if not listing:
         abort(404)
-        
+
     if listing["user_id"] != session["user_id"]:
         abort(403)
 
@@ -454,7 +476,7 @@ def remove_listing_image(listing_id):
             listings.remove_image(listing_id)
             flash("Kuva poistettiin")
         return redirect("/listing/" + str(listing_id))
-    
+
 @app.route("/listing/<int:listing_id>")
 def show_listing(listing_id):
     listing = listings.get_listing(listing_id)
@@ -474,7 +496,7 @@ def show_listing(listing_id):
     formatted_comments = []
 
     for comment in listing_comments:
-        formatted_comment = { 
+        formatted_comment = {
                         "comment_id": comment["comment_id"],
                         "content": comment["content"],
                         "user_id": comment["user_id"],
@@ -482,12 +504,15 @@ def show_listing(listing_id):
                         "sent_date": date_formatter.format_date_time(comment["sent_date"]),
                         "user_status": comment["user_status"],
                         "user_has_image": comment["user_has_image"]}
-        
+
         if comment["edited_date"]:
             formatted_comment["edited_date"] = date_formatter.format_date_time(comment["edited_date"])
-        
+
         formatted_comments.append(formatted_comment)
-    return render_template("listing.html", listing=listing, user=user, comments=formatted_comments, date_added=date_added, restrictions=restrictions, hint_text=hint_text, classes=classes)
+    return render_template("listing.html", listing=listing, user=user,
+                           comments=formatted_comments, date_added=date_added,
+                           restrictions=restrictions, hint_text=hint_text,
+                           classes=classes)
 
 @app.route("/image/listing/<int:listing_id>")
 def show_listing_image(listing_id):
@@ -509,7 +534,7 @@ def edit_listing(listing_id):
 
     if not listing:
         abort(404)
-        
+
     if listing["user_id"] != session["user_id"]:
         abort(403)
 
@@ -523,7 +548,9 @@ def edit_listing(listing_id):
 
     if request.method == "GET":
         restrictions = form_validation.new_listing_restrictions
-        return render_template("edit_listing.html", listing=listing, restrictions=restrictions, hint_text=hint_text, all_classes=all_classes, listing_classes=listing_classes)
+        return render_template("edit_listing.html", listing=listing,
+                               restrictions=restrictions, hint_text=hint_text,
+                               all_classes=all_classes, listing_classes=listing_classes)
 
     if request.method == "POST":
         check_csrf()
@@ -558,7 +585,7 @@ def remove_listing(listing_id):
 
     if not listing:
         abort(404)
-        
+
     if listing["user_id"] != session["user_id"]:
         abort(403)
 
@@ -574,12 +601,12 @@ def remove_listing(listing_id):
             images.remove_image(listing["image_id"])
             flash("Ilmoitus poistettiin")
         return redirect("/")
-    
+
 @app.route("/new_comment", methods=["POST"])
 def new_comment():
     require_login()
     check_csrf()
-    
+
     if request.method == "POST":
         content = request.form["content"]
         user_id = str(session["user_id"])
@@ -590,13 +617,13 @@ def new_comment():
         if not content_valid:
             flash(content_error_message)
             return redirect("/listing/" + str(listing_id)) 
-               
+ 
         try:
             comments.create_comment(user_id, listing_id, content)
             return redirect("/listing/" + str(listing_id))
         except sqlite3.IntegrityError:
             abort(403)
-        
+
 @app.route("/edit/comment/<int:comment_id>", methods=["GET", "POST"])
 def edit_comment(comment_id):
     require_login()
@@ -604,7 +631,7 @@ def edit_comment(comment_id):
 
     if not comment:
         abort(404)
-        
+
     if comment["user_id"] != session["user_id"]:
         abort(403)
 
@@ -612,7 +639,8 @@ def edit_comment(comment_id):
 
     if request.method == "GET":
         filled = { "content": comment["content"] }
-        return render_template("edit_comment.html", comment=comment, restrictions=restrictions, filled=filled)
+        return render_template("edit_comment.html", comment=comment,
+                               restrictions=restrictions, filled=filled)
 
     if request.method == "POST":
         check_csrf()
@@ -622,12 +650,12 @@ def edit_comment(comment_id):
 
         if not content_valid:
             flash(content_error_message)
-            return redirect("/edit/comment/" + str(comment["listing_id"])) 
-               
+            return redirect("/edit/comment/" + str(comment["listing_id"]))
+
         comments.update_comment(comment_id, content)
         flash("Muokkaus onnistui")
         return redirect("/listing/" + str(comment["listing_id"]))
-    
+
 @app.route("/remove/comment/<int:comment_id>", methods=["GET", "POST"])
 def remove_comment(comment_id):
     require_login()
@@ -635,7 +663,7 @@ def remove_comment(comment_id):
 
     if not comment:
         abort(404)
-        
+
     if comment["user_id"] != session["user_id"]:
         abort(403)
 
@@ -672,7 +700,7 @@ def delete_account():
             flash("Tili poistettiin")
             return redirect("/")
         return redirect("/user/" + str(user_id))
-    
+
 @app.route("/search")
 def search():
     query = request.args.get("query") if request.args.get("query") else ""
