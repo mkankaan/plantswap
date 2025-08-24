@@ -1,15 +1,15 @@
 import re
 
-registration_restrictions = { "min_username": 3,
+registration_restrictions = {"min_username": 3,
                              "max_username": 20,
                              "min_password": 8,
                              "max_password": 100,
-                             "max_city": 50 }
+                             "max_city": 50}
 
-new_listing_restrictions = { "max_name": 50,
-                            "max_info": 500 }
+listing_restrictions = {"max_name": 50,
+                        "max_info": 500}
 
-listing_comment_restrictions = { "max_comment": 500 }
+comment_restrictions = {"max_comment": 500}
 
 form_hint_text = {
     "username": f"""Pituus {registration_restrictions['min_username']}-
@@ -18,8 +18,9 @@ form_hint_text = {
                 {registration_restrictions['max_password']} merkkiä,
                 vähintään yksi kirjain ja numero""",
     "city": f"""Korkeintaan {registration_restrictions['max_city']} merkkiä""",
-    "comment": f"""Korkeintaan {listing_comment_restrictions['max_comment']} merkkiä"""
+    "comment": f"""Korkeintaan {comment_restrictions['max_comment']} merkkiä"""
 }
+
 
 def validate_username(username):
     min_length = registration_restrictions["min_username"]
@@ -43,6 +44,7 @@ def validate_username(username):
         return (False, message)
     return (True, "")
 
+
 def validate_password(password):
     min_length = registration_restrictions["min_password"]
     max_length = registration_restrictions["max_password"]
@@ -61,6 +63,7 @@ def validate_password(password):
         return (False, message)
     return (True, "")
 
+
 def validate_city(city):
     max_length = registration_restrictions["max_city"]
     city = city.strip()
@@ -71,8 +74,9 @@ def validate_city(city):
         return (False, message)
     return (True, "")
 
+
 def validate_comment(content):
-    max_length = listing_comment_restrictions["max_comment"]
+    max_length = comment_restrictions["max_comment"]
 
     if not content or content.strip() == "":
         message = "Kommentti ei voi olla tyhjä"
