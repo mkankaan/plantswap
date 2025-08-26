@@ -1,21 +1,14 @@
 # 🔄 PlantSwap 🪴
 
-🌵 [Kuvaus](#kuvaus) <br/>
-🌵 [Asennusohjeet (Linux/MacOS)](#asennusohjeet) <br/>
-🌵 [Sovelluksen tila](#tila) <br/>
-🌵 [Sovelluksen testaus](#testaus) <br/>
+PlantSwap on sovellus, jossa käyttäjät voivat lisätä ilmoituksia huonekasveista, jotka haluaisivat antaa vaihtoon. Sovelluksen tarkoitus on, että sen avulla voi vaihtaa kasveja tai pistokkaita muiden käyttäjien kanssa tai esimerkiksi löytää uuden kodin kasville, jota ei voi/halua pitää, ja saada vaihdossa toisen toivomansa kasvin. Haluamansa kasvin löydettyään käyttäjä voi ottaa yhteyttä ilmoituksen tekijään kommentilla.
 
-## <a name="kuvaus"></a> Kuvaus
+1. [Asennus (Linux/MacOS)](#asennusohjeet) <br/>
+2. [Sovelluksen tila](#tila) <br/>
+3. [Sovelluksen testaus](#testaus) <br/>
+3.1. [Ohjeet testaukseen](#testausohjeet) <br/>
+3.2. [Testauksen tulokset](#testaustulokset) <br/>
 
-- Käyttäjä pystyy lisäämään ilmoituksia huonekasveista, jotka haluaisi antaa vaihtoon.
-- Sovelluksen tarkoitus on, että sen avulla voi vaihtaa kasveja tai pistokkaita muiden käyttäjien kanssa tai esimerkiksi löytää uuden kodin kasville, jota ei voi/halua pitää, ja saada vaihdossa toisen toivomansa kasvin.
-- Käyttäjä pystyy luomaan tunnuksen, kirjautumaan sisään ja muokkaamaan profiiliaan. Profiili on näkyvillä myös muille käyttäjille. Profiilissa näkyy kaikki käyttäjän lisäämät ilmoitukset. Käyttäjä voi myös poistaa tilinsä.
-- Käyttäjä näkee muiden lisäämät ilmoitukset ja pystyy etsimään ilmoituksia kasvin nimen ja sijainnin perusteella.
-- Pääasiallinen tietokohde: ilmoitus. Toissijainen tietokohde: kommentti ilmoitukseen.
-- Käyttäjä voi muokata ja poistaa omia ilmoituksiaan ja kommenttejaan.
-- Ilmoituksen sivulla näkyy katselukertojen määrä.
-
-## <a name="asennusohjeet"></a> Asennusohjeet (Linux/MacOS)
+## <a name="asennusohjeet"></a> Asennus (Linux/MacOS)
 
 Seuraavat ohjeet on tarkoitettu sovelluksen asennukseen Linux- ja MacOS-käyttöjärjestelmillä. Muilla käyttöjärjestelmillä komennot ja sivuston osoite saattavat poiketa.
 
@@ -77,7 +70,7 @@ Sovellus käynnistyy oletusarvoisesti osoitteeseen http://127.0.0.1:5000
 
 ## <a name="testaus"></a> Sovelluksen testaus
 
-### Ohjeet testaukseen
+### <a name="testausohjeet"></a> Ohjeet testaukseen
 
 Sovelluksen tehokkuutta voi halutessaan testata ajamalla projektikansiossa komennon
 
@@ -93,9 +86,24 @@ flask run
 
 seed.py-tiedosto sisältää skriptin, joka lisää tietokantaan 1000 käyttäjää, 100 000 listausta ja miljoona kommenttia. Aina kun sivu ladataan sovelluksen ollessa käynnissä, komentotulkkiin tulostuu lataukseen kulunut aika.
 
-### Raportti
+### <a name="testaustulokset"></a> Testauksen tulokset
 
-Sovelluksen toiminnan nopeuttamiseksi etusivulla on käytössä sivutus. Tietokantaan on myös lisätty kaksi indeksiä nopeuttamaan hakuja. Seuraavissa kuvissa on nähtävissä sovelluksen latausnopeus ilman näitä ominaisuuksia ja niiden kanssa. Ennen testausta tietokantaan on lisätty suuri määrä tietoa yllä kuvatun seed.py-tiedoston avulla.
+Sovelluksen toiminnan nopeuttamiseksi etusivulla on käytössä sivutus. Tietokantaan on myös lisätty kaksi indeksiä nopeuttamaan hakuja. Seuraavissa kuvissa on nähtävissä etusivun latausnopeus ilman näitä ominaisuuksia sekä niiden kanssa. Ennen testausta tietokantaan on lisätty suuri määrä tietoa yllä kuvatun seed.py-tiedoston avulla.
 
 #### Ei sivutusta, ei indeksiä
 
+![Kuva komentotulkista, jossa sivun latausajaksi näkyy 3.95 sekuntia](images/no-idx-no-pg.jpg)
+
+Ilman sivutusta tai indeksiä etusivun latausnopeus on melkein 4 sekuntia.
+
+#### Sivutus ja yksi indeksi
+
+![Kuva komentotulkista, jossa sivun latausajoiksi näkyy 1.91 sekuntia ja 1.17 sekuntia](images/pg-1-idx.jpg)
+
+Sivutuksen ja indeksin käyttöönoton (luokkatauluun) jälkeen latausaika lyheni 1-2 sekunnilla.
+
+#### Sivutus ja kaksi indeksiä
+
+![Kuva komentotulkista, jossa sivun latausajoiksi näkyy 0.27 sekuntia ja 0.13 sekuntia](images/pg-2-idx.jpg)
+
+Toisen indeksin lisäys (kommenttitauluun) lyhensi latausajan alle sekuntiin.
