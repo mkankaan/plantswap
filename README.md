@@ -17,22 +17,22 @@ Suorita seuraavat komennot projektikansiossa.
 Alusta tietokanta:
 
 ```
-sqlite3 database.db < schema.sql
-sqlite3 database.db < init.sql
+$ sqlite3 database.db < schema.sql
+$ sqlite3 database.db < init.sql
 ```
 
 Asenna Pythonin virtuaaliympäristö ja Flask:
 
 ```
-python3 -m venv venv
-source venv/bin/activate
-pip install flask
+$ python3 -m venv venv
+$ source venv/bin/activate
+$ pip install flask
 ```
 
 Käynnistä sovellus komennolla
 
 ```
-flask run
+$ flask run
 ```
 
 Sovellus käynnistyy oletusarvoisesti osoitteeseen http://127.0.0.1:5000
@@ -75,13 +75,13 @@ Sovellus käynnistyy oletusarvoisesti osoitteeseen http://127.0.0.1:5000
 Sovelluksen tehokkuutta voi halutessaan testata ajamalla projektikansiossa komennon
 
 ```
-python3 seed.py
+$ python3 seed.py
 ```
 
 Sovelluksen voi sen jälkeen käynnistää normaalisti komennolla 
 
 ```
-flask run
+$ flask run
 ```
 
 seed.py-tiedosto sisältää skriptin, joka lisää tietokantaan 1000 käyttäjää, 100 000 listausta ja miljoona kommenttia. Aina kun sivu ladataan sovelluksen ollessa käynnissä, komentotulkkiin tulostuu lataukseen kulunut aika.
