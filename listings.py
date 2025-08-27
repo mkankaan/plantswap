@@ -1,18 +1,18 @@
 import db
 
+
 def create_listing(name, user_id, info, classes):
     sql = """INSERT INTO listings (name, user_id, views, date, info)
              VALUES (?, ?, -1, datetime('now'), ?)"""
     db.execute(sql, [name, user_id, info])
 
-    sql = """INSERT INTO listing_classes
-         (listing_id, option_title, option_value)
-         VALUES (?, ?, ?)"""
+    sql = """INSERT INTO listing_classes (listing_id, option_title, option_value)
+             VALUES (?, ?, ?)"""
     listing_id = db.last_insert_id()
 
     for option_title, option_value in classes:
-        print("listing:", name, "add class:", option_title, "value:", option_value)
         db.execute(sql, [listing_id, option_title, option_value])
+
 
 def get_listing(listing_id):
     sql = """SELECT l.id, l.name, l.date,
@@ -25,9 +25,13 @@ def get_listing(listing_id):
     result = db.query(sql, [listing_id])
     return result[0] if result else None
 
+
 def get_listing_classes(listing_id):
-    sql = "SELECT option_title, option_value FROM classes WHERE listing_id = ?"
+    sql = """SELECT option_title, option_value
+             FROM classes
+             WHERE listing_id = ?"""
     return db.query(sql, [listing_id])
+
 
 def get_listings_by_page(page, page_size):
     sql = """SELECT l.id listing_id,
@@ -39,7 +43,7 @@ def get_listings_by_page(page, page_size):
                     u.city,
                     (SELECT COUNT(*)
                     FROM comments
-                    WHERE listing_id = l.id) comment_count
+                    WHERE listing_id=l.id) comment_count
              FROM listings l, users u
              WHERE u.id = l.user_id
              AND u.status = 1
@@ -49,33 +53,42 @@ def get_listings_by_page(page, page_size):
     offset = page_size*(page-1)
     return db.query(sql, [limit, offset])
 
+
 def listing_count():
     sql = """SELECT COUNT(*) FROM listings
             LEFT JOIN users on users.id = listings.user_id
             WHERE users.status = 1"""
     return db.query(sql)[0][0]
 
+
 def update_image(listing_id, image_id):
     sql = "UPDATE listings SET image_id = ? WHERE id = ?"
     db.execute(sql, [image_id, listing_id])
 
+
 def remove_image(listing_id):
     sql = "UPDATE listings SET image_id = NULL WHERE id = ?"
     db.execute(sql, [listing_id])
+
 
 def get_image_id(listing_id):
     sql = "SELECT image_id FROM listings WHERE id = ?"
     result = db.query(sql, [listing_id])
     return result[0][0] if result else None
 
+
 def add_view(listing_id):
-    sql = "UPDATE listings SET views = (SELECT views FROM listings WHERE id = ?)+1 WHERE id = ?"
+    sql = """UPDATE listings
+             SET views = (SELECT views FROM listings WHERE id = ?)+1
+             WHERE id = ?"""
     db.execute(sql, [listing_id, listing_id])
+
 
 def get_user(listing_id):
     sql = "SELECT user_id FROM listings WHERE id = ?"
     result = db.query(sql, [listing_id])
     return result[0][0] if result else None
+
 
 def update_listing(listing_id, name, info, classes):
     sql = "UPDATE listings SET (name, info) = (?, ?) WHERE id = ?"
@@ -83,16 +96,19 @@ def update_listing(listing_id, name, info, classes):
 
     delete_classes(listing_id)
 
-    sql = "INSERT INTO listing_classes (listing_id, option_title, option_value) VALUES (?, ?, ?)"
+    sql = """INSERT INTO listing_classes (listing_id, option_title, option_value)
+             VALUES (?, ?, ?)"""
 
     for option_title, option_value in classes:
         db.execute(sql, [listing_id, option_title, option_value])
+
 
 def remove_listing(listing_id):
     delete_classes(listing_id)
 
     sql = "DELETE FROM listings WHERE id = ?"
     db.execute(sql, [listing_id])
+
 
 def search(query, city):
     sql = """SELECT l.id listing_id,
@@ -101,7 +117,10 @@ def search(query, city):
                     l.image_id IS NOT NULL has_image,
                     u.username,
                     u.id user_id,
-                    u.city
+                    u.city,
+                    (SELECT COUNT(*)
+                    FROM comments
+                    WHERE listing_id = l.id) comment_count
              FROM listings l, users u
              WHERE u.id = l.user_id AND
              u.status = 1 AND
@@ -109,6 +128,7 @@ def search(query, city):
                    u.city LIKE ?
              ORDER BY l.date DESC"""
     return db.query(sql, ["%" + query + "%", "%" + city + "%"])
+
 
 def get_all_classes():
     sql = "SELECT option_title, option_value FROM classes"
@@ -123,9 +143,13 @@ def get_all_classes():
 
     return classes
 
+
 def get_classes(listing_id):
-    sql = "SELECT option_title, option_value FROM listing_classes WHERE listing_id = ?"
+    sql = """SELECT option_title, option_value
+             FROM listing_classes
+             WHERE listing_id = ?"""
     return db.query(sql, [listing_id])
+
 
 def delete_classes(listing_id):
     sql = "DELETE FROM listing_classes WHERE listing_id = ?"

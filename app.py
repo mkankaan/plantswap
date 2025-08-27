@@ -762,7 +762,8 @@ def search():
                 "has_image": listing["has_image"],
                 "username": listing["username"],
                 "user_id": listing["user_id"],
-                "city": listing["city"]
+                "city": listing["city"],
+                "comment_count": listing["comment_count"]
             }
             formatted_results.append(formatted_listing)
         results = formatted_results

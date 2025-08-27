@@ -37,8 +37,9 @@ block content %}
           <a href="/user/{{ listing.user_id }}"
             >{{ listing.username }}</a
           >
-          📍 {{ listing.city }}
         </p>
+        <p>📍 {{ listing.city }}</p>
+        <!-- 
         <p class="class-icon">
           {% if listing["Valon tarve"] == "Vähäinen" %} ☼ {% elif
           listing["Valon tarve"] == "Keskitaso" %} ☼ ☼ {% elif
@@ -47,6 +48,7 @@ block content %}
         <p class="class-icon">
           {% if listing["Tyyppi"] == "Pistokas" %} 🌱 {% endif %}
         </p>
+        -->
         <div class="list-item-footer">
           <p>Ilmoitus jätetty {{ listing.date }}</p>
           <p>💬 {{ listing.comment_count }}</p>
