@@ -140,7 +140,7 @@ endblock %} {% block content %}
       <div class="comment">
         <div class="comment-header">
           <div class="username-image-box">
-            {% if comment.user_has_image %}
+            {% if comment.user_status == 1 and comment.user_has_image %}
             <img
               src="/image/user/{{ comment.user_id }}"
               class="profile-image-small"
