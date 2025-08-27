@@ -45,23 +45,23 @@ Sovellus käynnistyy oletusarvoisesti osoitteeseen http://127.0.0.1:5000
 - Käyttäjä voi vaihtaa ja poistaa profiilikuvansa.
 - Käyttäjä näkee muiden käyttäjien profiilit.
 - Profiilissa näkyy lista käyttäjän luomista ilmoituksista.
-- Käyttäjä voi poistaa profiilinsa. Profiili ei katoa tietokannasta, vaan sen status muuttuu.
+- Käyttäjä voi poistaa tilinsä. Tili ei katoa tietokannasta, vaan sen status muuttuu. Kun tili poistetaan, kaikki käyttäjän lisäämät ilmoitukset ja niiden kommentit, luokat ja kuva poistetaan samalla tietokannasta, koska sovelluksen käyttötarkoituksen vuoksi niiden säilyttäminen ei ole hyödyllistä.
 
 ### Ilmoitukset (pääasiallinen tietokohde)
 
 - Käyttäjä voi lisätä, muokata ja poistaa ilmoituksia. Ilmoitus poistuu tietokannasta pysyvästi.
 - Käyttäjä voi vaihtaa ja poistaa ilmoituksen kuvan.
 - Kasville voi lisätä luokitteluja: tyyppi (pistokas/kokonainen kasvi) ja valon tarve (vähäinen/keskitaso/runsas). Luokkia voi päivittää jälkeenpäin.
-- Jokaisen ilmoituksen voi klikata auki omalle sivulleen, jossa näkyy siihen liittyvät tiedot: lisäyspäivä, luokat, katselukerrat ja kommentit.
+- Jokainen ilmoitus avautuu omalle sivulleen, jossa näkyy siihen liittyvät tiedot: lisäyspäivä, luokat, sijainti, katselukerrat, kommentit ja ilmoituksen tehneen käyttäjän sijainti.
 
 ### Kommentit (toissijainen tietokohde)
 
 - Käyttäjä voi lisätä kommentin ilmoitukseen.
-- Käyttäjä pystyy muokkaamaan ja poistamaan omia kommenttejaan. Kommentti poistuu tietokannasta pysyvästi.
+- Käyttäjä voi muokata ja poistaa omia kommenttejaan. Kommentti poistuu tietokannasta pysyvästi.
 
 ### Haku
 
-- Käyttäjä voi hakea ilmoituksia kasvin nimen ja/tai lähettäjän sijainnin perusteella.
+- Käyttäjä voi hakea ilmoituksia kasvin nimen ja/tai sijainnin perusteella.
 
 ### Tietoturva
 
