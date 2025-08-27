@@ -198,6 +198,21 @@ def show_user(user_id):
         abort(404)
 
     user_listings = users.get_listings(user_id)
+
+    if user_listings:
+        formatted_listings = []
+
+        for listing in user_listings:
+            formatted_listing = {
+                "listing_id": listing["id"],
+                "name": listing["name"],
+                "date": date_formatter.format_date(listing["date"]),
+                "has_image": listing["has_image"],
+                "comment_count": listing["comment_count"]
+            }
+            formatted_listings.append(formatted_listing)
+        user_listings = formatted_listings
+
     joined_date = date_formatter.format_date(user["joined"])
     return render_template("user.html", user=user, listings=user_listings,
                            joined_date=joined_date)
@@ -739,7 +754,6 @@ def delete_account():
 
                 if image_id:
                     images.remove_image(image_id)
-                    print("delete image from listing", listing_id)
 
             users.delete_account(user_id)
 

@@ -60,10 +60,18 @@
         <p class="text-small">Ei kuvaa</p>
         {% endif %}
       </div>
-      <div>
-        <a href="/listing/{{ listing.id }}">{{ listing.name }}</a>
-        <br />
-        {{ listing.date }}
+      <div class="list-item-info">
+        <p>
+          <a
+            class="subheading"
+            href="/listing/{{ listing.listing_id }}"
+            >{{ listing.name }}</a
+          >
+        </p>
+        <div class="list-item-footer">
+          <p>Ilmoitus jätetty {{ listing.date }}</p>
+          <p>💬 {{ listing.comment_count }}</p>
+        </div>
       </div>
     </li>
     {% endfor %}

@@ -55,7 +55,11 @@ def get_image(user_id):
 
 
 def get_listings(user_id):
-    sql = """SELECT id, name, date, image_id IS NOT NULL has_image
+    sql = """SELECT id, name, date,
+             image_id IS NOT NULL has_image,
+                (SELECT COUNT(*)
+                FROM comments
+                WHERE listing_id = listings.id) comment_count
              FROM listings
              WHERE user_id = ?
              ORDER BY date DESC"""
@@ -67,7 +71,7 @@ def newest_listing(user_id):
              FROM listings
              WHERE user_id = ?
              ORDER BY id DESC
-            LIMIT 1 """
+             LIMIT 1"""
     result = db.query(sql, [user_id])
     return result[0][0] if result else None
 
