@@ -56,8 +56,8 @@ def get_listings_by_page(page, page_size):
 
 def listing_count():
     sql = """SELECT COUNT(*) FROM listings
-            LEFT JOIN users on users.id = listings.user_id
-            WHERE users.status = 1"""
+             LEFT JOIN users on users.id = listings.user_id
+             WHERE users.status = 1"""
     return db.query(sql)[0][0]
 
 
@@ -154,3 +154,11 @@ def get_classes(listing_id):
 def delete_classes(listing_id):
     sql = "DELETE FROM listing_classes WHERE listing_id = ?"
     db.execute(sql, [listing_id])
+
+
+def get_id_by_user(user_id):
+    sql = """SELECT id, image_id
+             FROM listings
+             WHERE user_id = ?
+             ORDER BY date DESC"""
+    return db.query(sql, [user_id])

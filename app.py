@@ -729,6 +729,18 @@ def delete_account():
         user = users.get_user(user_id)
 
         if "continue" in request.form:
+            user_listings = listings.get_id_by_user(user_id)
+
+            for listing in user_listings:
+                listing_id = listing["id"]
+                image_id = listing["image_id"]
+                comments.remove_from_listing(listing_id)
+                listings.remove_listing(listing_id)
+
+                if image_id:
+                    images.remove_image(image_id)
+                    print("delete image from listing", listing_id)
+
             users.delete_account(user_id)
 
             if user["has_image"]:
