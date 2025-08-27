@@ -89,11 +89,6 @@ def index(page=1):
             "city": listing["city"],
             "comment_count": listing["comment_count"]
         }
-        classes = listings.get_classes(listing["listing_id"])
-
-        for option_title, option_value in classes:
-            formatted_listing[option_title] = option_value
-
         formatted_listings.append(formatted_listing)
 
     return render_template("index.html", listings=formatted_listings,
