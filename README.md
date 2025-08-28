@@ -88,9 +88,9 @@ seed.py-tiedosto sisältää skriptin, joka lisää tietokantaan 1000 käyttäj�
 
 ### <a name="testaustulokset"></a> Testauksen tulokset
 
-Sovelluksen toiminnan nopeuttamiseksi etusivulla on käytössä sivutus. Tietokantaan on myös lisätty kaksi indeksiä nopeuttamaan hakuja. Seuraavissa kuvissa on nähtävissä etusivun latausnopeus ilman näitä ominaisuuksia sekä niiden kanssa. Ennen testausta tietokantaan on lisätty suuri määrä tietoa yllä kuvatun seed.py-tiedoston avulla.
+Sovelluksen toiminnan nopeuttamiseksi etusivulla on käytössä sivutus. Tietokantaan on myös lisätty indeksi nopeuttamaan hakuja. Seuraavissa kuvissa on nähtävissä näiden ominaisuuksien vaikutus etusivun latausnopeuteen. Ennen testausta tietokantaan on lisätty suuri määrä tietoa yllä kuvatun seed.py-tiedoston avulla.
 
-#### Ei sivutusta, ei indeksiä
+#### Ilman sivutusta tai indeksiä
 
 ![Kuva komentotulkista, jossa sivun latausajaksi näkyy 3.95 sekuntia](images/no-idx-no-pg.jpg)
 
@@ -110,4 +110,4 @@ Hakusivulla ei ole käytössä sivutusta, mutta SQL-kysely hyödyntää tietokan
 Jos haulla löytyy 100 000 ilmoitusta, sivun lataus kestää varsin kauan, n. 7-8 sekuntia.
 
 ![Kuva komentotulkista, jossa sivun latausajoiksi näkyy 0.51 sekuntia, 0.33 sekuntia ja 0.05 sekuntia](images/search-fast.jpg)
-Muutamaan sataan tai tuhanteen ilmoitukseen kohdistuva haku sen sijaan latautuu alle sekunnissa. Hakusivun tehokkuus on eräs sovelluksen kehityskohde.
+Muutamaan sataan tai tuhanteen ilmoitukseen kohdistuva haku sen sijaan latautuu parhaimmillaan alle sekunnissa. Hakusivun tehokkuus on eräs sovelluksen kehityskohde.
