@@ -96,14 +96,18 @@ Sovelluksen toiminnan nopeuttamiseksi etusivulla on käytössä sivutus. Tietoka
 
 Ilman sivutusta tai indeksiä etusivun latausnopeus on melkein 4 sekuntia.
 
-#### Sivutus ja yksi indeksi
+#### Sivutus ja indeksi
 
-![Kuva komentotulkista, jossa sivun latausajoiksi näkyy 1.91 sekuntia ja 1.17 sekuntia](images/pg-1-idx.jpg)
+![Kuva komentotulkista, jossa sivun latausajoiksi näkyy 0.28 sekuntia, 0.09 sekuntia ja 0.08 sekuntia](images/pg-idx.jpg)
 
-Sivutuksen ja indeksin käyttöönoton (luokkatauluun) jälkeen latausaika lyheni 1-2 sekunnilla.
+Sivutuksen ja indeksin käyttöönoton jälkeen latausaika lyheni alle sekuntiin.
 
-#### Sivutus ja kaksi indeksiä
+#### Hakusivu
 
-![Kuva komentotulkista, jossa sivun latausajoiksi näkyy 0.27 sekuntia ja 0.13 sekuntia](images/pg-2-idx.jpg)
+Hakusivulla ei ole käytössä sivutusta, mutta SQL-kysely hyödyntää tietokannan indeksiä.
 
-Toisen indeksin lisäys (kommenttitauluun) lyhensi latausajan alle sekuntiin.
+![Kuva komentotulkista, jossa sivun latausajoiksi näkyy 6.84 sekuntia, 7.8 sekuntia ja 7.97 sekuntia](images/search-slow.jpg)
+Jos haulla löytyy 100 000 ilmoitusta, sivun lataus kestää varsin kauan, n. 7-8 sekuntia.
+
+![Kuva komentotulkista, jossa sivun latausajoiksi näkyy 0.51 sekuntia, 0.33 sekuntia ja 0.05 sekuntia](images/search-fast.jpg)
+Muutamaan sataan tai tuhanteen ilmoitukseen kohdistuva haku sen sijaan latautuu alle sekunnissa. Hakusivun tehokkuus on eräs sovelluksen kehityskohde.
