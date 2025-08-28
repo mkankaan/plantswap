@@ -1,6 +1,6 @@
 # 🔄 PlantSwap 🪴
 
-PlantSwap on sovellus, jossa käyttäjät voivat lisätä ilmoituksia huonekasveista, jotka haluaisivat antaa vaihtoon. Sovelluksen tarkoitus on, että sen avulla voi vaihtaa kasveja tai pistokkaita muiden käyttäjien kanssa tai esimerkiksi löytää uuden kodin kasville, jota ei voi/halua pitää, ja saada vaihdossa toisen toivomansa kasvin. Haluamansa kasvin löydettyään käyttäjä voi ottaa yhteyttä ilmoituksen tekijään kommentilla.
+PlantSwap on sovellus, jossa käyttäjät voivat lisätä ilmoituksia huonekasveista, jotka haluaisivat antaa vaihtoon. Sovelluksen tarkoitus on, että sen avulla voi vaihtaa kasveja tai pistokkaita muiden käyttäjien kanssa tai esimerkiksi löytää uuden kodin kasville, jota ei voi tai halua pitää, ja saada vaihdossa toivomansa kasvin. Haluamansa kasvin löydettyään käyttäjä voi ottaa yhteyttä ilmoituksen tekijään kommentilla.
 
 1. [Asennus (Linux/MacOS)](#asennusohjeet) <br/>
 2. [Sovelluksen tila](#tila) <br/>
@@ -10,7 +10,7 @@ PlantSwap on sovellus, jossa käyttäjät voivat lisätä ilmoituksia huonekasve
 
 ## <a name="asennusohjeet"></a> Asennus (Linux/MacOS)
 
-Seuraavat ohjeet on tarkoitettu sovelluksen asennukseen Linux- ja MacOS-käyttöjärjestelmillä. Muilla käyttöjärjestelmillä komennot ja sivuston osoite saattavat poiketa.
+Seuraavat ohjeet on suunnattu Linux- ja MacOS-käyttöjärjestelmille. Muilla käyttöjärjestelmillä komennot ja sivuston osoite saattavat olla erilaiset.
 
 Suorita seuraavat komennot projektikansiossa.
 
@@ -21,7 +21,7 @@ $ sqlite3 database.db < schema.sql
 $ sqlite3 database.db < init.sql
 ```
 
-Asenna Pythonin virtuaaliympäristö ja Flask:
+Asenna Pythonin virtuaaliympäristö ja Flask-kirjasto:
 
 ```
 $ python3 -m venv venv
@@ -45,14 +45,14 @@ Sovellus käynnistyy oletusarvoisesti osoitteeseen http://127.0.0.1:5000
 - Käyttäjä voi vaihtaa ja poistaa profiilikuvansa.
 - Käyttäjä näkee muiden käyttäjien profiilit.
 - Profiilissa näkyy lista käyttäjän luomista ilmoituksista.
-- Käyttäjä voi poistaa tilinsä. Tili ei katoa tietokannasta, vaan sen status muuttuu. Kun tili poistetaan, kaikki käyttäjän lisäämät ilmoitukset ja niiden kommentit, luokat ja kuva poistetaan samalla tietokannasta, koska sovelluksen käyttötarkoituksen vuoksi niiden säilyttäminen ei ole hyödyllistä.
+- Käyttäjä voi poistaa tilinsä. Tili ei katoa tietokannasta, vaan sen status muuttuu. Kun tili poistetaan, kaikki käyttäjän lisäämät ilmoitukset poistetaan samalla, koska sovelluksen käyttötarkoituksen vuoksi niiden säilyttäminen ei ole hyödyllistä.
 
 ### Ilmoitukset (pääasiallinen tietokohde)
 
 - Käyttäjä voi lisätä, muokata ja poistaa ilmoituksia. Ilmoitus poistuu tietokannasta pysyvästi.
 - Käyttäjä voi vaihtaa ja poistaa ilmoituksen kuvan.
 - Kasville voi lisätä luokitteluja: tyyppi (pistokas/kokonainen kasvi) ja valon tarve (vähäinen/keskitaso/runsas). Luokkia voi päivittää jälkeenpäin.
-- Jokainen ilmoitus avautuu omalle sivulleen, jossa näkyy siihen liittyvät tiedot: lisäyspäivä, luokat, sijainti, katselukerrat, kommentit ja ilmoituksen tehneen käyttäjän sijainti.
+- Jokainen ilmoitus avautuu omalle sivulleen, jossa näkyy siihen liittyvät tiedot: lisäyspäivä, luokat, katselukerrat, kommentit ja lähettäjän sijainti.
 
 ### Kommentit (toissijainen tietokohde)
 
@@ -66,7 +66,7 @@ Sovellus käynnistyy oletusarvoisesti osoitteeseen http://127.0.0.1:5000
 ### Tietoturva
 
 - Kaikkien tietokohteiden luontiin, muokkaukseen ja poistamiseen liittyvät toiminnot vaativat sisäänkirjautumisen. Käyttäjältä on estetty muiden kuin hänen omien tietokohteidensa muokkaus ja poisto.
-- csrf on käytössä kaikissa lomakkeissa, jotka vaativat sisäänkirjautumisen.
+- CSRF-hyökkäys on estetty kaikissa lomakkeissa, jotka vaativat sisäänkirjautumisen.
 
 ## <a name="testaus"></a> Sovelluksen testaus
 

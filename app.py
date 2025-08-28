@@ -172,10 +172,10 @@ def register():
             return render_template("register.html", restrictions=restrictions,
                                    hint_text=hint_text, filled=filled)
 
-        city_valid, city_error_message = form_validation.validate_city(city)
+        city_valid, city_error = form_validation.validate_city(city)
 
         if not city_valid:
-            flash(city_error_message)
+            flash(city_error)
             return render_template("register.html", restrictions=restrictions,
                                    hint_text=hint_text, filled=filled)
 
@@ -197,24 +197,21 @@ def show_user(user_id):
     if not user or user["status"] == 0:
         abort(404)
 
-    user_listings = users.get_listings(user_id)
-
-    if user_listings:
-        formatted_listings = []
-
-        for listing in user_listings:
-            formatted_listing = {
-                "listing_id": listing["id"],
-                "name": listing["name"],
-                "date": date_formatter.format_date(listing["date"]),
-                "has_image": listing["has_image"],
-                "comment_count": listing["comment_count"]
-            }
-            formatted_listings.append(formatted_listing)
-        user_listings = formatted_listings
-
     joined_date = date_formatter.format_date(user["joined"])
-    return render_template("user.html", user=user, listings=user_listings,
+    user_listings = users.get_listings(user_id)
+    formatted_listings = []
+
+    for listing in user_listings:
+        formatted_listing = {
+            "listing_id": listing["id"],
+            "name": listing["name"],
+            "date": date_formatter.format_date(listing["date"]),
+            "has_image": listing["has_image"],
+            "comment_count": listing["comment_count"]
+        }
+        formatted_listings.append(formatted_listing)
+
+    return render_template("user.html", user=user, listings=formatted_listings,
                            joined_date=joined_date)
 
 
@@ -526,14 +523,17 @@ def show_listing(listing_id):
     if not listing:
         abort(404)
 
-    classes = listings.get_classes(listing_id)
-    listings.add_view(listing_id)
-    listing = listings.get_listing(listing_id)
-    user_id = listings.get_user(listing_id)
-    user = users.get_user(user_id)
-    date_added = date_formatter.format_date(listing["date"])
     restrictions = form_validation.comment_restrictions
     hint_text = form_validation.form_hint["comment"]
+
+    listings.add_view(listing_id)
+    listing = listings.get_listing(listing_id)
+
+    user_id = listings.get_user(listing_id)
+    user = users.get_user(user_id)
+
+    classes = listings.get_classes(listing_id)
+    date_added = date_formatter.format_date(listing["date"])
 
     listing_comments = comments.get_by_listing(listing_id)
     formatted_comments = []
@@ -553,6 +553,7 @@ def show_listing(listing_id):
                 comment["edited_date"])
 
         formatted_comments.append(formatted_comment)
+
     return render_template("listing.html", listing=listing, user=user,
                            comments=formatted_comments, date_added=date_added,
                            restrictions=restrictions, hint_text=hint_text,
@@ -696,11 +697,11 @@ def edit_comment(comment_id):
         check_csrf()
         content = request.form["content"]
 
-        content_valid, content_error_message = form_validation.validate_comment(
+        content_valid, content_error = form_validation.validate_comment(
             content)
 
         if not content_valid:
-            flash(content_error_message)
+            flash(content_error)
             return redirect("/edit/comment/" + str(comment["listing_id"]))
 
         comments.update_comment(comment_id, content)
@@ -771,22 +772,19 @@ def search():
     query = request.args.get("query") if request.args.get("query") else ""
     city = request.args.get("city") if request.args.get("city") else ""
     results = listings.search(query, city) if query or city else []
+    formatted_results = []
 
-    if results:
-        formatted_results = []
+    for listing in results:
+        formatted_listing = {
+            "listing_id": listing["listing_id"],
+            "name": listing["name"],
+            "date": date_formatter.format_date(listing["date"]),
+            "has_image": listing["has_image"],
+            "username": listing["username"],
+            "user_id": listing["user_id"],
+            "city": listing["city"],
+            "comment_count": listing["comment_count"]
+        }
+        formatted_results.append(formatted_listing)
 
-        for listing in results:
-            formatted_listing = {
-                "listing_id": listing["listing_id"],
-                "name": listing["name"],
-                "date": date_formatter.format_date(listing["date"]),
-                "has_image": listing["has_image"],
-                "username": listing["username"],
-                "user_id": listing["user_id"],
-                "city": listing["city"],
-                "comment_count": listing["comment_count"]
-            }
-            formatted_results.append(formatted_listing)
-        results = formatted_results
-
-    return render_template("search.html", query=query, city=city, results=results)
+    return render_template("search.html", query=query, city=city, results=formatted_results)
