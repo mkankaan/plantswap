@@ -8,10 +8,15 @@ def create_comment(user_id, listing_id, content):
 
 
 def get_by_listing(listing_id):
-    sql = """SELECT c.id comment_id, c.content, c.user_id, c.sent_date,
-             c.edited_date, u.username, u.status user_status,
-             u.image_id IS NOT NULL user_has_image,
-             c.edited_date IS NOT NULL edited
+    sql = """SELECT c.id comment_id,
+                    c.content, 
+                    c.user_id, 
+                    c.sent_date,
+                    c.edited_date, 
+                    u.username, 
+                    u.status user_status,
+                    u.image_id IS NOT NULL user_has_image,
+                    c.edited_date IS NOT NULL edited
              FROM comments c, users u
              WHERE u.id = c.user_id
              AND c.listing_id = ?
@@ -20,9 +25,14 @@ def get_by_listing(listing_id):
 
 
 def get_comment(comment_id):
-    sql = """SELECT c.id, c.user_id, c.listing_id, c.content,
-             c.sent_date, c.edited_date, u.username,
-             u.image_id IS NOT NULL user_has_image
+    sql = """SELECT c.id, 
+                    c.user_id, 
+                    c.listing_id, 
+                    c.content,
+                    c.sent_date, 
+                    c.edited_date, 
+                    u.username,
+                    u.image_id IS NOT NULL user_has_image
              FROM comments c, users u
              WHERE c.user_id = u.id
              AND c.id = ?"""

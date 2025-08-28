@@ -29,9 +29,13 @@ def create_user(username, password, city):
 
 
 def get_user(user_id):
-    sql = """SELECT u.id, u.username, u.city, u.joined,
-             u.image_id IS NOT NULL has_image,
-             u.image_id, u.status
+    sql = """SELECT u.id,
+                    u.username, 
+                    u.city, 
+                    u.joined,
+                    u.image_id IS NOT NULL has_image,
+                    u.image_id, 
+                    u.status
              FROM users u
              WHERE u.id = ?"""
     result = db.query(sql, [user_id])
@@ -55,11 +59,15 @@ def get_image(user_id):
 
 
 def get_listings(user_id):
-    sql = """SELECT id, name, date,
-             image_id IS NOT NULL has_image,
-                (SELECT COUNT(*)
-                FROM comments
-                WHERE listing_id = listings.id) comment_count
+    sql = """SELECT id,
+                    name, 
+                    date,
+                    image_id IS NOT NULL has_image,
+                    (
+                        SELECT COUNT(*)
+                        FROM comments
+                        WHERE listing_id = listings.id
+                    ) comment_count
              FROM listings
              WHERE user_id = ?
              ORDER BY date DESC"""
