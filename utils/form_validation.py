@@ -1,13 +1,17 @@
 import re
 
-registration_restrictions = {"min_username": 3,
-                             "max_username": 20,
-                             "min_password": 8,
-                             "max_password": 100,
-                             "max_city": 50}
+registration_restrictions = {
+    "min_username": 3,
+    "max_username": 20,
+    "min_password": 8,
+    "max_password": 100,
+    "max_city": 50
+}
 
-listing_restrictions = {"max_name": 50,
-                        "max_info": 500}
+listing_restrictions = {
+    "max_name": 50,
+    "max_info": 500
+}
 
 comment_restrictions = {"max_comment": 500}
 
